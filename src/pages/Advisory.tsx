@@ -124,7 +124,7 @@ const Advisory = () => {
         </div>
 
         {/* Advisors Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           {advisors.map((advisor) => (
             <Card 
               key={advisor.id} 
@@ -178,9 +178,7 @@ const Advisory = () => {
                 </div>
               </div>
 
-              <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                {advisor.bio}
-              </p>
+            
 
               <div className="flex gap-2">
                 <Button 
