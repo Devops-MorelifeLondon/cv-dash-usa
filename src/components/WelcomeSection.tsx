@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, TrendingUp, Globe, Users, Zap } from "lucide-react";
 import { CrossAssistPanel } from "@/components/CroaaAssistPanel"; // Adjust path as needed
 import SuccessStories from "./SucessStories";
+import CrossAssist from "@/pages/CrossAssist";
+
 
 export function WelcomeSection() {
   return (
@@ -130,7 +132,7 @@ export function WelcomeSection() {
 
       {/* CrossAssistPanel, always present */}
       <div className="mt-10">
-        <CrossAssistPanel />
+        <CrossAssist />
       </div>
 
       <div className="max-w-4xl overflow-hidden mx-auto">

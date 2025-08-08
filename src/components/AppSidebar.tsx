@@ -8,7 +8,8 @@ import {
   BarChart3,
   BookOpen,
   MessageCircle,
-  ChevronRight
+  ChevronRight,
+  CreditCard
 } from "lucide-react";
 
 import {
@@ -62,10 +63,10 @@ const navigationItems = [
     emoji: "📚"
   },
   { 
-    title: "Ask CrossAssist", 
-    url: "/crossassist", 
-    icon: MessageCircle,
-    emoji: "💬"
+    title: "Pricing", 
+    url: "/pricing", 
+   icon: CreditCard,
+    emoji: "💳"
   },
 ];
 
