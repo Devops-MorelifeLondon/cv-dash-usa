@@ -109,26 +109,7 @@ export function WelcomeSection() {
         </Card>
       </div>
 
-      {/* QUICK ACTIONS */}
-      <Card className="p-8">
-        <h2 className="text-2xl font-bold mb-6 text-foreground">
-          Quick Start Actions
-        </h2>
-        <div>
-          <div className="p-6 border border-border/50 rounded-lg hover:border-primary/50 hover:shadow-card transition-all duration-300 cursor-pointer group">
-            <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform">
-              💬
-            </div>
-            <h3 className="text-lg font-semibold mb-2 text-foreground">Ask CrossAssist</h3>
-            <p className="text-muted-foreground text-sm mb-4">
-              Instantly connect with AI-powered expertise for licensing, compliance, and go-to-market guidance.
-            </p>
-            <span className="text-xs text-primary font-bold opacity-70">
-              Chat below — your assistant is ready!
-            </span>
-          </div>
-        </div>
-      </Card>
+     
 
       {/* CrossAssistPanel, always present */}
       <div className="mt-10">
