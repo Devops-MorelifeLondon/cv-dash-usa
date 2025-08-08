@@ -75,7 +75,10 @@ export function AppSidebar() {
   const currentPath = location.pathname;
   const collapsed = state === "collapsed";
 
-  const isActive = (path: string) => {
+  // Country switch state
+  const [country, setCountry] = useState("IN");
+
+  const isActive = (path) => {
     if (path === "/" && currentPath === "/") return true;
     if (path !== "/" && currentPath.startsWith(path)) return true;
     return false;
@@ -87,6 +90,7 @@ export function AppSidebar() {
       collapsible="icon"
     >
       <SidebarContent className="bg-gradient-to-b from-background to-muted/20">
+
         {/* Logo Section */}
         <div className="p-6 border-b border-border/10">
           <div className="flex items-center gap-3">
@@ -133,7 +137,6 @@ export function AppSidebar() {
                       {!collapsed && isActive(item.url) && (
                         <ChevronRight className="w-4 h-4 opacity-60" />
                       )}
-                      
                       {/* Active indicator */}
                       {isActive(item.url) && (
                         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary-foreground rounded-r-full" />
@@ -145,6 +148,34 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Country Switch placed here */}
+        {!collapsed && (
+          <div className="px-6 py-4 flex justify-center animate-fade-in">
+            <div className="flex rounded-lg bg-muted/20 border border-border/10">
+              <button
+                className={`px-3 py-1 text-base font-semibold rounded-l-lg transition-colors duration-150
+                  ${country === "IN"
+                    ? "bg-primary text-primary-foreground"
+                    : "hover:text-primary text-muted-foreground"
+                  }`}
+                onClick={() => setCountry("IN")}
+                aria-pressed={country === "IN"}
+                type="button"
+              >IN</button>
+              <button
+                className={`px-3 py-1 text-base font-semibold rounded-r-lg transition-colors duration-150
+                  ${country === "US"
+                    ? "bg-primary text-primary-foreground"
+                    : "hover:text-primary text-muted-foreground"
+                  }`}
+                onClick={() => setCountry("US")}
+                aria-pressed={country === "US"}
+                type="button"
+              >US</button>
+            </div>
+          </div>
+        )}
 
         {/* Footer */}
         <div className="mt-auto p-4 border-t border-border/10">
