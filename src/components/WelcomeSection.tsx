@@ -133,7 +133,7 @@ export function WelcomeSection() {
         <CrossAssistPanel />
       </div>
 
-      <div className="max-w-5xl overflow-hidden mx-auto">
+      <div className="max-w-4xl overflow-hidden mx-auto">
         <SuccessStories />
       </div>
     </div>
