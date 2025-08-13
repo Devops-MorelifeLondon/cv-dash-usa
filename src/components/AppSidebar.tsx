@@ -96,7 +96,7 @@ export function AppSidebar() {
                         }
                       `}
                     >
-                      <item.icon className="w-5 h-5 opacity-80" />
+                      {/* <item.icon className="w-5 h-5 opacity-80" /> */}
                       
                       {!collapsed && (
                         <span className="text-sm font-medium truncate animate-fade-in">
