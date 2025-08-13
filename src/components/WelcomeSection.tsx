@@ -1,15 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, TrendingUp, Globe, Users, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  Landmark,
+  ShoppingCart,
+} from "lucide-react";
 import { CrossAssistPanel } from "@/components/CroaaAssistPanel"; // Adjust path as needed
 import SuccessStories from "./SucessStories";
 import CrossAssist from "@/pages/CrossAssist";
 
-
 export function WelcomeSection() {
   return (
-    <div className="space-y-8 p-6">
+    <div className="space-y-8 p-6 max-w-md lg:max-w-full ">
       {/* HERO */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-primary p-8 text-white">
         <div className="relative z-10">
@@ -22,13 +26,14 @@ export function WelcomeSection() {
             </Badge>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-            Expand Your Business  
+            Expand Your Business
             <br />
             <span className="text-white">Across Borders</span>
           </h1>
           <p className="text-xl text-white/90 mb-8 max-w-2xl">
-            Seamlessly launch and scale in the India and USA markets.  
-            Get tailored advice, real-time insights, and hands-on support as you grow your global vision.
+            Seamlessly launch and scale in the India and USA markets. Get
+            tailored advice, real-time insights, and hands-on support as you
+            grow your global vision.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button
@@ -62,54 +67,47 @@ export function WelcomeSection() {
       </div>
 
       {/* STATS */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="p-6 hover:shadow-card-hover transition-all duration-300 border-border/50">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-cv-blue-light rounded-lg flex items-center justify-center">
-              <TrendingUp className="w-6 h-6 text-primary" />
+              <Building2 className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground">85%</p>
-              <p className="text-sm text-muted-foreground">Profile Completion</p>
+              <p className="text-2xl font-bold text-green-600">Completed</p>
+              <p className="text-sm text-muted-foreground">
+                Company Registration
+              </p>
             </div>
           </div>
         </Card>
         <Card className="p-6 hover:shadow-card-hover transition-all duration-300 border-border/50">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-cv-blue-light rounded-lg flex items-center justify-center">
-              <Globe className="w-6 h-6 text-primary" />
+              <Landmark className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground">2</p>
-              <p className="text-sm text-muted-foreground">Active Markets</p>
+              <p className="text-2xl font-bold text-yellow-500">In Progress</p>
+              <p className="text-sm text-muted-foreground">Bank Account</p>
             </div>
           </div>
         </Card>
         <Card className="p-6 hover:shadow-card-hover transition-all duration-300 border-border/50">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-cv-blue-light rounded-lg flex items-center justify-center">
-              <Users className="w-6 h-6 text-primary" />
+              <ShoppingCart className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground">12</p>
-              <p className="text-sm text-muted-foreground">Expert Advisors</p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-6 hover:shadow-card-hover transition-all duration-300 border-border/50">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-cv-blue-light rounded-lg flex items-center justify-center">
-              <Zap className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">24h</p>
-              <p className="text-sm text-muted-foreground">Avg. Response Time</p>
+              <p className="text-2xl font-bold text-muted-foreground">
+                Not Started
+              </p>
+              <p className="text-sm text-muted-foreground">
+                eCommerce Onboarding
+              </p>
             </div>
           </div>
         </Card>
       </div>
-
-     
 
       {/* CrossAssistPanel, always present */}
       <div className="mt-10">

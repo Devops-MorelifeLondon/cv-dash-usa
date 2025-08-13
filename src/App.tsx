@@ -11,6 +11,12 @@ import Support from "./pages/Support";
 import Resources from "./pages/Resources";
 import CrossAssist from "./pages/CrossAssist";
 import NotFound from "./pages/NotFound";
+import IndiaMarketEntryPricing from "./pages/Pricing";
+import PricingLayout from "./pages/PricingLayout";
+import PostLayout from "./pages/PostConsLayout";
+
+
+
 
 const queryClient = new QueryClient();
 
@@ -28,6 +34,8 @@ const App = () => (
           <Route path="/support" element={<Support />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/crossassist" element={<CrossAssist />} />
+          <Route path="/pricing" element={<PricingLayout />} />
+          <Route path="/post-consultation" element={<PostLayout />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

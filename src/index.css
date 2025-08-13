@@ -126,3 +126,39 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/*
+ * Place this in your global CSS file (e.g., src/index.css)
+ * This provides custom scrollbar styles for the element with the .custom-scrollbar class
+ */
+
+/* For WebKit-based browsers (Chrome, Safari, Edge, etc.) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Sets the width of the scrollbar */
+  height: 8px; /* Sets the height for horizontal scrollbars */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent; /* Makes the track (the background) invisible */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--primary) / 0.3); /* Sets a subtle, transparent thumb color */
+  border-radius: 10px; /* Rounds the corners of the thumb */
+  border: 2px solid transparent; /* Creates padding around the thumb, making it appear thinner */
+  background-clip: content-box; /* Ensures the border is transparent and not covered by the background */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+/* On hover, make the scrollbar thumb more visible */
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--primary) / 0.6);
+}
+
+/* For Firefox browser */
+@supports (scrollbar-width: thin) {
+  .custom-scrollbar {
+    scrollbar-width: thin; /* Makes the scrollbar thin */
+    scrollbar-color: hsl(var(--primary) / 0.6) transparent; /* Sets thumb and track color */
+  }
+}
