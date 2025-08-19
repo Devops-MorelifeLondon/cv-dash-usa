@@ -11,6 +11,7 @@ import {
   Phone,
   MessageCircle,
   FolderLock,
+  Building2
 } from "lucide-react";
 
 const serviceCategories = [
@@ -20,6 +21,13 @@ const serviceCategories = [
     description:
       "Business structure guidance (LLC, Pvt Ltd, Branch Office), company registration, local licensing & tax IDs, and government approvals.",
     icon: <Building className="w-6 h-6" />,
+  },
+  {
+    key: "entity",
+    name: "Government Incentives & Schemes",
+    description:
+      "Discover and apply for benefits available to foreign investors",
+    icon: <Building2 className="w-6 h-6" />,
   },
   {
     key: "address",
@@ -102,7 +110,7 @@ const Support = () => {
             >
               <div className="flex items-center gap-3 mb-4 text-primary">
                 {cat.icon}
-                <h3 className="text-lg font-semibold text-foreground">
+                <h3 className="text-base font-semibold text-foreground">
                   {cat.name}
                 </h3>
               </div>

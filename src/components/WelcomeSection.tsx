@@ -1,122 +1,112 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress"; // <-- shadcn/ui progress
 import {
   ArrowRight,
   Building2,
   Landmark,
   ShoppingCart,
 } from "lucide-react";
-import { CrossAssistPanel } from "@/components/CroaaAssistPanel"; // Adjust path as needed
+import { CrossAssistPanel } from "@/components/CroaaAssistPanel"; // Adjust path
 import SuccessStories from "./SucessStories";
 import CrossAssist from "@/pages/CrossAssist";
 
 export function WelcomeSection() {
   return (
-    <div className="space-y-8 p-6 max-w-md lg:max-w-full ">
+    <div className="space-y-10 p-4 max-w-md lg:max-w-full">
       {/* HERO */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-primary p-8 text-white">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-primary p-6 md:p-8 text-white">
         <div className="relative z-10">
-          <div className="flex items-center gap-2 mb-4">
-            <Badge
-              variant="secondary"
-              className="bg-white/20 text-white border-white/30"
-            >
-              Welcome Back
-            </Badge>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-            Expand Your Business
-            <br />
-            <span className="text-white">Across Borders</span>
+          <Badge
+            variant="secondary"
+            className="bg-white/20 text-white border-white/30 mb-3"
+          >
+            Welcome Back
+          </Badge>
+
+          <h1 className="text-3xl md:text-4xl font-bold mb-6 leading-snug">
+            Expand Your Business in India
           </h1>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl">
-            Seamlessly launch and scale in the India and USA markets. Get
-            tailored advice, real-time insights, and hands-on support as you
-            grow your global vision.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4">
+
+          <div className="flex flex-col sm:flex-row gap-3">
             <Button
-              size="lg"
-              className="bg-white text-primary hover:bg-white/90 font-semibold"
-              // TODO: Add your onClick or href here
+              size="sm"
+              className="bg-white text-primary hover:bg-white/90 font-semibold shadow"
             >
               Explore Opportunities
-              <ArrowRight className="ml-2 w-5 h-5" />
+              <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
             <Button
-              size="lg"
-              variant="outline"
-              className="border-2 border-white bg-transparent text-white hover:bg-white/10 font-semibold"
-              // TODO: Add your onClick or href here
+              size="sm"
+              className="bg-transparent border border-white text-white hover:bg-white hover:text-blue-500 font-semibold shadow"
             >
-              Fast Track my Set up
+              🚀 FastTrack My Setup
             </Button>
           </div>
         </div>
-        {/* Floating Orbs + Visuals */}
-        <div className="absolute top-10 right-10 w-20 h-20 bg-white/10 rounded-full animate-float"></div>
+
+        {/* Smaller Orbs */}
+        <div className="absolute top-6 right-6 w-12 h-12 bg-white/10 rounded-full animate-float"></div>
         <div
-          className="absolute bottom-10 right-20 w-12 h-12 bg-white/20 rounded-full animate-float"
+          className="absolute bottom-6 right-12 w-8 h-8 bg-white/20 rounded-full animate-float"
           style={{ animationDelay: "1s" }}
-        ></div>
-        <div
-          className="absolute top-1/2 right-5 w-8 h-8 bg-white/15 rounded-full animate-float"
-          style={{ animationDelay: "2s" }}
-        ></div>
+        />
       </div>
+        {/* PROGRESS CARDS - compact */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card className="p-4 hover:shadow-card-hover transition-all duration-300 border-border/50">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 bg-cv-blue-light rounded-lg flex items-center justify-center">
+              <Building2 className="w-5 h-5 text-primary" />
+            </div>
+            <p className="text-lg font-bold text-green-600">Completed</p>
+          </div>
+          <p className="text-xs text-muted-foreground mb-1">
+            Company Registration
+          </p>
+          <Progress value={100} className="h-1.5" />
+        </Card>
 
-      {/* STATS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="p-6 hover:shadow-card-hover transition-all duration-300 border-border/50">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-cv-blue-light rounded-lg flex items-center justify-center">
-              <Building2 className="w-6 h-6 text-primary" />
+        <Card className="p-4 hover:shadow-card-hover transition-all duration-300 border-border/50">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 bg-cv-blue-light rounded-lg flex items-center justify-center">
+              <Landmark className="w-5 h-5 text-primary" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-green-600">Completed</p>
-              <p className="text-sm text-muted-foreground">
-                Company Registration
-              </p>
-            </div>
+            <p className="text-lg font-bold text-yellow-500">In Progress</p>
           </div>
+          <p className="text-xs text-muted-foreground mb-1">Bank Account</p>
+          <Progress value={60} className="h-1.5" />
         </Card>
-        <Card className="p-6 hover:shadow-card-hover transition-all duration-300 border-border/50">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-cv-blue-light rounded-lg flex items-center justify-center">
-              <Landmark className="w-6 h-6 text-primary" />
+
+        <Card className="p-4 hover:shadow-card-hover transition-all duration-300 border-border/50">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 bg-cv-blue-light rounded-lg flex items-center justify-center">
+              <ShoppingCart className="w-5 h-5 text-primary" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-yellow-500">In Progress</p>
-              <p className="text-sm text-muted-foreground">Bank Account</p>
-            </div>
+            <p className="text-lg font-bold text-muted-foreground">
+              Not Started
+            </p>
           </div>
-        </Card>
-        <Card className="p-6 hover:shadow-card-hover transition-all duration-300 border-border/50">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-cv-blue-light rounded-lg flex items-center justify-center">
-              <ShoppingCart className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-muted-foreground">
-                Not Started
-              </p>
-              <p className="text-sm text-muted-foreground">
-                eCommerce Onboarding
-              </p>
-            </div>
-          </div>
+          <p className="text-xs text-muted-foreground mb-1">
+            eCommerce Onboarding
+          </p>
+          <Progress value={0} className="h-1.5" />
         </Card>
       </div>
 
-      {/* CrossAssistPanel, always present */}
-      <div className="mt-10">
+      {/* CrossAssist right after Hero */}
+      <div className="mt-4">
         <CrossAssist />
       </div>
 
+    
+
+      {/* Success Stories */}
       <div className="max-w-4xl overflow-hidden mx-auto">
         <SuccessStories />
       </div>
     </div>
   );
 }
+

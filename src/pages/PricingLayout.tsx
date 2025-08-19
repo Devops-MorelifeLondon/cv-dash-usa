@@ -1,6 +1,10 @@
 import { DashboardLayout } from "@/components/DashboardLayout";
 import IndiaMarketEntryPricing from "./Pricing";
 import IndiaEntryPackages from "@/components/BundlePackage";
+import IndiaEntryPricingPage from "@/components/ConsultantPackage";
+
+
+
 
 
 
@@ -8,8 +12,9 @@ import IndiaEntryPackages from "@/components/BundlePackage";
 const PricingLayout = () => {
   return (
     <DashboardLayout>
-      <IndiaMarketEntryPricing />
-       <IndiaEntryPackages/>
+      <IndiaEntryPricingPage />
+     
+    
     </DashboardLayout>
   );
 };

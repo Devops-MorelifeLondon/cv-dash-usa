@@ -29,9 +29,8 @@ const navigationItems = [
   { title: "Discover Opportunities", url: "/opportunities", icon: TrendingUp },
   { title: "Meet Advisory Team", url: "/advisory", icon: Users },
   { title: "Operational Support Status", url: "/support", icon: BarChart3 },
-  { title: "Resources & Playbooks", url: "/resources", icon: BookOpen },
   { title: "Pricing", url: "/pricing", icon: CreditCard },
-  { title: "Post-Consultation Services", url: "/post-consultation", icon: CreditCard },
+  { title: "Resources & Playbooks", url: "/resources", icon: BookOpen },
 ];
 
 
@@ -54,7 +53,7 @@ export function AppSidebar() {
       className={`transition-all duration-300 ${collapsed ? "w-16" : "w-72"} border-r border-border/10 `}
       collapsible="icon"
     >
-      <SidebarContent 
+      <SidebarContent
         className={`
           bg-gradient-to-b from-background to-muted/20 
           custom-scrollbar 
@@ -90,20 +89,20 @@ export function AppSidebar() {
                       href={item.url}
                       className={`
                         relative flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 group
-                        ${isActive(item.url) 
-                          ? "bg-primary text-primary-foreground shadow-card" 
+                        ${isActive(item.url)
+                          ? "bg-primary text-primary-foreground shadow-card"
                           : "hover:bg-muted/60 text-foreground hover:text-primary"
                         }
                       `}
                     >
                       {/* <item.icon className="w-5 h-5 opacity-80" /> */}
-                      
+
                       {!collapsed && (
                         <span className="text-sm font-medium truncate animate-fade-in">
                           {item.title}
                         </span>
                       )}
-                      
+
                       {!collapsed && isActive(item.url) && (
                         <ChevronRight className="w-4 h-4 opacity-60 ml-auto" />
                       )}
@@ -119,32 +118,17 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {!collapsed && (
-          <div className="px-6 py-4 flex justify-center animate-fade-in">
-            <div className="flex rounded-lg bg-muted/20 border border-border/10">
-              <button
-                className={`px-3 py-1 text-base font-semibold rounded-l-lg transition-colors duration-150
+
+        <div className="px-6 py-4 flex justify-center animate-fade-in">
+          <button
+            className={`px-3 py-1 text-base font-semibold rounded-md transition-colors duration-150
                   ${country === "IN"
-                    ? "bg-primary text-primary-foreground"
-                    : "hover:text-primary text-muted-foreground"
-                  }`}
-                onClick={() => setCountry("IN")}
-                aria-pressed={country === "IN"}
-                type="button"
-              >IN</button>
-              <button
-                className={`px-3 py-1 text-base font-semibold rounded-r-lg transition-colors duration-150
-                  ${country === "US"
-                    ? "bg-primary text-primary-foreground"
-                    : "hover:text-primary text-muted-foreground"
-                  }`}
-                onClick={() => setCountry("US")}
-                aria-pressed={country === "US"}
-                type="button"
-              >US</button>
-            </div>
-          </div>
-        )}
+                ? "bg-primary text-primary-foreground"
+                : "hover:text-primary text-muted-foreground"
+              }`}
+        
+          >INDIA</button>
+        </div>
 
         <div className="mt-auto p-4 border-t border-border/10">
           {!collapsed && (
