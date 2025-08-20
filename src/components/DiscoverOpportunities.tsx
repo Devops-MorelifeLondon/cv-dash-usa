@@ -1,7 +1,14 @@
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Map, ArrowRight, Video, Brain, ChevronDown, Check } from "lucide-react";
+import {
+  Map,
+  ArrowRight,
+  Video,
+  Brain,
+  ChevronDown,
+  Check,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,10 +26,12 @@ type StateData = {
 const stateInfo: Record<string, StateData> = {
   Maharashtra: {
     title: "Maharashtra – India’s Financial Capital",
-    about: "Maharashtra is India’s financial hub with strong presence in finance, auto and entertainment industries.",
+    about:
+      "Maharashtra is India’s financial hub with strong presence in finance, auto and entertainment industries.",
     keySectors: "Finance, Auto, Life Sciences, Media & Film",
     cities: ["Mumbai", "Pune", "Nagpur"],
-    incentives: "Tax benefits for IT parks, Startup subsidies, Special economic zones",
+    incentives:
+      "Tax benefits for IT parks, Startup subsidies, Special economic zones",
     snapshot: "Contributes ~14% to India’s GDP, largest GSDP among Indian states",
     fact: "Mumbai houses both NSE & BSE making it India’s Wall Street",
   },
@@ -31,18 +40,42 @@ const stateInfo: Record<string, StateData> = {
     about: "Known for its pro-business policies and robust infrastructure.",
     keySectors: "Textiles, Gems & Jewelry, Logistics",
     cities: ["Ahmedabad", "Surat", "Vadodara"],
-    incentives: "Lowest electricity duty for industries, plug-and-play industrial estates",
+    incentives:
+      "Lowest electricity duty for industries, plug-and-play industrial estates",
     snapshot: "Leader in exports, accounts for 33% of India’s cotton production",
     fact: "World’s largest oil refinery is in Jamnagar, Gujarat",
   },
   Karnataka: {
     title: "Karnataka – India’s Silicon Valley",
-    about: "Home to India’s tech hub Bengaluru, strong in aerospace and startups.",
+    about:
+      "Home to India’s tech hub Bengaluru, strong in aerospace and startups.",
     keySectors: "Aerospace, Electronics, Startups",
     cities: ["Bengaluru", "Mysuru", "Mangaluru"],
     incentives: "Startup-friendly policies, R&D support, IT parks",
     snapshot: "Over 40% of India’s IT exports come from Karnataka",
     fact: "Bengaluru is called the Startup Capital of India",
+  },
+  "Delhi NCR": {
+    title: "Delhi NCR – India’s Policy & Business Gateway",
+    about:
+      "Delhi NCR is a major hub for policy, governance, IT services, consulting, and real estate.",
+    keySectors: "IT Services, Consulting, Real Estate, Retail",
+    cities: ["Delhi", "Gurugram", "Noida"],
+    incentives:
+      "Startup incubation hubs, IT/ITES SEZs, single-window clearance systems",
+    snapshot: "Among India’s top 3 startup ecosystems",
+    fact: "Delhi NCR is home to 12 of India’s 100+ unicorns",
+  },
+  Telangana: {
+    title: "Telangana – Hyderabad’s Innovation Hub",
+    about:
+      "Telangana, with Hyderabad as its capital, is a rising IT, pharma, and aerospace hub.",
+    keySectors: "IT, Pharma, Aerospace, Biotech",
+    cities: ["Hyderabad", "Warangal"],
+    incentives:
+      "TS-iPASS single window clearance, R&D subsidies, industrial parks",
+    snapshot: "Hyderabad contributes 35% of India’s pharmaceutical production",
+    fact: "Hyderabad’s HITEC City is a global IT & innovation hub",
   },
 };
 
@@ -111,7 +144,9 @@ export default function DiscoverOpportunitiesIndia() {
                       <div
                         key={st}
                         className={`px-4 py-2 cursor-pointer flex items-center justify-between ${
-                          selectedState === st ? "bg-primary/20 font-semibold" : "hover:bg-primary/10"
+                          selectedState === st
+                            ? "bg-primary/20 font-semibold"
+                            : "hover:bg-primary/10"
                         }`}
                         onMouseEnter={() => setHoveredItem(st)}
                         onClick={() => {
@@ -121,7 +156,9 @@ export default function DiscoverOpportunitiesIndia() {
                         }}
                       >
                         {st}
-                        {selectedState === st && <Check className="w-4 h-4 text-primary" />}
+                        {selectedState === st && (
+                          <Check className="w-4 h-4 text-primary" />
+                        )}
                       </div>
                     ))}
                   </motion.div>
@@ -153,7 +190,9 @@ export default function DiscoverOpportunitiesIndia() {
                         <div
                           key={city}
                           className={`px-4 py-2 cursor-pointer flex items-center justify-between ${
-                            selectedCity === city ? "bg-primary/20 font-semibold" : "hover:bg-primary/10"
+                            selectedCity === city
+                              ? "bg-primary/20 font-semibold"
+                              : "hover:bg-primary/10"
                           }`}
                           onMouseEnter={() => setHoveredItem("City:" + city)}
                           onClick={() => {
@@ -162,7 +201,9 @@ export default function DiscoverOpportunitiesIndia() {
                           }}
                         >
                           {city}
-                          {selectedCity === city && <Check className="w-4 h-4 text-primary" />}
+                          {selectedCity === city && (
+                            <Check className="w-4 h-4 text-primary" />
+                          )}
                         </div>
                       ))}
                     </motion.div>
@@ -174,63 +215,63 @@ export default function DiscoverOpportunitiesIndia() {
         </div>
 
         {/* ----- RIGHT PANEL ----- */}
-        {/* ----- RIGHT PANEL ----- */}
-<div className="w-full md:w-2/3 flex flex-col gap-6">
-<AnimatePresence mode="wait">
-  {displayInfo ? (
-    <motion.div
-      key={displayInfo.title}
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
-    >
-    <Card className="p-6 shadow-xl">
-          <div className="space-y-3">
-            <h2 className="text-xl font-bold text-primary">{displayInfo.title}</h2>
-            <p className="text-muted-foreground">{displayInfo.about}</p>
-            <div>
-              <h4 className="font-semibold">Key Sectors</h4>
-              <p>{displayInfo.keySectors}</p>
-            </div>
-            {displayInfo.cities.length > 0 && (
-              <div>
-                <h4 className="font-semibold">Top Cities</h4>
-                <p>{displayInfo.cities.join(", ")}</p>
-              </div>
+        <div className="w-full md:w-2/3 flex flex-col gap-6">
+          <AnimatePresence mode="wait">
+            {displayInfo ? (
+              <motion.div
+                key={displayInfo.title}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
+              >
+                <Card className="p-6 shadow-xl">
+                  <div className="space-y-3">
+                    <h2 className="text-xl font-bold text-primary">
+                      {displayInfo.title}
+                    </h2>
+                    <p className="text-muted-foreground">{displayInfo.about}</p>
+                    <div>
+                      <h4 className="font-semibold">Key Sectors</h4>
+                      <p>{displayInfo.keySectors}</p>
+                    </div>
+                    {displayInfo.cities.length > 0 && (
+                      <div>
+                        <h4 className="font-semibold">Top Cities</h4>
+                        <p>{displayInfo.cities.join(", ")}</p>
+                      </div>
+                    )}
+                    <div>
+                      <h4 className="font-semibold">Investment Incentives</h4>
+                      <p>{displayInfo.incentives}</p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">Growth Snapshot</h4>
+                      <p>{displayInfo.snapshot}</p>
+                    </div>
+                    <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
+                      <strong>Fact:</strong> {displayInfo.fact}
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="placeholder"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Card className="p-6 border-2 border-primary shadow-xl">
+                  <p className="text-muted-foreground">
+                    Hover or select from dropdown options to see details
+                  </p>
+                </Card>
+              </motion.div>
             )}
-            <div>
-              <h4 className="font-semibold">Investment Incentives</h4>
-              <p>{displayInfo.incentives}</p>
-            </div>
-            <div>
-              <h4 className="font-semibold">Growth Snapshot</h4>
-              <p>{displayInfo.snapshot}</p>
-            </div>
-            <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
-              <strong>Fact:</strong> {displayInfo.fact}
-            </div>
-          </div>
-        </Card>
-    </motion.div>
-  ) : (
-    <motion.div
-      key="placeholder"
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.2 }}
-    >
-      <Card className="p-6 border-2 border-primary shadow-xl">
-        <p className="text-muted-foreground">
-          Hover or select from dropdown options to see details
-        </p>
-      </Card>
-    </motion.div>
-  )}
-</AnimatePresence>
-
-</div>
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* BIG BUSINESS MATCH CENTERPIECE */}
@@ -243,10 +284,17 @@ export default function DiscoverOpportunitiesIndia() {
             </h2>
             <p className="text-muted-foreground text-lg">
               Answer a few quick questions and we’ll suggest <br />
-              <strong className="text-primary">3 best-fit business ideas</strong> for India.
+              <strong className="text-primary">
+                3 best-fit business ideas
+              </strong>{" "}
+              for India.
             </p>
-            <Button size="lg" className="px-8 py-4 text-lg rounded-xl shadow-lg">
-              Start Business Idea Generator <ArrowRight className="ml-2 w-6 h-6" />
+            <Button
+              size="lg"
+              className="px-8 py-4 text-lg rounded-xl shadow-lg"
+            >
+              Start Business Idea Generator{" "}
+              <ArrowRight className="ml-2 w-6 h-6" />
             </Button>
             <Badge className="bg-blue-50 border border-blue-300 text-blue-700 text-sm px-3 py-1">
               88% Match Accuracy
@@ -263,10 +311,12 @@ export default function DiscoverOpportunitiesIndia() {
             <h3 className="text-lg font-bold">📚 Proven Playbooks</h3>
           </div>
           <p className="text-muted-foreground text-sm">
-            Learn from real success stories and expert playbooks—step-by-step journeys of entrepreneurs who expanded in India.
+            Learn from real success stories and expert playbooks—step-by-step
+            journeys of entrepreneurs who expanded in India.
           </p>
           <Button className="w-full" variant="outline">
-            Discover Success Stories <ArrowRight className="ml-2 w-4 h-4" />
+            Discover Success Stories{" "}
+            <ArrowRight className="ml-2 w-4 h-4" />
           </Button>
         </Card>
       </div>

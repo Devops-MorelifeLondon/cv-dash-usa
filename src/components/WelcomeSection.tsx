@@ -54,7 +54,7 @@ export function WelcomeSection() {
         />
       </div>
         {/* PROGRESS CARDS - compact */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="p-4 hover:shadow-card-hover transition-all duration-300 border-border/50">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 bg-cv-blue-light rounded-lg flex items-center justify-center">
@@ -93,7 +93,7 @@ export function WelcomeSection() {
           </p>
           <Progress value={0} className="h-1.5" />
         </Card>
-      </div>
+      </div> */}
 
       {/* CrossAssist right after Hero */}
       <div className="mt-4">

@@ -152,52 +152,56 @@ export default function IndiaEntryPricingPage() {
     <div className="bg-white antialiased">
       <div className="container mx-auto px-4 py-12 md:px-6 md:py-16 lg:py-24 space-y-16 md:space-y-24">
         {/* Section 1: Consultation Packages */}
-        <section>
-          <div className="text-center max-w-3xl mx-auto mb-10">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Consultation Packages - (India Entry – Paid Advisory)</h1>
-            <p className="mt-4 text-lg text-muted-foreground">
-              Start with an expert-led advisory session to build your strategic roadmap for India.
-            </p>
+       {/* Section 1: Consultation Packages */}
+<section>
+  <div className="text-center max-w-3xl mx-auto mb-10">
+    <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+      Consultation Packages - (India Entry – Paid Advisory)
+    </h1>
+    <p className="mt-4 text-lg text-muted-foreground">
+      Start with an expert-led advisory session to build your strategic roadmap for India.
+    </p>
+  </div>
+
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+    {consultationPackagesData.map((pkg, idx) => (
+      <Card
+        key={idx}
+        className={`flex flex-col h-full transition-all duration-300 bg-white hover:shadow-xl`}
+      >
+        <CardHeader className="items-center text-center">
+          {pkg.icon}
+          <CardTitle className="text-xl mt-4">{pkg.title}</CardTitle>
+          <div className="mt-2 flex flex-col gap-2 items-center">
+            <Badge variant="outline" className="bg-white">
+              {pkg.duration}
+            </Badge>
+            <p className="text-lg font-bold text-primary">{pkg.price}</p>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {consultationPackagesData.map((pkg, idx) => (
-              <Card key={idx} className="flex flex-col bg-[#FDFFFC] hover:shadow-xl transition-shadow duration-300">
-                <CardHeader className="flex flex-row items-start gap-4">
-                  {pkg.icon}
-                  <div className="flex-1">
-                    <CardTitle className="text-xl">{pkg.title}</CardTitle>
-                    <div className="flex items-center gap-4 mt-2">
-                        <Badge variant="outline" className="bg-white">{pkg.duration}</Badge>
-                        <p className="text-lg font-bold text-primary">{pkg.price}</p>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <div className="mb-4">
-                    <p className="font-semibold text-sm">Who it's for:</p>
-                    <p className="text-sm text-muted-foreground">{pkg.target}</p>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-sm">Includes:</p>
-                    <ul className="mt-2 space-y-2 text-sm">
-                      {pkg.includes.map((item, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <CheckCircle2 className="w-4 h-4 mt-0.5 text-green-600 flex-shrink-0" />
-                          <span className="text-muted-foreground">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full">
-                    Book Consultation <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
-                </CardFooter>
-              </Card>
+        </CardHeader>
+
+        <CardContent className="flex flex-col flex-grow">
+          <p className="text-center mb-6 text-muted-foreground">{pkg.target}</p>
+          <ul className="space-y-3 flex-grow text-sm">
+            {pkg.includes.map((item, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 mt-0.5 text-green-500 flex-shrink-0" />
+                <span>{item}</span>
+              </li>
             ))}
-          </div>
-        </section>
+          </ul>
+        </CardContent>
+
+        <CardFooter>
+          <Button className="w-full">
+            Book Consultation <ArrowRight className="ml-2 w-4 h-4" />
+          </Button>
+        </CardFooter>
+      </Card>
+    ))}
+  </div>
+</section>
+
 
         {/* Section 2: Customized Execution */}
         <section>
