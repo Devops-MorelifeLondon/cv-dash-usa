@@ -14,7 +14,7 @@ import CrossAssist from "@/pages/CrossAssist";
 
 export function WelcomeSection() {
   return (
-    <div className="space-y-10 p-4 max-w-md lg:max-w-full">
+    <div className="p-4 max-w-md lg:max-w-full">
       {/* HERO */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-primary p-6 md:p-8 text-white">
         <div className="relative z-10">
@@ -34,7 +34,7 @@ export function WelcomeSection() {
               size="sm"
               className="bg-white text-primary hover:bg-white/90 font-semibold shadow"
             >
-              Explore Opportunities
+              Discover Opportunities
               <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
             <Button
