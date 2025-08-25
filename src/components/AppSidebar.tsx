@@ -25,11 +25,11 @@ import {
 // Navigation items remain the same...
 const navigationItems = [
   { title: "Welcome & Quick Start", url: "/", icon: Flag },
-  { title: "Startup Badge Progress", url: "/badges", icon: Trophy },
-    { title: "Operational Support Status", url: "/support", icon: BarChart3 },
-  { title: "Pricing", url: "/pricing", icon: CreditCard },
   { title: "Discover Opportunities", url: "/opportunities", icon: TrendingUp },
+  { title: "Operational Support Status", url: "/support", icon: BarChart3 },
+  { title: "Pricing", url: "/pricing", icon: CreditCard },
   { title: "Meet Advisory Team", url: "/advisory", icon: Users },
+  { title: "Startup Badge Progress", url: "/badges", icon: Trophy },
 
   { title: "Resources & Playbooks", url: "/resources", icon: BookOpen },
 ];
