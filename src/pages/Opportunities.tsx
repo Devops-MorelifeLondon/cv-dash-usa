@@ -1,12 +1,12 @@
 import { DashboardLayout } from "@/components/DashboardLayout";
-import DiscoverOpportunitiesIndia from "@/components/DiscoverOpportunities";
+import DiscoverOpportunitiesUSA from "@/components/DiscoverOpportunities";
 
 
 
 const Opportunities = () => {
   return (
     <DashboardLayout>
-      <DiscoverOpportunitiesIndia />
+      <DiscoverOpportunitiesUSA />
     </DashboardLayout>
   );
 };

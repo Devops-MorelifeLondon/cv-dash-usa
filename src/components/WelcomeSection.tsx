@@ -26,7 +26,7 @@ export function WelcomeSection() {
           </Badge>
 
           <h1 className="text-3xl md:text-4xl font-bold mb-6 leading-snug">
-            Expand Your Business in India
+            Expand Your Business in USA
           </h1>
 
           <div className="flex flex-col sm:flex-row gap-3">

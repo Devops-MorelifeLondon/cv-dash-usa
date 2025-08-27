@@ -13,79 +13,82 @@ import {
   FolderLock,
   Building2
 } from "lucide-react";
+import USAExpansionServicesGrid from "@/components/extra/USAExpansionServicesGrid";
+
 
 const serviceCategories = [
   {
     key: "entity",
     name: "Entity Setup & Registration",
     description:
-      "Business structure guidance (LLC, Pvt Ltd, Branch Office), company registration, local licensing & tax IDs, and government approvals.",
+      "Business structure guidance (LLC, C-Corp, S-Corp, Branch Office), company registration, EIN/Tax IDs, and state-level filings.",
     icon: <Building className="w-6 h-6" />,
   },
   {
-    key: "entity",
-    name: "Government Incentives & Schemes",
+    key: "incentives",
+    name: "Government Incentives & Grants",
     description:
-      "Discover and apply for benefits available to foreign investors",
+      "Explore and apply for federal and state-level programs, tax credits, and grants available to new and foreign businesses.",
     icon: <Building2 className="w-6 h-6" />,
   },
   {
     key: "address",
     name: "Local Address & Office Setup",
     description:
-      "Virtual office, physical co-working / leased office, registered agent services, and address proof documentation.",
+      "Virtual business address, registered agent services, co-working or leased office space, and mail forwarding solutions.",
     icon: <MapPin className="w-6 h-6" />,
   },
   {
     key: "hiring",
     name: "Hiring & HR Support",
     description:
-      "Employer registration (ESI, PF, WPS), talent sourcing, payroll setup, and visa/work permit advisory.",
+      "Employer registration (EIN, E-Verify), payroll setup, HR compliance, talent recruitment, and visa/work permit advisory.",
     icon: <Users className="w-6 h-6" />,
   },
   {
     key: "banking",
     name: "Banking & Financial Setup",
     description:
-      "Corporate bank account assistance, payment gateway integration, merchant account setup, and forex account management.",
+      "Assistance with U.S. corporate bank accounts, payment gateways, merchant accounts, and international transaction management.",
     icon: <CreditCard className="w-6 h-6" />,
   },
   {
     key: "legal",
     name: "Legal & Compliance Support",
     description:
-      "Local contracts review, statutory filings, ongoing compliance calendar, and legal translator/local counsel access.",
+      "Contract drafting & review, state and federal compliance filings, annual reports, business licenses, and ongoing legal counsel access.",
     icon: <Scale className="w-6 h-6" />,
   },
   {
     key: "logistics",
     name: "Infrastructure & Logistics",
     description:
-      "Warehouse and supply chain setup, customs brokerage assistance, import/export licensing, and manufacturing site scouting.",
+      "Warehouse & distribution setup, 3PL partnerships, customs clearance, import/export licensing, and site selection for operations.",
     icon: <Truck className="w-6 h-6" />,
   },
   {
     key: "concierge",
     name: "Concierge & Local Liaisons",
     description:
-      "Local phone number setup, representative services, in-person government follow-ups, and translation + notary support.",
+      "U.S. phone number setup, representative services, notary support, and in-person coordination with state/federal offices.",
     icon: <Phone className="w-6 h-6" />,
   },
   {
     key: "expert",
     name: "Talk to a Local Expert",
     description:
-      "Real-time help from someone who knows the local landscape.",
+      "On-demand support from advisors with deep knowledge of the U.S. business ecosystem.",
     icon: <MessageCircle className="w-6 h-6" />,
   },
   {
     key: "vault",
     name: "Document Vault",
     description:
-      "Store all your local business documents in one secure place.",
+      "Securely store all your U.S. business documents in one place.",
     icon: <FolderLock className="w-6 h-6" />,
   },
 ];
+
 
 const Support = () => {
   return (
@@ -123,6 +126,7 @@ const Support = () => {
             </Card>
           ))}
         </div>
+        <USAExpansionServicesGrid/>
       </div>
     </DashboardLayout>
   );

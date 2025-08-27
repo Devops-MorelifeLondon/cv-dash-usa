@@ -128,7 +128,7 @@ export function AppSidebar() {
                 : "hover:text-primary text-muted-foreground"
               }`}
         
-          >INDIA</button>
+          >USA</button>
         </div>
 
         <div className="mt-auto p-4 border-t border-border/10">

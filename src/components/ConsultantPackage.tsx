@@ -34,28 +34,28 @@ import {
 const consultationPackagesData = [
   {
     icon: <Compass className="w-8 h-8 text-primary" />,
-    title: "India Entry Navigator – Starter Consultation",
+    title: "U.S. Entry Navigator – Starter Consultation",
     duration: "30 minutes (Virtual)",
     price: "USD 59",
-    target: "Founders exploring expansion but unsure of entity type, capital route, or structure.",
+    target: "For founders exploring U.S. expansion but unsure of entity type, state of registration, or compliance steps.",
     includes: [
       "Understanding your business model",
-      "High-level eligibility check for Indian entry",
-      "Brief on regulatory landscape (FEMA, RBI, DPIIT)",
-      "Suggestion of ideal market entry route (liaison, branch, WOS, JV)",
+      "High-level eligibility check for U.S. entry",
+      "Brief on regulatory landscape (IRS, SEC, USCIS basics)",
+      "Suggestion of ideal market entry route (LLC, C-Corp, S-Corp, Branch)",
     ],
   },
   {
     icon: <Banknote className="w-8 h-8 text-primary" />,
-    title: "Regulatory Readiness Check – FEMA Focused",
+    title: "Regulatory Readiness Check – Federal & State Focused",
     duration: "60 minutes + Summary Report",
     price: "USD 99",
-    target: "Businesses planning FDI and capital movement into India.",
+    target: "For businesses planning foreign direct investment (FDI) and capital movement into the U.S.",
     includes: [
-      "FEMA compliance overview specific to your model",
-      "Sector-specific caps (FDI limits, automatic vs approval route)",
-      "RBI reporting framework (FC-GPR, FC-TRS)",
-      "Advisory on capital inflow documentation",
+      "Overview of federal vs. state compliance specific to your model",
+      "State registration requirements (Delaware, Wyoming, etc.)",
+      "EIN, ITIN, and IRS reporting framework",
+      "Advisory on capital inflow documentation & banking KYC",
     ],
   },
   {
@@ -63,40 +63,66 @@ const consultationPackagesData = [
     title: "Tax and Entity Structuring Advisory",
     duration: "90 minutes + Advisory Memo",
     price: "USD 99",
-    target: "Foreign founders needing help with tax-efficient India entity setup.",
+    target: "For foreign founders needing guidance on tax-efficient U.S. entity setup.",
     includes: [
-      "Ideal entity type (Pvt Ltd, LLP, Branch, etc.)",
-      "Cross-border taxation basics (DTAA, PE Risk)",
-      "Advice on shareholding, repatriation & exit options",
+      "Ideal entity type (LLC, C-Corp, S-Corp, Branch Office)",
+      "Basics of U.S. taxation & treaties (DTAA, PE risk, state taxes)",
+      "Advice on shareholding, profit repatriation & exit strategies",
       "One free follow-up email consultation",
     ],
   },
   {
     icon: <Users className="w-8 h-8 text-primary" />,
-    title: "Complete India Entry Planning Workshop",
+    title: "Complete U.S. Entry Planning Workshop",
     duration: "2 hours – Zoom Workshop + Detailed Roadmap (PDF)",
     price: "USD 199",
-    target: "Those ready to enter India and need execution clarity.",
+    target: "For those ready to launch in the U.S. and seeking execution clarity.",
     includes: [
-      "Entity structuring",
+      "Entity structuring & registration roadmap",
       "Tax and compliance overview",
-      "Capital movement, banking, RBI/FEMA requirements",
-      "Hiring, payroll, and local partner risks",
+      "Banking, payments & capital movement guidance",
+      "Hiring, payroll, and local partner/legal risks",
     ],
   },
 ];
 
+
 // 2. Data for Customized Execution Services
 const customExecutionServicesData = [
-  { serviceArea: "Business Registration", examples: "State ROC filings, GST, FSSAI, Factory License, MSME/Udyam registration" },
-  { serviceArea: "Local Office & Presence", examples: "Registered office setup, co-working space support, address compliance" },
-  { serviceArea: "Licenses & Permits", examples: "Trade license, import/export code, labor registration, fire/NOC, pollution board clearance" },
-  { serviceArea: "Recruitment & HR Setup", examples: "Local HR partner sourcing, payroll system, EPFO/ESIC registration" },
-  { serviceArea: "Vendor & Supply Chain Onboarding", examples: "Ground partner search, due diligence, negotiation support" },
-  { serviceArea: "Legal & Taxation Setup", examples: "Chartered Accountant onboarding, tax registration, compliance calendar setup" },
-  { serviceArea: "Banking & Payments", examples: "Guidance on nationalized/private banks, KYC support, account opening assistance" },
-  { serviceArea: "Operational Compliance", examples: "Shops & Establishment Act, state labor laws, professional tax setup" },
+  {
+    serviceArea: "Business Registration",
+    examples: "State incorporation filings, EIN application, registered agent service"
+  },
+  {
+    serviceArea: "Local Office & Presence",
+    examples: "Virtual office setup, co-working/leased office support, compliance address proof"
+  },
+  {
+    serviceArea: "Licenses & Permits",
+    examples: "State & federal licenses, industry-specific permits (FDA, DOT, etc.)"
+  },
+  {
+    serviceArea: "Recruitment & HR Setup",
+    examples: "Local HR partner sourcing, payroll setup, E-Verify, visa/work permit advisory"
+  },
+  {
+    serviceArea: "Vendor & Supply Chain Onboarding",
+    examples: "Ground partner search, due diligence, local contracts"
+  },
+  {
+    serviceArea: "Legal & Taxation Setup",
+    examples: "CPA onboarding, tax registration, compliance calendar setup"
+  },
+  {
+    serviceArea: "Banking & Payments",
+    examples: "Corporate bank account opening, merchant account setup, payment gateway integration"
+  },
+  {
+    serviceArea: "Operational Compliance",
+    examples: "State labor law registrations, OSHA compliance, business insurance setup"
+  },
 ];
+
 
 // 3. Data for Suggested Bundled Packages
 const bundledPackagesData = [
@@ -104,10 +130,10 @@ const bundledPackagesData = [
     icon: <Rocket className="w-8 h-8 text-primary" />,
     title: "Entry Assist",
     price: "Indicative: Starting at $1,500",
-    description: "Company Incorporation (Pvt Ltd or LLP), basic licenses, local office support, and 1-month compliance handholding.",
+    description: "Company incorporation (LLC or C-Corp), basic licenses, local address support, and 1-month compliance handholding.",
     inclusions: [
-      "Company Incorporation (Pvt Ltd or LLP)",
-      "Basic licenses (GST, MSME, Import/Export)",
+      "Company incorporation (LLC or C-Corp)",
+      "Basic registrations (EIN, state filings, business license)",
       "Local registered office support",
       "1-month compliance handholding",
     ],
@@ -119,10 +145,10 @@ const bundledPackagesData = [
     price: "Indicative: Starting at $3,500",
     description: "All of Entry Assist plus office setup, hiring coordination, payroll, and a dedicated Relationship Manager.",
     inclusions: [
-      "All of Entry Assist +",
-      "Physical/Virtual Office Setup",
-      "Local hiring coordination",
-      "Payroll + HR compliance",
+      "Everything in Entry Assist +",
+      "Virtual/Physical Office Setup",
+      "Local hiring coordination & payroll setup",
+      "HR compliance advisory",
       "Dedicated Relationship Manager (2 months)",
     ],
     cta: "Launch with this Plan",
@@ -130,19 +156,20 @@ const bundledPackagesData = [
   },
   {
     icon: <TrendingUp className="w-8 h-8 text-primary" />,
-    title: "Scale India",
+    title: "Scale U.S.",
     price: "Custom Quote",
-    description: "Custom solutions for multi-state setup, industry-specific licensing, tax structuring, and more.",
+    description: "Tailored solutions for multi-state expansion, industry-specific licensing, advanced tax structuring, and long-term support.",
     inclusions: [
-      "Multi-state setup",
-      "Industry-specific licensing (e.g., food, manufacturing, logistics)",
-      "Tax structuring & audits",
-      "Vendor onboarding",
+      "Multi-state incorporation & compliance",
+      "Industry-specific licensing (e.g., food, logistics, fintech, healthcare)",
+      "Advanced tax structuring & audits",
+      "Vendor onboarding & supply chain compliance",
       "Continued operational support (3–6 months retainer)",
     ],
     cta: "Request a Custom Quote",
   },
 ];
+
 
 
 // --- COMPONENT ---
@@ -156,10 +183,10 @@ export default function IndiaEntryPricingPage() {
 <section>
   <div className="text-center max-w-3xl mx-auto mb-10">
     <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
-      Consultation Packages - (India Entry – Paid Advisory)
+     Consultation Packages – (U.S. Entry – Paid Advisory)
     </h1>
     <p className="mt-4 text-lg text-muted-foreground">
-      Start with an expert-led advisory session to build your strategic roadmap for India.
+     Start with an expert-led advisory session to build your strategic roadmap for the U.S.
     </p>
   </div>
 
@@ -206,9 +233,11 @@ export default function IndiaEntryPricingPage() {
         {/* Section 2: Customized Execution */}
         <section>
           <div className="text-center max-w-3xl mx-auto mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Customized Execution (Priced Post-Discovery)</h2>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Customized Execution (Priced Post-Discovery)
+</h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              After your consultation, we provide hands-on support to execute your India entry plan.
+             After your consultation, we provide hands-on support to execute your U.S. entry plan.
+
             </p>
           </div>
           <Card className="max-w-6xl mx-auto overflow-hidden">
@@ -249,7 +278,7 @@ export default function IndiaEntryPricingPage() {
           <div className="text-center max-w-3xl mx-auto mb-10">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Suggested Bundled Packages (Post-Consult)</h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Get started faster with curated packages for common entry needs. Prices are indicative.
+              Get started faster with curated packages for common U.S. entry needs. Prices are indicative.
             </p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start max-w-7xl mx-auto">

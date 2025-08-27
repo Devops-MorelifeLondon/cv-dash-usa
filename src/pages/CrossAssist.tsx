@@ -18,23 +18,25 @@ const CrossAssist = () => {
     },
   ]);
 
-  const suggestedQuestions = [
-    "What licenses do I need for supplements in the USA?",
-    "Which states are cheapest for LLCs?",
-    "Should I start with Amazon or Shopify?",
-    "Show me top exports from Gujarat",
-    "What can I start with ₹5L capital?",
-    "How to get FDA clearance for cosmetics?",
-    "Best states for tax optimization",
-    "GST requirements for foreign companies",
-  ];
+const suggestedQuestions = [
+    "What licenses do I need to sell supplements in the USA?",
+    "Which states are cheapest for forming an LLC in the USA?",
+    "Should I start selling on Amazon or my own Shopify store?",
+    "What are the top US exports by state?",
+    "What business can I start in the USA with $5,000 capital?",
+    "How to get FDA clearance for cosmetics in the USA?",
+    "Which US states are best for tax optimization?",
+    "What are the US sales tax requirements for foreign companies?"
+];
+
 
   const features = [
-    { icon: "🇮🇳", title: "India Market Entry", desc: "GST, licensing, compliance" },
-    { icon: "🇺🇸", title: "USA Expansion", desc: "LLC formation, state regulations" },
-    { icon: "📋", title: "Compliance Guidance", desc: "Licensing, permits, regulations" },
-    { icon: "💡", title: "Strategy Advice", desc: "Market entry, product fit" },
-  ];
+    { icon: "🇺🇸", title: "USA Market Entry", desc: "LLC formation, state regulations, compliance" },
+    { icon: "📦", title: "E-commerce Setup", desc: "Amazon, Shopify, fulfillment strategies" },
+    { icon: "📋", title: "Regulatory Guidance", desc: "FDA, licenses, permits, state rules" },
+    { icon: "💡", title: "Business Strategy", desc: "Market research, product fit, growth plan" },
+];
+
 
   const handleSendMessage = () => {
     if (!message.trim()) return;
