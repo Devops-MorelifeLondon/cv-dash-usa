@@ -12,7 +12,7 @@ type Question = {
 
 const quizQuestions: Question[] = [
   { question: "Capital available?", options: ["<$10k", "$10k-$50k", "$50k-$200k", ">$200k"] },
-  { question: "Preferred sector?", options: ["E-commerce 🛍️", "Manufacturing 🏗️", "Services 🏢", "Tech 💻"] },
+  { question: "Preferred sector?", options: ["E-commerce", "Manufacturing", "Services", "Tech"] },
   { question: "Location goals?", options: ["East Coast", "West Coast", "Central US", "Flexible"] },
   { question: "Time-to-market?", options: ["<1 month", "1-3 months", "3-6 months", ">6 months"] },
 ];
