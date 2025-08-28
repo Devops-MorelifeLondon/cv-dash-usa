@@ -41,7 +41,7 @@ export function AppSidebar() {
   const currentPath = location.pathname;
   const collapsed = state === "collapsed";
 
-  const [country, setCountry] = useState("IN");
+  const [country, setCountry] = useState("US");
 
   const isActive = (path) => {
     if (path === "/" && currentPath === "/") return true;
@@ -120,16 +120,31 @@ export function AppSidebar() {
         </SidebarGroup>
 
 
-        <div className="px-6 py-4 flex justify-center animate-fade-in">
-          <button
-            className={`px-3 py-1 text-base font-semibold rounded-md transition-colors duration-150
-                  ${country === "IN"
-                ? "bg-primary text-primary-foreground"
-                : "hover:text-primary text-muted-foreground"
-              }`}
-        
-          >USA</button>
-        </div>
+       <div className="px-6 py-4 flex justify-center animate-fade-in gap-3">
+  {/* India Button */}
+  <a
+    href="https://cv-dash-2-git-v4-devopmlls-projects.vercel.app/" // replace with actual India domain
+    className={`px-3 py-1 text-base font-semibold rounded-md transition-colors duration-150
+      ${country === "IN"
+        ? "bg-primary text-primary-foreground"
+        : "hover:text-primary text-muted-foreground"
+      }`}
+  >
+    INDIA
+  </a>
+
+  {/* USA Button */}
+  <a
+    href="https://cv-dash-usa.vercel.app" // replace with actual USA domain
+    className={`px-3 py-1 text-base font-semibold rounded-md transition-colors duration-150
+      ${country === "US"
+        ? "bg-primary text-primary-foreground"
+        : "hover:text-primary text-muted-foreground"
+      }`}
+  >
+    USA
+  </a>
+</div>
 
         <div className="mt-auto p-4 border-t border-border/10">
           {!collapsed && (

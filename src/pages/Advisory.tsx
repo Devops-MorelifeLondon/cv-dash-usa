@@ -6,86 +6,87 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar, MessageCircle, Star, MapPin, Briefcase, Users } from "lucide-react";
 
 const Advisory = () => {
-  const advisors = [
-    {
-      id: 1,
-      name: "Rajesh Sharma",
-      title: "India Market Expert",
-      specialization: "Manufacturing & Export",
-      location: "Mumbai, India",
-      experience: "15+ years",
-      rating: 4.9,
-      sessions: 247,
-      bio: "Former VP at Tata Group with deep expertise in Indian manufacturing and export regulations. Helped 100+ companies successfully enter Indian markets.",
-      availability: "Available",
-      image: "/placeholder.svg"
-    },
-    {
-      id: 2,
-      name: "Sarah Johnson",
-      title: "USA Business Formation Specialist",
-      specialization: "Legal & Compliance",
-      location: "Delaware, USA",
-      experience: "12+ years",
-      rating: 4.8,
-      sessions: 189,
-      bio: "Corporate attorney specializing in international business formation. Expert in Delaware, Wyoming, and California incorporation strategies.",
-      availability: "Available",
-      image: "/placeholder.svg"
-    },
-    {
-      id: 3,
-      name: "Priya Patel",
-      title: "Digital Marketing Strategist",
-      specialization: "E-commerce & Scaling",
-      location: "Bangalore, India",
-      experience: "10+ years",
-      rating: 4.9,
-      sessions: 156,
-      bio: "Former Amazon India executive. Specializes in cross-border e-commerce, digital marketing, and scaling strategies for Indian and US markets.",
-      availability: "Busy until Tomorrow",
-      image: "/placeholder.svg"
-    },
-    {
-      id: 4,
-      name: "Michael Chen",
-      title: "Investment & Finance Advisor",
-      specialization: "Funding & Growth",
-      location: "San Francisco, USA",
-      experience: "18+ years",
-      rating: 4.7,
-      sessions: 312,
-      bio: "Former Goldman Sachs analyst and VC partner. Helps companies raise funding and structure financial operations for global expansion.",
-      availability: "Available",
-      image: "/placeholder.svg"
-    },
-    {
-      id: 5,
-      name: "Ankit Gupta",
-      title: "Tech & SaaS Specialist",
-      specialization: "Technology Setup",
-      location: "Hyderabad, India",
-      experience: "8+ years",
-      rating: 4.8,
-      sessions: 98,
-      bio: "Former Microsoft engineer turned consultant. Specializes in setting up tech infrastructure, SaaS platforms, and remote teams.",
-      availability: "Available",
-      image: "/placeholder.svg"
-    },
-    {
-      id: 6,
-      name: "Lisa Rodriguez",
-      title: "Operations & Logistics Expert",
-      specialization: "Supply Chain",
-      location: "Texas, USA",
-      experience: "14+ years",
-      rating: 4.9,
-      sessions: 203,
-      bio: "Supply chain expert with experience at FedEx and Amazon. Helps companies set up efficient logistics and fulfillment operations.",
-      availability: "Available",
-      image: "/placeholder.svg"
-    }
-  ];
+ const advisors = [
+  {
+    id: 1,
+    name: "Sarah Johnson",
+    title: "Business Formation Specialist",
+    specialization: "Legal & Compliance",
+    location: "Delaware, USA",
+    experience: "12+ years",
+    rating: 4.8,
+    sessions: 189,
+    bio: "Corporate attorney specializing in international business formation. Expert in Delaware, Wyoming, and California incorporation strategies.",
+    availability: "Available",
+    image: "/placeholder.svg"
+  },
+  {
+    id: 2,
+    name: "Michael Chen",
+    title: "Investment & Finance Advisor",
+    specialization: "Funding & Growth",
+    location: "San Francisco, USA",
+    experience: "18+ years",
+    rating: 4.7,
+    sessions: 312,
+    bio: "Former Goldman Sachs analyst and VC partner. Helps companies raise funding and structure financial operations for global expansion.",
+    availability: "Available",
+    image: "/placeholder.svg"
+  },
+  {
+    id: 3,
+    name: "Lisa Rodriguez",
+    title: "Operations & Logistics Expert",
+    specialization: "Supply Chain",
+    location: "Texas, USA",
+    experience: "14+ years",
+    rating: 4.9,
+    sessions: 203,
+    bio: "Supply chain expert with experience at FedEx and Amazon. Helps companies set up efficient logistics and fulfillment operations across the US.",
+    availability: "Available",
+    image: "/placeholder.svg"
+  },
+  {
+    id: 4,
+    name: "David Miller",
+    title: "US Tax & Compliance Advisor",
+    specialization: "Tax & Structuring",
+    location: "New York, USA",
+    experience: "20+ years",
+    rating: 4.8,
+    sessions: 276,
+    bio: "CPA with extensive experience in IRS compliance, federal/state tax filings, and structuring businesses for tax efficiency in the US.",
+    availability: "Available",
+    image: "/placeholder.svg"
+  },
+  {
+    id: 5,
+    name: "Emily Davis",
+    title: "Digital Marketing & Growth Specialist",
+    specialization: "E-commerce & Branding",
+    location: "Los Angeles, USA",
+    experience: "11+ years",
+    rating: 4.9,
+    sessions: 167,
+    bio: "Former Shopify and Meta strategist. Expert in US e-commerce, paid ads, and scaling direct-to-consumer brands nationwide.",
+    availability: "Available",
+    image: "/placeholder.svg"
+  },
+  {
+    id: 6,
+    name: "Robert Williams",
+    title: "Technology & SaaS Advisor",
+    specialization: "Product & Infrastructure",
+    location: "Seattle, USA",
+    experience: "13+ years",
+    rating: 4.7,
+    sessions: 142,
+    bio: "Ex-Amazon engineer turned consultant. Specializes in SaaS product development, cloud infrastructure, and scaling tech teams in the US.",
+    availability: "Available",
+    image: "/placeholder.svg"
+  }
+];
+
 
   return (
     <DashboardLayout>

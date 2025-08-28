@@ -1,0 +1,502 @@
+{
+  "Alabama": {
+    "title": "Alabama – Southern Manufacturing Hub",
+    "about": "Alabama offers a strategic location with strong automotive, aerospace, and manufacturing industries.",
+    "keySectors": "Automotive, Aerospace, Manufacturing, Steel Production",
+    "cities": ["Birmingham", "Huntsville", "Mobile"],
+    "incentives": "Tax abatements, investment credits, job creation grants",
+    "taxes": "State income tax 2-5%, corporate tax 6.5%",
+    "snapshot": "Major automotive manufacturing center with growing aerospace sector",
+    "fact": "Huntsville is known as the 'Rocket City' due to its NASA facilities"
+  },
+  "Alaska": {
+    "title": "Alaska – Resource Rich Frontier",
+    "about": "Alaska's economy is driven by natural resources, fishing, and strategic location for Arctic trade.",
+    "keySectors": "Oil & Gas, Fishing, Mining, Tourism",
+    "cities": ["Anchorage", "Fairbanks", "Juneau"],
+    "incentives": "Resource development incentives, tax credits for exploration",
+    "taxes": "No state income or sales tax, corporate tax 0-9.4%",
+    "snapshot": "Resource-rich economy with unique geographic advantages",
+    "fact": "Alaska produces about 4% of U.S. oil and has the largest fishing industry"
+  },
+  "Arizona": {
+    "title": "Arizona – Sun Belt Growth Center",
+    "about": "Arizona offers a business-friendly environment with growing tech, semiconductor, and aerospace sectors.",
+    "keySectors": "Semiconductors, Aerospace, Tourism, Renewable Energy",
+    "cities": ["Phoenix", "Tucson", "Scottsdale"],
+    "incentives": "Quality jobs tax credit, R&D tax credit, foreign trade zones",
+    "taxes": "State income tax 2.59-4.5%, corporate tax 4.9%",
+    "snapshot": "Fast-growing state with strong manufacturing and tech sectors",
+    "fact": "Arizona is home to one of the world's largest semiconductor manufacturing facilities"
+  },
+  "Arkansas": {
+    "title": "Arkansas – Natural State Business Opportunities",
+    "about": "Arkansas offers low business costs and a central location with diverse industries.",
+    "keySectors": "Agriculture, Food Processing, Retail, Transportation",
+    "cities": ["Little Rock", "Fayetteville", "Fort Smith"],
+    "incentives": "Tax credits, investment incentives, job training programs",
+    "taxes": "State income tax 2-5.5%, corporate tax 6.5%",
+    "snapshot": "Low cost of business with strong logistics advantages",
+    "fact": "Arkansas is home to Walmart, the world's largest retailer"
+  },
+  "California": {
+    "title": "California – Innovation & Tech Capital",
+    "about": "California leads in technology, entertainment, and green energy industries.",
+    "keySectors": "Technology, Entertainment, Clean Energy, Biotech",
+    "cities": ["San Francisco", "Los Angeles", "San Diego"],
+    "incentives": "California Competes Tax Credit, R&D incentives",
+    "taxes": "State income tax 1-13.3%, corporate tax 8.84%",
+    "snapshot": "Largest state GDP in the US, home to Silicon Valley",
+    "fact": "Silicon Valley hosts over 2,000 tech companies"
+  },
+  "Colorado": {
+    "title": "Colorado – Rocky Mountain Innovation",
+    "about": "Colorado combines quality lifestyle with thriving tech, aerospace, and renewable energy sectors.",
+    "keySectors": "Technology, Aerospace, Renewable Energy, Tourism",
+    "cities": ["Denver", "Boulder", "Colorado Springs"],
+    "incentives": "Job Growth Incentive Tax Credit, R&D tax credits",
+    "taxes": "Flat income tax 4.55%, corporate tax 4.55%",
+    "snapshot": "Strong tech hub with highly educated workforce",
+    "fact": "Colorado has the highest concentration of tech workers outside of California"
+  },
+  "Connecticut": {
+    "title": "Connecticut – New England Financial Hub",
+    "about": "Connecticut offers proximity to major markets with strengths in finance, insurance, and advanced manufacturing.",
+    "keySectors": "Finance, Insurance, Aerospace, Biotechnology",
+    "cities": ["Hartford", "Stamford", "New Haven"],
+    "incentives": "Urban and industrial site reinvestment tax credits",
+    "taxes": "State income tax 3-6.99%, corporate tax 7.5%",
+    "snapshot": "High per capita income with strong financial services sector",
+    "fact": "Hartford is known as the 'Insurance Capital of the World'"
+  },
+  "Delaware": {
+    "title": "Delaware – Corporate Haven",
+    "about": "Delaware is renowned for its business-friendly corporate laws and financial services.",
+    "keySectors": "Finance, Chemicals, Agriculture, Corporate Services",
+    "cities": ["Wilmington", "Dover", "Newark"],
+    "incentives": "Strategic fund grants, R&D tax credits",
+    "taxes": "State income tax 2.2-6.6%, corporate tax 8.7%",
+    "snapshot": "Corporate legal hub with more than 1 million registered businesses",
+    "fact": "Over 68% of Fortune 500 companies are incorporated in Delaware"
+  },
+  "Florida": {
+    "title": "Florida – Tourism & Trade Hub",
+    "about": "Florida offers a business-friendly climate, strong logistics, and tourism-driven economy.",
+    "keySectors": "Tourism, Logistics, Aerospace, Agriculture",
+    "cities": ["Miami", "Orlando", "Tampa"],
+    "incentives": "Enterprise zones, tax exemptions, foreign trade zones",
+    "taxes": "No state income tax, corporate tax 5.5%",
+    "snapshot": "Fast-growing population and strong international trade",
+    "fact": "Miami is a key gateway for US-Latin America trade"
+  },
+  "Georgia": {
+    "title": "Georgia – Logistics & Film Hub",
+    "about": "Georgia offers strategic logistics advantages and a diverse economy with growing film industry.",
+    "keySectors": "Logistics, Film Production, Automotive, Technology",
+    "cities": ["Atlanta", "Savannah", "Augusta"],
+    "incentives": "Film tax credits, job tax credits, investment credits",
+    "taxes": "State income tax 1-5.75%, corporate tax 5.75%",
+    "snapshot": "Major logistics hub with the world's busiest airport",
+    "fact": "Georgia is the third-largest film production center in the U.S."
+  },
+  "Hawaii": {
+    "title": "Hawaii – Pacific Crossroads",
+    "about": "Hawaii offers unique opportunities in tourism, renewable energy, and Pacific Rim trade.",
+    "keySectors": "Tourism, Defense, Agriculture, Renewable Energy",
+    "cities": ["Honolulu", "Hilo", "Kailua"],
+    "incentives": "High-tech business investment tax credit, renewable energy incentives",
+    "taxes": "State income tax 1.4-11%, corporate tax 6.4%",
+    "snapshot": "Strategic Pacific location with strong tourism industry",
+    "fact": "Hawaii generates the highest percentage of electricity from solar power in the nation"
+  },
+  "Idaho": {
+    "title": "Idaho – Growing Tech & Agriculture",
+    "about": "Idaho combines traditional agriculture with growing technology and manufacturing sectors.",
+    "keySectors": "Agriculture, Technology, Manufacturing, Food Processing",
+    "cities": ["Boise", "Idaho Falls", "Meridian"],
+    "incentives": "Tax reimbursements, investment tax credits",
+    "taxes": "State income tax 1-6.5%, corporate tax 6%",
+    "snapshot": "Fast-growing state with business-friendly environment",
+    "fact": "Idaho produces nearly one-third of all potatoes grown in the U.S."
+  },
+  "Illinois": {
+    "title": "Illinois – Midwest Economic Powerhouse",
+    "about": "Illinois offers a diverse economy with strengths in finance, manufacturing, and transportation.",
+    "keySectors": "Finance, Manufacturing, Agriculture, Transportation",
+    "cities": ["Chicago", "Springfield", "Naperville"],
+    "incentives": "Economic development for a growing economy tax credit",
+    "taxes": "Flat income tax 4.95%, corporate tax 9.5%",
+    "snapshot": "Major transportation hub with the nation's rail center",
+    "fact": "Chicago is the nation's largest rail hub and third-largest intermodal port"
+  },
+  "Indiana": {
+    "title": "Indiana – Crossroads of America",
+    "about": "Indiana offers strategic logistics advantages and a strong manufacturing base.",
+    "keySectors": "Manufacturing, Logistics, Life Sciences, Automotive",
+    "cities": ["Indianapolis", "Fort Wayne", "Evansville"],
+    "incentives": "Economic development tax credit, HQ relocation incentives",
+    "taxes": "Flat income tax 3.23%, corporate tax 5.5-6%",
+    "snapshot": "Strong manufacturing state with central logistics location",
+    "fact": "Indiana has the highest concentration of manufacturing jobs in the U.S."
+  },
+  "Iowa": {
+    "title": "Iowa – Agricultural Innovation",
+    "about": "Iowa combines strong agricultural base with growing renewable energy and financial services.",
+    "keySectors": "Agriculture, Renewable Energy, Insurance, Food Processing",
+    "cities": ["Des Moines", "Cedar Rapids", "Davenport"],
+    "incentives": "High quality jobs creation program, investment tax credits",
+    "taxes": "State income tax 0.33-8.53%, corporate tax 9.8%",
+    "snapshot": "Leading renewable energy producer with strong insurance sector",
+    "fact": "Iowa generates over 60% of its electricity from wind power"
+  },
+  "Kansas": {
+    "title": "Kansas – Central US Advantage",
+    "about": "Kansas offers central location advantages with strengths in aviation and agriculture.",
+    "keySectors": "Aviation, Agriculture, Animal Health, Renewable Energy",
+    "cities": ["Wichita", "Overland Park", "Kansas City"],
+    "incentives": "High performance incentive program, investment tax credits",
+    "taxes": "State income tax 3.1-5.7%, corporate tax 4-7%",
+    "snapshot": "Aviation manufacturing hub with strategic central location",
+    "fact": "Wichita is known as the 'Air Capital of the World'"
+  },
+  "Kentucky": {
+    "title": "Kentucky – Logistics & Manufacturing",
+    "about": "Kentucky offers strategic location and business costs with growing advanced manufacturing.",
+    "keySectors": "Automotive, Logistics, Advanced Manufacturing, Bourbon",
+    "cities": ["Louisville", "Lexington", "Bowling Green"],
+    "incentives": "Kentucky business investment program, tax incentives",
+    "taxes": "Flat income tax 5%, corporate tax 5-6%",
+    "snapshot": "Major automotive manufacturing state with central logistics",
+    "fact": "Kentucky produces 95% of the world's bourbon supply"
+  },
+  "Louisiana": {
+    "title": "Louisiana – Energy & Chemical Hub",
+    "about": "Louisiana offers energy resources and chemical manufacturing with port access advantages.",
+    "keySectors": "Energy, Chemicals, Shipping, Tourism",
+    "cities": ["New Orleans", "Baton Rouge", "Shreveport"],
+    "incentives": "Quality jobs program, industrial tax exemption",
+    "taxes": "State income tax 1.85-4.25%, corporate tax 4-8%",
+    "snapshot": "Major energy and chemical production with port infrastructure",
+    "fact": "Louisiana has the highest concentration of crude oil refineries in the U.S."
+  },
+  "Maine": {
+    "title": "Maine – Natural Resources & Quality of Life",
+    "about": "Maine offers natural resource advantages and quality lifestyle with growing tech sectors.",
+    "keySectors": "Fishing, Forestry, Tourism, Technology",
+    "cities": ["Portland", "Lewiston", "Bangor"],
+    "incentives": "Seed capital tax credit, R&D tax credit",
+    "taxes": "State income tax 5.8-7.15%, corporate tax 8.93%",
+    "snapshot": "Natural resource economy with growing innovation sectors",
+    "fact": "Maine produces 90% of the nation's lobster supply"
+  },
+  "Maryland": {
+    "title": "Maryland – BioHealth & Defense Corridor",
+    "about": "Maryland offers proximity to DC with strengths in biotech, defense, and cybersecurity.",
+    "keySectors": "Biotechnology, Defense, Cybersecurity, Life Sciences",
+    "cities": ["Baltimore", "Columbia", "Rockville"],
+    "incentives": "More jobs for Marylanders program, R&D tax credit",
+    "taxes": "State income tax 2-5.75%, corporate tax 8.25%",
+    "snapshot": "Leading biotech hub with strong federal presence",
+    "fact": "Maryland has the highest concentration of bioscientists in the U.S."
+  },
+  "Massachusetts": {
+    "title": "Massachusetts – Innovation Economy Leader",
+    "about": "Massachusetts leads in education, healthcare innovation, and technology sectors.",
+    "keySectors": "Education, Healthcare, Technology, Financial Services",
+    "cities": ["Boston", "Cambridge", "Worcester"],
+    "incentives": "Economic development incentive program, R&D tax credit",
+    "taxes": "Flat income tax 5%, corporate tax 8%",
+    "snapshot": "World-leading education and healthcare innovation hub",
+    "fact": "Massachusetts has the highest number of patents per capita in the U.S."
+  },
+  "Michigan": {
+    "title": "Michigan – Automotive & Mobility Innovation",
+    "about": "Michigan is transforming from traditional automotive to future mobility and technology.",
+    "keySectors": "Automotive, Advanced Manufacturing, Technology, Mobility",
+    "cities": ["Detroit", "Grand Rapids", "Ann Arbor"],
+    "incentives": "Good jobs for Michigan program, business development programs",
+    "taxes": "Flat income tax 4.25%, corporate tax 6%",
+    "snapshot": "Traditional automotive hub transforming to future mobility",
+    "fact": "Michigan has the highest concentration of mechanical engineers in the U.S."
+  },
+  "Minnesota": {
+    "title": "Minnesota – Medical Technology Hub",
+    "about": "Minnesota offers strong healthcare and medical technology sectors with quality workforce.",
+    "keySectors": "Medical Technology, Healthcare, Food Processing, Financial Services",
+    "cities": ["Minneapolis", "Saint Paul", "Rochester"],
+    "incentives": "Job creation fund, investment fund",
+    "taxes": "State income tax 5.35-9.85%, corporate tax 9.8%",
+    "snapshot": "Leading medical technology cluster with diverse economy",
+    "fact": "Minnesota has more Fortune 500 companies per capita than any other state"
+  },
+  "Mississippi": {
+    "title": "Mississippi – Southern Opportunity",
+    "about": "Mississippi offers low business costs and strategic location with growing advanced industries.",
+    "keySectors": "Advanced Manufacturing, Aerospace, Automotive, Energy",
+    "cities": ["Jackson", "Gulfport", "Southaven"],
+    "incentives": "Mississippi development authority incentives, tax credits",
+    "taxes": "State income tax 3-5%, corporate tax 3-5%",
+    "snapshot": "Low cost business environment with strategic Gulf access",
+    "fact": "Mississippi is home to the largest naval shipbuilding company in the U.S."
+  },
+  "Missouri": {
+    "title": "Missouri – Central US Logistics Hub",
+    "about": "Missouri offers central location advantages with diverse agriculture and manufacturing.",
+    "keySectors": "Agriculture, Advanced Manufacturing, Logistics, Animal Science",
+    "cities": ["Kansas City", "Saint Louis", "Springfield"],
+    "incentives": "Missouri works program, tax credits",
+    "taxes": "State income tax 1.5-5.4%, corporate tax 4-6.25%",
+    "snapshot": "Central logistics location with diverse economic base",
+    "fact": "Missouri is the nation's second-largest aerospace manufacturing state"
+  },
+  "Montana": {
+    "title": "Montana – Big Sky Business Opportunities",
+    "about": "Montana offers natural resource advantages and growing technology sectors.",
+    "keySectors": "Agriculture, Mining, Tourism, Technology",
+    "cities": ["Billings", "Missoula", "Great Falls"],
+    "incentives": "Big sky economic development fund, tax incentives",
+    "taxes": "State income tax 1-6.75%, corporate tax 6.75%",
+    "snapshot": "Resource-rich economy with growing tech presence",
+    "fact": "Montana has the largest grizzly bear population in the lower 48 states"
+  },
+  "Nebraska": {
+    "title": "Nebraska – Agricultural Innovation",
+    "about": "Nebraska combines strong agricultural base with growing insurance and tech sectors.",
+    "keySectors": "Agriculture, Insurance, Food Processing, Transportation",
+    "cities": ["Omaha", "Lincoln", "Bellevue"],
+    "incentives": "Nebraska advantage program, tax incentives",
+    "taxes": "State income tax 2.46-6.84%, corporate tax 7.1%",
+    "snapshot": "Leading agricultural producer with strong insurance sector",
+    "fact": "Nebraska has more miles of river than any other state"
+  },
+  "Nevada": {
+    "title": "Nevada – Business-Friendly Desert Oasis",
+    "about": "Nevada offers business-friendly environment with strengths in tourism, logistics, and technology.",
+    "keySectors": "Tourism, Logistics, Technology, Renewable Energy",
+    "cities": ["Las Vegas", "Reno", "Henderson"],
+    "incentives": "Modified business tax abatements, sales tax exemptions",
+    "taxes": "No state income tax, corporate tax no payroll tax but modified business tax",
+    "snapshot": "Tourism and entertainment hub with growing tech sector",
+    "fact": "Nevada is the only state where prostitution is legal in some counties"
+  },
+  "New Hampshire": {
+    "title": "New Hampshire – Live Free and Work",
+    "about": "New Hampshire offers quality New England lifestyle with business-friendly tax environment.",
+    "keySectors": "Advanced Manufacturing, Technology, Healthcare, Tourism",
+    "cities": ["Manchester", "Nashua", "Concord"],
+    "incentives": "Business finance authority, tax incentives",
+    "taxes": "No state income tax (except on dividends/interest), corporate tax 7.7%",
+    "snapshot": "High quality of life with business-friendly environment",
+    "fact": "New Hampshire has the lowest poverty rate in the U.S."
+  },
+  "New Jersey": {
+    "title": "New Jersey – Pharma & Technology Corridor",
+    "about": "New Jersey offers proximity to NYC with strengths in pharmaceuticals and technology.",
+    "keySectors": "Pharmaceuticals, Technology, Logistics, Life Sciences",
+    "cities": ["Newark", "Jersey City", "Trenton"],
+    "incentives": "Grow NJ assistance program, economic development authority",
+    "taxes": "State income tax 1.4-10.75%, corporate tax 9-11.5%",
+    "snapshot": "Pharmaceutical hub with strategic Northeast location",
+    "fact": "New Jersey has the highest number of scientists per square mile in the U.S."
+  },
+  "New Mexico": {
+    "title": "New Mexico – Energy & Space Frontier",
+    "about": "New Mexico offers energy resources and space industry with growing technology sectors.",
+    "keySectors": "Energy, Aerospace, Film Production, Technology",
+    "cities": ["Albuquerque", "Santa Fe", "Las Cruces"],
+    "incentives": "High wage jobs tax credit, investment credit",
+    "taxes": "State income tax 1.7-5.9%, corporate tax 5.9-7.6%",
+    "snapshot": "Energy and space research hub with unique cultural assets",
+    "fact": "New Mexico has more PhDs per capita than any other state"
+  },
+  "New York": {
+    "title": "New York – Finance & Commerce Center",
+    "about": "New York excels in finance, media, and professional services, with strong market access.",
+    "keySectors": "Finance, Media, Real Estate, Healthcare",
+    "cities": ["New York City", "Buffalo", "Albany"],
+    "incentives": "Economic development tax credits, investment incentives",
+    "taxes": "State income tax 4-10.9%, corporate tax 6.5%",
+    "snapshot": "NYC is the world's financial capital",
+    "fact": "Wall Street handles $22 trillion in assets"
+  },
+  "North Carolina": {
+    "title": "North Carolina – Research Triangle Innovation",
+    "about": "North Carolina combines research excellence with business-friendly environment and diverse industries.",
+    "keySectors": "Technology, Biotechnology, Finance, Advanced Manufacturing",
+    "cities": ["Charlotte", "Raleigh", "Greensboro"],
+    "incentives": "Job development investment grant, One NC fund",
+    "taxes": "Flat income tax 4.99%, corporate tax 2.5%",
+    "snapshot": "Leading research and biotech hub with strong manufacturing",
+    "fact": "North Carolina has the largest banking assets under management outside of New York"
+  },
+  "North Dakota": {
+    "title": "North Dakota – Energy & Agricultural Power",
+    "about": "North Dakota offers energy resources and agricultural strength with growing technology sectors.",
+    "keySectors": "Energy, Agriculture, Advanced Manufacturing, Technology",
+    "cities": ["Fargo", "Bismarck", "Grand Forks"],
+    "incentives": "Economic development grants, tax incentives",
+    "taxes": "State income tax 1.1-2.9%, corporate tax 4.31%",
+    "snapshot": "Energy production leader with strong agricultural base",
+    "fact": "North Dakota produces more honey than any other state"
+  },
+  "Ohio": {
+    "title": "Ohio – Manufacturing & Innovation Revival",
+    "about": "Ohio offers strategic location and manufacturing base with growing technology sectors.",
+    "keySectors": "Advanced Manufacturing, Healthcare, Financial Services, Logistics",
+    "cities": ["Columbus", "Cleveland", "Cincinnati"],
+    "incentives": "Job creation tax credit, investment tax credit",
+    "taxes": "State income tax 2.765-3.99%, corporate tax no GRT but commercial activity tax",
+    "snapshot": "Traditional manufacturing hub transforming with new technologies",
+    "fact": "Ohio has the largest concentration of polymer companies in the U.S."
+  },
+  "Oklahoma": {
+    "title": "Oklahoma – Energy & Aerospace Hub",
+    "about": "Oklahoma offers energy resources and aerospace industry with central location advantages.",
+    "keySectors": "Energy, Aerospace, Biotechnology, Weather Science",
+    "cities": ["Oklahoma City", "Tulsa", "Norman"],
+    "incentives": "Quality jobs program, investment tax credits",
+    "taxes": "State income tax 0.5-5%, corporate tax 6%",
+    "snapshot": "Energy and aerospace hub with central US location",
+    "fact": "Oklahoma has the most women-owned businesses per capita in the U.S."
+  },
+  "Oregon": {
+    "title": "Oregon – Pacific Northwest Innovation",
+    "about": "Oregon offers quality lifestyle with strengths in technology, athletic apparel, and renewable energy.",
+    "keySectors": "Technology, Athletic Apparel, Renewable Energy, Forestry",
+    "cities": ["Portland", "Salem", "Eugene"],
+    "incentives": "Strategic investment program, business energy tax credit",
+    "taxes": "State income tax 4.75-9.9%, corporate tax 6.6-7.6%",
+    "snapshot": "Tech and athletic apparel hub with strong sustainability focus",
+    "fact": "Oregon has no sales tax"
+  },
+  "Pennsylvania": {
+    "title": "Pennsylvania – East Coast Manufacturing",
+    "about": "Pennsylvania offers strategic Northeast location with diverse manufacturing and energy sectors.",
+    "keySectors": "Advanced Manufacturing, Energy, Healthcare, Robotics",
+    "cities": ["Philadelphia", "Pittsburgh", "Allentown"],
+    "incentives": "Economic development grant program, tax credits",
+    "taxes": "Flat income tax 3.07%, corporate tax 9.99%",
+    "snapshot": "Traditional manufacturing state transforming with new technologies",
+    "fact": "Pennsylvania produces more canned mushrooms than any other state"
+  },
+  "Rhode Island": {
+    "title": "Rhode Island – Ocean State Innovation",
+    "about": "Rhode Island offers coastal location with growing technology and marine industries.",
+    "keySectors": "Marine Industries, Technology, Healthcare, Education",
+    "cities": ["Providence", "Warwick", "Cranston"],
+    "incentives": "Rebuild Rhode Island tax credit, innovation voucher program",
+    "taxes": "State income tax 3.75-5.99%, corporate tax 7%",
+    "snapshot": "Coastal innovation hub with quality education institutions",
+    "fact": "Rhode Island has the most tattoo parlors per capita in the U.S."
+  },
+  "South Carolina": {
+    "title": "South Carolina – Advanced Manufacturing Hub",
+    "about": "South Carolina offers business-friendly environment with strengths in automotive and aerospace.",
+    "keySectors": "Automotive, Aerospace, Advanced Manufacturing, Tourism",
+    "cities": ["Charleston", "Columbia", "Greenville"],
+    "incentives": "Job development credits, investment tax credits",
+    "taxes": "State income tax 0-7%, corporate tax 5%",
+    "snapshot": "Major automotive and aerospace manufacturing center",
+    "fact": "South Carolina produces more peaches than Georgia"
+  },
+  "South Dakota": {
+    "title": "South Dakota – Business-Friendly Plains",
+    "about": "South Dakota offers business-friendly tax environment with strengths in financial services and agriculture.",
+    "keySectors": "Financial Services, Agriculture, Tourism, Healthcare",
+    "cities": ["Sioux Falls", "Rapid City", "Aberdeen"],
+    "incentives": "Revolving economic development fund, tax incentives",
+    "taxes": "No state income tax, corporate tax no but bank franchise tax",
+    "snapshot": "Financial services hub with strong agricultural base",
+    "fact": "South Dakota has more miles of shoreline than Florida"
+  },
+  "Tennessee": {
+    "title": "Tennessee – Southern Automotive Hub",
+    "about": "Tennessee offers central location and business-friendly environment with automotive strength.",
+    "keySectors": "Automotive, Advanced Manufacturing, Healthcare, Logistics",
+    "cities": ["Nashville", "Memphis", "Knoxville"],
+    "incentives": "FastTrack economic development fund, tax credits",
+    "taxes": "No state income tax (except on dividends/interest), corporate tax 6.5%",
+    "snapshot": "Major automotive manufacturing center with music industry",
+    "fact": "Tennessee has the second-largest auto manufacturing industry in the U.S."
+  },
+  "Texas": {
+    "title": "Texas – Business-Friendly Powerhouse",
+    "about": "Texas is a hub for energy, technology, and manufacturing with no state income tax.",
+    "keySectors": "Energy, Technology, Manufacturing, Aerospace",
+    "cities": ["Houston", "Austin", "Dallas"],
+    "incentives": "R&D tax credits, grants, enterprise zones",
+    "taxes": "No state income tax, corporate tax 1-8.5%",
+    "snapshot": "Second-largest US economy, low corporate taxes",
+    "fact": "Austin is the fastest-growing tech city in the USA"
+  },
+  "Utah": {
+    "title": "Utah – Silicon Slopes Tech Hub",
+    "about": "Utah offers business-friendly environment with growing technology and outdoor industries.",
+    "keySectors": "Technology, Outdoor Products, Financial Services, Life Sciences",
+    "cities": ["Salt Lake City", "Provo", "Orem"],
+    "incentives": "Economic development tax increment financing, tax credits",
+    "taxes": "Flat income tax 4.95%, corporate tax 4.95%",
+    "snapshot": "Fast-growing tech hub with outdoor recreation industry",
+    "fact": "Utah has the youngest population in the U.S."
+  },
+  "Vermont": {
+    "title": "Vermont – Green Mountain Business",
+    "about": "Vermont offers quality lifestyle with strengths in sustainable technology and agriculture.",
+    "keySectors": "Sustainable Technology, Agriculture, Tourism, Education",
+    "cities": ["Burlington", "South Burlington", "Rutland"],
+    "incentives": "Vermont employment growth incentive, tax credits",
+    "taxes": "State income tax 3.35-8.75%, corporate tax 6-8.5%",
+    "snapshot": "Sustainable technology hub with quality lifestyle",
+    "fact": "Vermont produces more maple syrup than any other state"
+  },
+  "Virginia": {
+    "title": "Virginia – Defense & Technology Corridor",
+    "about": "Virginia offers proximity to DC with strengths in defense, technology, and data centers.",
+    "keySectors": "Defense, Technology, Data Centers, Biotechnology",
+    "cities": ["Richmond", "Virginia Beach", "Arlington"],
+    "incentives": "Major business facility job tax credit, R&D tax credit",
+    "taxes": "State income tax 2-5.75%, corporate tax 6%",
+    "snapshot": "Defense and technology hub with data center concentration",
+    "fact": "Virginia has the highest concentration of technology workers in the U.S."
+  },
+  "Washington": {
+    "title": "Washington – Pacific Northwest Tech Power",
+    "about": "Washington offers technology leadership with strengths in aerospace, software, and clean energy.",
+    "keySectors": "Technology, Aerospace, Clean Energy, Life Sciences",
+    "cities": ["Seattle", "Spokane", "Tacoma"],
+    "incentives": "Business & occupation tax credits, R&D tax credit",
+    "taxes": "No state income tax, corporate tax no but business & occupation tax",
+    "snapshot": "Global technology and aerospace hub with no income tax",
+    "fact": "Washington produces more apples than any other state"
+  },
+  "West Virginia": {
+    "title": "West Virginia – Energy & Chemical Production",
+    "about": "West Virginia offers energy resources and chemical production with strategic East Coast location.",
+    "keySectors": "Energy, Chemicals, Manufacturing, Tourism",
+    "cities": ["Charleston", "Huntington", "Morgantown"],
+    "incentives": "West Virginia jobs investment trust, tax credits",
+    "taxes": "State income tax 3-6.5%, corporate tax 6.5%",
+    "snapshot": "Energy production hub with chemical manufacturing",
+    "fact": "West Virginia is the only state completely within the Appalachian Mountain region"
+  },
+  "Wisconsin": {
+    "title": "Wisconsin – Manufacturing & Dairy Innovation",
+    "about": "Wisconsin offers manufacturing excellence with strengths in food processing and technology.",
+    "keySectors": "Advanced Manufacturing, Food Processing, Technology, Healthcare",
+    "cities": ["Milwaukee", "Madison", "Green Bay"],
+    "incentives": "Economic development tax credit, business development grants",
+    "taxes": "State income tax 3.54-7.65%, corporate tax 7.9%",
+    "snapshot": "Traditional manufacturing hub with food processing strength",
+    "fact": "Wisconsin produces more cheese than any other state"
+  },
+  "Wyoming": {
+    "title": "Wyoming – Energy & Outdoor Business",
+    "about": "Wyoming offers energy resources and outdoor industry with business-friendly tax environment.",
+    "keySectors": "Energy, Tourism, Outdoor Products, Agriculture",
+    "cities": ["Cheyenne", "Casper", "Laramie"],
+    "incentives": "Business ready community program, tax incentives",
+    "taxes": "No state income tax, corporate tax no but mineral severance tax",
+    "snapshot": "Energy production with business-friendly tax environment",
+    "fact": "Wyoming has the lowest population of any U.S. state"
+  }
+}

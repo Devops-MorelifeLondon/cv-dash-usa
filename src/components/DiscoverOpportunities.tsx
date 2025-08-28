@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import USBusinessMatchQuiz from "./extra/USBusinessMatchQuiz";
 import TopUSProducts from "./extra/TopUSProducts";
 import USEntryCaseStudies from "./extra/USEntryCaseStudies";
+import  stateInfo from "../../data/states.json"
 
 // ----- Types -----
 type StateData = {
@@ -23,48 +24,7 @@ type StateData = {
 };
 
 // ----- Data -----
-const stateInfo: Record<string, StateData> = {
-  Texas: {
-    title: "Texas – Business-Friendly Powerhouse",
-    about: "Texas is a hub for energy, technology, and manufacturing with no state income tax.",
-    keySectors: "Energy, Technology, Manufacturing, Aerospace",
-    cities: ["Houston", "Austin", "Dallas"],
-    incentives: "R&D tax credits, grants, enterprise zones",
-    taxes: "No state income tax, corporate tax 1-8.5%",
-    snapshot: "Second-largest US economy, low corporate taxes",
-    fact: "Austin is the fastest-growing tech city in the USA",
-  },
-  California: {
-    title: "California – Innovation & Tech Capital",
-    about: "California leads in technology, entertainment, and green energy industries.",
-    keySectors: "Technology, Entertainment, Clean Energy, Biotech",
-    cities: ["San Francisco", "Los Angeles", "San Diego"],
-    incentives: "California Competes Tax Credit, R&D incentives",
-    taxes: "State income tax 1-13.3%, corporate tax 8.84%",
-    snapshot: "Largest state GDP in the US, home to Silicon Valley",
-    fact: "Silicon Valley hosts over 2,000 tech companies",
-  },
-  Florida: {
-    title: "Florida – Tourism & Trade Hub",
-    about: "Florida offers a business-friendly climate, strong logistics, and tourism-driven economy.",
-    keySectors: "Tourism, Logistics, Aerospace, Agriculture",
-    cities: ["Miami", "Orlando", "Tampa"],
-    incentives: "Enterprise zones, tax exemptions, foreign trade zones",
-    taxes: "No state income tax, corporate tax 5.5%",
-    snapshot: "Fast-growing population and strong international trade",
-    fact: "Miami is a key gateway for US-Latin America trade",
-  },
-  NewYork: {
-    title: "New York – Finance & Commerce Center",
-    about: "New York excels in finance, media, and professional services, with strong market access.",
-    keySectors: "Finance, Media, Real Estate, Healthcare",
-    cities: ["New York City", "Buffalo", "Albany"],
-    incentives: "Economic development tax credits, investment incentives",
-    taxes: "State income tax 4-10.9%, corporate tax 6.5%",
-    snapshot: "NYC is the world's financial capital",
-    fact: "Wall Street handles $22 trillion in assets",
-  },
-};
+
 
 // ----- Main Component -----
 export default function DiscoverOpportunitiesUSA() {
@@ -74,6 +34,7 @@ export default function DiscoverOpportunitiesUSA() {
   const [openCity, setOpenCity] = useState(false);
   const [hoveredState, setHoveredState] = useState<string | null>(null);
   const [hoveredCity, setHoveredCity] = useState<string | null>(null);
+     const [quizFinished, setQuizFinished] = useState(false);
 
   const statesList = Object.keys(stateInfo);
 
@@ -87,12 +48,12 @@ export default function DiscoverOpportunitiesUSA() {
         about: `Key business city in ${selectedState}, opportunities in ${stateInfo[selectedState!].keySectors}.`,
       };
     }
-    
+
     // If a state is selected, show state info
     if (selectedState) {
       return stateInfo[selectedState];
     }
-    
+
     // If hovering over a city, show city preview
     if (hoveredCity && selectedState) {
       return {
@@ -101,12 +62,12 @@ export default function DiscoverOpportunitiesUSA() {
         about: `Key business city in ${selectedState}, opportunities in ${stateInfo[selectedState].keySectors}.`,
       };
     }
-    
+
     // If hovering over a state, show state preview
     if (hoveredState) {
       return stateInfo[hoveredState];
     }
-    
+
     // Default case when nothing is selected or hovered
     return null;
   };
@@ -149,9 +110,8 @@ export default function DiscoverOpportunitiesUSA() {
                   {statesList.map((st) => (
                     <div
                       key={st}
-                      className={`px-4 py-2 cursor-pointer flex items-center justify-between hover:bg-primary/10 ${
-                        selectedState === st ? "bg-primary/20 font-semibold" : ""
-                      }`}
+                      className={`px-4 py-2 cursor-pointer flex items-center justify-between hover:bg-primary/10 ${selectedState === st ? "bg-primary/20 font-semibold" : ""
+                        }`}
                       onClick={() => {
                         setSelectedState(st);
                         setSelectedCity(null);
@@ -270,47 +230,50 @@ export default function DiscoverOpportunitiesUSA() {
         </div>
       </div>
 
-        <div className="flex flex-col gap-6 mt-10">
-  {/* Full width quiz */}
-  <div className="w-full">
-    <USBusinessMatchQuiz />
-  </div>
+      <div className="flex flex-col gap-6 mt-10">
+        {/* Full width quiz */}
+        <div className="w-full">
+          <USBusinessMatchQuiz  onFinish={() => setQuizFinished(true)} />
+        </div>
 
-  {/* Side-by-side products and case studies */}
-  <div className="flex flex-col justify-center items-center  md:flex-row gap-5">
-    <div className="w-full md:w-1/2">
-      <TopUSProducts />
-    </div>
-    <div className="w-full md:w-1/2">
-      <USEntryCaseStudies />
-    </div>
-  </div>
-</div>
+           {/* ✅ Show this only if quiz is finished */}
+      {quizFinished && (
+        <div className="mt-12 flex justify-center">
+          <Card className="p-12 w-full md:w-3/4 text-center shadow-2xl bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl">
+            <div className="flex flex-col items-center gap-6">
+              <Brain className="w-14 h-14 text-primary" />
+              <h2 className="text-3xl md:text-4xl font-extrabold text-primary">
+                🚀 Find Your Business Match
+              </h2>
+              <p className="text-muted-foreground text-lg">
+                Answer a few quick questions and we'll suggest <br />
+                <strong className="text-primary">3 best-fit business ideas</strong> for the USA.
+              </p>
+              <Button size="lg" className="px-8 py-4 text-lg rounded-xl shadow-lg">
+                Start Business Idea Generator <ArrowRight className="ml-2 w-6 h-6" />
+              </Button>
+              <Badge className="bg-blue-50 border border-blue-300 text-blue-700 text-sm px-3 py-1">
+                88% Match Accuracy
+              </Badge>
+            </div>
+          </Card>
+        </div>
+      )}
 
-      
-
-      {/* Business Match Section */}
-      <div className="mt-12 flex justify-center">
-        <Card className="p-12 w-full md:w-3/4 text-center shadow-2xl bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl">
-          <div className="flex flex-col items-center gap-6">
-            <Brain className="w-14 h-14 text-primary" />
-            <h2 className="text-3xl md:text-4xl font-extrabold text-primary">
-              🚀 Find Your Business Match
-            </h2>
-            <p className="text-muted-foreground text-lg">
-              Answer a few quick questions and we'll suggest <br />
-              <strong className="text-primary">3 best-fit business ideas</strong> for the USA.
-            </p>
-            <Button size="lg" className="px-8 py-4 text-lg rounded-xl shadow-lg">
-              Start Business Idea Generator <ArrowRight className="ml-2 w-6 h-6" />
-            </Button>
-            <Badge className="bg-blue-50 border border-blue-300 text-blue-700 text-sm px-3 py-1">
-              88% Match Accuracy
-            </Badge>
+        {/* Side-by-side products and case studies */}
+        <div className="flex flex-col justify-center items-center  md:flex-row gap-5">
+          <div className="w-full md:w-1/2">
+            <TopUSProducts />
           </div>
-        </Card>
+          <div className="w-full md:w-1/2">
+            <USEntryCaseStudies />
+          </div>
+        </div>
       </div>
 
+
+
+   
       {/* Success Stories */}
       <div className="mt-10">
         <Card className="p-6 flex flex-col gap-4">

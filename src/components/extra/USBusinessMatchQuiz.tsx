@@ -23,7 +23,7 @@ const suggestedBusinessTypes = [
   "Service Business in Texas",
 ];
 
-export default function USBusinessMatchQuiz() {
+export default function USBusinessMatchQuiz({ onFinish }: { onFinish?: () => void }) {
   const [answers, setAnswers] = useState<number[]>(Array(quizQuestions.length).fill(-1));
   const [currentStep, setCurrentStep] = useState(0);
   const [showResult, setShowResult] = useState(false);
@@ -34,11 +34,13 @@ export default function USBusinessMatchQuiz() {
     setAnswers(newAns);
   };
 
+ 
   const nextStep = () => {
     if (currentStep < quizQuestions.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
       setShowResult(true);
+      if (onFinish) onFinish(); // 🔥 tell parent quiz is finished
     }
   };
 
