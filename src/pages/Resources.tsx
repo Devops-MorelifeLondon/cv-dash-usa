@@ -16,122 +16,127 @@ import {
   ArrowRight,
   PlayCircle,
   Users,
-  Globe
+  Globe,
+  Mic
 } from "lucide-react";
 
 const Resources = () => {
-  const playbooks = [
-    {
-      id: 1,
-      title: "Complete India Market Entry Guide",
-      description: "Step-by-step playbook covering business registration, GST compliance, banking, and operational setup in India.",
-      category: "Market Entry",
-      readTime: "45 min",
-      downloads: 1250,
-      rating: 4.9,
-      type: "PDF Guide",
-      featured: true
-    },
-    {
-      id: 2,
-      title: "USA LLC Formation Checklist",
-      description: "Comprehensive checklist for forming an LLC in the United States, including state comparisons and tax implications.",
-      category: "Legal & Compliance",
-      readTime: "30 min",
-      downloads: 890,
-      rating: 4.8,
-      type: "Checklist",
-      featured: true
-    },
-    {
-      id: 3,
-      title: "Cross-Border E-commerce Playbook",
-      description: "Master the art of selling across borders with this detailed guide covering Amazon, Shopify, and direct-to-consumer strategies.",
-      category: "E-commerce",
-      readTime: "60 min",
-      downloads: 2100,
-      rating: 4.9,
-      type: "PDF Guide",
-      featured: false
-    },
-    {
-      id: 4,
-      title: "Tax Optimization Strategies",
-      description: "Legal strategies to optimize your tax structure across India and USA operations for maximum efficiency.",
-      category: "Tax & Finance",
-      readTime: "40 min",
-      downloads: 675,
-      rating: 4.7,
-      type: "Strategy Guide",
-      featured: false
-    }
-  ];
+ const playbooks = [
+  {
+    id: 1,
+    title: "Complete US Market Entry Guide",
+    description: "Step-by-step playbook covering business formation, sales tax compliance, business banking, and operational setup in the US.",
+    category: "Market Entry",
+    readTime: "45 min",
+    downloads: 1800,
+    rating: 4.9,
+    type: "PDF Guide",
+    featured: true
+  },
+  {
+    id: 2,
+    title: "LLC vs S-Corp vs C-Corp",
+    description: "Detailed comparison of US business structures, including federal/state taxation, liability protection, and suitability for startups and small businesses.",
+    category: "Legal & Compliance",
+    readTime: "35 min",
+    downloads: 1120,
+    rating: 4.8,
+    type: "Checklist",
+    featured: true
+  },
+  {
+    id: 3,
+    title: "US E-commerce Domination Playbook",
+    description: "Master the art of selling within the US and globally with this guide covering Amazon.com, Walmart Marketplace, Shopify, and D2C strategies.",
+    category: "E-commerce",
+    readTime: "60 min",
+    downloads: 2450,
+    rating: 4.9,
+    type: "PDF Guide",
+    featured: false
+  },
+  {
+    id: 4,
+    title: "Tax Optimization for US Startups",
+    description: "Practical sales tax, payroll tax, and corporate income tax strategies for founders to maximize efficiency while staying IRS compliant.",
+    category: "Tax & Finance",
+    readTime: "40 min",
+    downloads: 890,
+    rating: 4.7,
+    type: "Strategy Guide",
+    featured: false
+  }
+];
 
-  const videos = [
-    {
-      id: 1,
-      title: "Setting Up Your First Indian Business",
-      description: "Watch our founder explain the complete process of setting up a business in India, from incorporation to operations.",
-      duration: "25:30",
-      views: "12.5K",
-      category: "Getting Started",
-      thumbnail: "/placeholder.svg",
-      featured: true
-    },
-    {
-      id: 2,
-      title: "USA Entity Formation: LLC vs C-Corp",
-      description: "Detailed comparison of business structures in the USA and which one is right for your specific situation.",
-      duration: "18:45",
-      views: "8.9K",
-      category: "Legal Structure",
-      thumbnail: "/placeholder.svg",
-      featured: true
-    },
-    {
-      id: 3,
-      title: "Scaling Your Business Globally",
-      description: "Success stories and practical tips from entrepreneurs who successfully scaled their businesses across multiple countries.",
-      duration: "32:15",
-      views: "15.2K",
-      category: "Scaling",
-      thumbnail: "/placeholder.svg",
-      featured: false
-    }
-  ];
 
-  const webinars = [
-    {
-      id: 1,
-      title: "Live Q&A: India Market Entry",
-      description: "Join our experts for a live session answering your questions about entering the Indian market.",
-      date: "Jan 25, 2024",
-      time: "3:00 PM EST",
-      attendees: 250,
-      status: "upcoming",
-      speaker: "Rajesh Sharma"
-    },
-    {
-      id: 2,
-      title: "USA Tax Strategies for Foreign Businesses",
-      description: "Learn advanced tax optimization strategies for international businesses operating in the USA.",
-      date: "Jan 30, 2024",
-      time: "2:00 PM EST",
-      attendees: 180,
-      status: "upcoming",
-      speaker: "Michael Chen"
-    },
-    {
-      id: 3,
-      title: "E-commerce Success on Amazon USA",
-      description: "Recorded session covering the complete process of launching and scaling on Amazon USA marketplace.",
-      date: "Jan 15, 2024",
-      time: "4:00 PM EST",
-      attendees: 420,
-      status: "recorded",
-      speaker: "Sarah Johnson"
-    }
-  ];
+const videos = [
+  {
+    id: 1,
+    title: "Setting Up Your First US Business",
+    description: "Watch our expert explain the complete process of forming and operating a business in the US, from incorporation to daily operations.",
+    duration: "25:30",
+    views: "15.8K",
+    category: "Getting Started",
+    thumbnail: "/placeholder.svg",
+    featured: true
+  },
+  {
+    id: 2,
+    title: "Understanding Sales Tax for Startups",
+    description: "Beginner-friendly guide on state sales tax registration, nexus, filing, and compliance for American entrepreneurs.",
+    duration: "20:15",
+    views: "10.4K",
+    category: "Compliance",
+    thumbnail: "/placeholder.svg",
+    featured: true
+  },
+  {
+    id: 3,
+    title: "Scaling E-commerce in the US",
+    description: "Insights and success stories from founders who scaled their businesses through Amazon.com, Walmart Marketplace, and D2C brands.",
+    duration: "32:15",
+    views: "18.2K",
+    category: "Scaling",
+    thumbnail: "/placeholder.svg",
+    featured: false
+  }
+];
+
+
+const webinars = [
+  {
+    id: 1,
+    title: "Live Q&A: US Market Entry",
+    description: "Join our experts for a live session answering your questions about setting up and growing in the American market.",
+    date: "Sep 15, 2025",
+    time: "2:00 PM EST",
+    attendees: 320,
+    status: "upcoming",
+    speaker: "John Smith"
+  },
+  {
+    id: 2,
+    title: "Fundraising for US Startups",
+    description: "Learn how to approach angel investors, VCs, and government programs like SBA loans & SBIR grants.",
+    date: "Sep 25, 2025",
+    time: "4:00 PM EST",
+    attendees: 275,
+    status: "upcoming",
+    speaker: "Emily Chen"
+  },
+  {
+    id: 3,
+    title: "Recorded Session: IRS & Tax Simplified",
+    description: "Practical walkthrough of IRS filings, tax deductions, and tax-saving strategies for American founders.",
+    date: "Aug 10, 2025",
+    time: "11:00 AM PST",
+    attendees: 540,
+    status: "recorded",
+    speaker: "Michael Rodriguez"
+  }
+];
+
+
 
   return (
     <DashboardLayout>
@@ -180,14 +185,17 @@ const Resources = () => {
 
         <Tabs defaultValue="playbooks" className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-8 h-12">
-            <TabsTrigger value="playbooks" className="text-lg font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              📚 Playbooks
+            <TabsTrigger value="playbooks" className="text-lg font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex items-center gap-2">
+              <BookOpen className="w-5 h-5" />
+              Playbooks
             </TabsTrigger>
-            <TabsTrigger value="videos" className="text-lg font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              🎥 Videos
+            <TabsTrigger value="videos" className="text-lg font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex items-center gap-2">
+              <Video className="w-5 h-5" />
+              Videos
             </TabsTrigger>
-            <TabsTrigger value="webinars" className="text-lg font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              🎤 Webinars
+            <TabsTrigger value="webinars" className="text-lg font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex items-center gap-2">
+              <Mic className="w-5 h-5" />
+              Webinars
             </TabsTrigger>
           </TabsList>
 
