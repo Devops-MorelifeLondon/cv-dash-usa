@@ -35,25 +35,44 @@ const SuccessStories = () => {
   return (
     <section className="bg-white py-10 px-4 w-full overflow-hidden">
       {/* Marquee Container */}
-      <div className="relative w-full max-w-7xl mx-auto overflow-x-hidden">
+      <div className="relative w-full max-w-4xl 2xl:max-w-6xl mx-auto overflow-hidden">
         <div
-          className="flex flex-nowrap animate-marquee gap-3"
+          className="flex flex-nowrap animate-marquee gap-6"
           style={{
-            width: `${marqueeStories.length * 420}px`, // Calculate based on item count and width
+            // Card width (396px) + gap (24px) = 420px per item
+            width: `${marqueeStories.length * 420}px`,
           }}
         >
           {marqueeStories.map((story, idx) => (
             <div
               key={idx}
-              className="flex  items-center flex-shrink-0 mx-3 my-2 rounded-2xl py-2 px-6 border border-[#f3f3f3] w-fit shadow-sm bg-white  transition duration-300"
+              className="flex flex-col flex-shrink-0 rounded-md p-4 border border-gray-200 w-[396px] shadow-sm bg-white transition duration-300"
             >
-              <div className="w-full flex justify-between items-center gap-6 mb-1">
-                <h3 className="font-semibold text-foreground text-base truncate">
+              {/* Card Header */}
+              <div className="w-full flex justify-between items-start gap-4 mb-2">
+                <h3 className="font-semibold text-gray-800 text-base">
                   {story.business}
                 </h3>
-                <span className="text-xl">{story.route}</span>
+                <span className="text-xl flex-shrink-0">{story.route}</span>
               </div>
-           
+
+              {/* Achievement Description */}
+              <p className="text-gray-500 text-sm mb-4 h-10">
+                {story.achievement}
+              </p>
+
+              {/* CTAs */}
+              <div className="flex justify-between items-center text-sm text-blue-600 font-medium mt-auto  border-t border-gray-100">
+                <a href="#" className="flex items-center gap-1 hover:underline">
+                  Case Study <ArrowRight size={14} />
+                </a>
+                <a href="#" className="flex items-center gap-1 hover:underline">
+                  Read Playbook <ArrowRight size={14} />
+                </a>
+                <a href="#" className="flex items-center gap-1 hover:underline">
+                  Book Consulting <ArrowRight size={14} />
+                </a>
+              </div>
             </div>
           ))}
         </div>

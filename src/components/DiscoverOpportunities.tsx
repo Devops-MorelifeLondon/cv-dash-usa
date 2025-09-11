@@ -75,7 +75,7 @@ export default function DiscoverOpportunitiesUSA() {
   const currentDisplayInfo = displayInfo();
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+   <div className="w-full max-w-7xl mx-auto px-6 lg:px-8 p-4 space-y-8">
       {/* Header */}
       <div className="sticky rounded-sm top-0 bg-gradient-primary z-20 px-4 py-6">
         <h1 className="text-3xl text-white font-bold text-primary">

@@ -176,7 +176,7 @@ const bundledPackagesData = [
 
 export default function IndiaEntryPricingPage() {
   return (
-    <div className="bg-white antialiased">
+   <div className="w-full max-w-7xl mx-auto px-6 lg:px-8 space-y-8">
       <div className="container mx-auto px-4 py-12 md:px-6 md:py-16 lg:py-24 space-y-16 md:space-y-24">
         {/* Section 1: Consultation Packages */}
        {/* Section 1: Consultation Packages */}

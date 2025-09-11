@@ -68,7 +68,7 @@ const Badges = () => {
 
   return (
     <DashboardLayout>
-      <div className="p-6 space-y-8">
+      <div className="w-full max-w-7xl mx-auto px-6 lg:px-8 space-y-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-4 text-foreground">
             Startup Badge <span className="text-primary">Progress</span>
