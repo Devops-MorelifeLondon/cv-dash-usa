@@ -10,6 +10,7 @@ import USBusinessMatchQuiz from "./extra/USBusinessMatchQuiz";
 import TopUSProducts from "./extra/TopUSProducts";
 import USEntryCaseStudies from "./extra/USEntryCaseStudies";
 import  stateInfo from "../../data/states.json"
+import BusinessIdeaGenerator from "./extra/BusinessIdeaGenerator";
 
 // ----- Types -----
 type StateData = {
@@ -237,27 +238,8 @@ export default function DiscoverOpportunitiesUSA() {
         </div>
 
            {/* ✅ Show this only if quiz is finished */}
-      {quizFinished && (
-        <div className="mt-12 flex justify-center">
-          <Card className="p-12 w-full md:w-3/4 text-center shadow-2xl bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl">
-            <div className="flex flex-col items-center gap-6">
-              <Brain className="w-14 h-14 text-primary" />
-              <h2 className="text-3xl md:text-4xl font-extrabold text-primary">
-                🚀 Find Your Business Match
-              </h2>
-              <p className="text-muted-foreground text-lg">
-                Answer a few quick questions and we'll suggest <br />
-                <strong className="text-primary">3 best-fit business ideas</strong> for the USA.
-              </p>
-              <Button size="lg" className="px-8 py-4 text-lg rounded-xl shadow-lg">
-                Start Business Idea Generator <ArrowRight className="ml-2 w-6 h-6" />
-              </Button>
-              <Badge className="bg-blue-50 border border-blue-300 text-blue-700 text-sm px-3 py-1">
-                88% Match Accuracy
-              </Badge>
-            </div>
-          </Card>
-        </div>
+   {quizFinished && (
+       <BusinessIdeaGenerator/>
       )}
 
         {/* Side-by-side products and case studies */}

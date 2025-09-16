@@ -52,7 +52,7 @@ export default function USBusinessMatchQuiz({ onFinish }: { onFinish?: () => voi
 
   return (
     <div className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl shadow-xl w-full  mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-primary">Take the U.S. Entry Idea Quiz 🚀</h2>
+      <h2 className="text-2xl font-bold mb-4 text-primary">Idea to Visionary program</h2>
 
       {/* Progress Bar */}
       <div className="w-full bg-blue-200 rounded-full h-2 mb-6">
