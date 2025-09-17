@@ -77,6 +77,8 @@ export default function DiscoverOpportunitiesUSA() {
 
   return (
    <div className="w-full max-w-7xl mx-auto px-6 lg:px-8 p-4 space-y-8">
+
+       <BusinessIdeaGenerator/>
       {/* Header */}
       <div className="sticky rounded-sm top-0 bg-gradient-primary z-20 px-4 py-6">
         <h1 className="text-3xl text-white font-bold text-primary">
@@ -233,14 +235,12 @@ export default function DiscoverOpportunitiesUSA() {
 
       <div className="flex flex-col gap-6 mt-10">
         {/* Full width quiz */}
-        <div className="w-full">
-          <USBusinessMatchQuiz  onFinish={() => setQuizFinished(true)} />
-        </div>
+     
 
            {/* ✅ Show this only if quiz is finished */}
-   {quizFinished && (
-       <BusinessIdeaGenerator/>
-      )}
+ 
+    
+      
 
         {/* Side-by-side products and case studies */}
         <div className="flex flex-col justify-center items-center  md:flex-row gap-5">
