@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 import CrossAssist from "@/pages/CrossAssist";
 import SuccessStories from "./SucessStories";
+import { Link } from "react-router-dom";
+
 
 export function WelcomeSection() {
   return (
@@ -23,18 +25,23 @@ export function WelcomeSection() {
               Expand Your Business in USA
             </h1>
             <div className="flex flex-col sm:flex-row gap-3">
-              <Button
+         <Button
                 size="sm"
                 className="bg-white text-primary hover:bg-white/90 font-semibold shadow"
               >
-                Discover Opportunities
+               <Link to={'/opportunities'}>
+               Discover Opportunities
+               </Link> 
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
               <Button
                 size="sm"
                 className="bg-transparent border border-white text-white hover:bg-white hover:text-blue-500 font-semibold shadow"
               >
-                🚀 FastTrack My Setup
+                  <Link to={'/support'}>
+             🚀 FastTrack My Setup
+               </Link> 
+                
               </Button>
             </div>
           </div>
