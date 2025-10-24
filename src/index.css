@@ -162,3 +162,51 @@ All colors MUST be HSL.
     scrollbar-color: hsl(var(--primary) / 0.6) transparent; /* Sets thumb and track color */
   }
 }
+
+
+/* Base styling for the markdown output container */
+.markdown-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  color: #333333;
+  line-height: 1.6;
+}
+
+/* Style for all headings (h3) */
+.markdown-container h3 {
+  color: #1a202c; /* A darker, professional blue/gray */
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Remove default bullets and padding from unordered lists */
+.markdown-container ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+/* Style for list items */
+.markdown-container li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+/* Custom symbol for list items using a pseudo-element */
+.markdown-container li::before {
+  content: '✓'; /* You can use any symbol, like '→', '•', or '✓' */
+  color: #2563eb; /* A nice blue color */
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+/* Spacing for paragraphs */
+.markdown-container p {
+  margin-bottom: 1rem;
+}

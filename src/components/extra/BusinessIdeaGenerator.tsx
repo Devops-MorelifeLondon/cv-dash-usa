@@ -1,791 +1,1004 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Select from "react-select";
+import React, { useState, useEffect } from 'react';
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import { Check, Briefcase, History, Globe2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-// --- UI Components (assuming they exist in your project structure) ---
-import { Stepper } from "@/components/extra/Stepper";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Label } from "@/components/ui/label";
-import {
-    Lightbulb, DollarSign, MapPin, CheckCircle, ArrowRight, Sparkles, Target, Code2,
-    ShoppingCart, Ship, Globe, Building2, Briefcase, TrendingUp, Users, BrainCircuit,
-    FileText, LineChart, Factory, Warehouse, Network, Banknote, Scale, Megaphone,
-    BookUser, Repeat, Award, Zap, BarChart3, Rocket,
-    Globe2,
-    Repeat2,
-    Package,
-    KanbanSquare,
-    Landmark,
-    Settings
-} from "lucide-react";
-import DualRangeSlider from "../DualRangeSlider";
-
-
-
-// ---------------------------------
-// --- HELPER FUNCTIONS & DATA ---
-// ---------------------------------
-
-const parseRevenue = (revenueStr) => {
-    if (!revenueStr) return { min: 0, max: 0 };
-    const matches = revenueStr.match(/\d+/g);
-    if (!matches || matches.length < 2) return { min: 0, max: 0 };
-    return { min: parseInt(matches[0], 10), max: parseInt(matches[1], 10) };
-};
-
-// --- CORE DATA STRUCTURES ---
-
-const PROFESSIONAL_BACKGROUNDS = [
-    { value: 'tech', label: 'Tech & IT' },
-    { value: 'marketing', label: 'Marketing & Sales' },
-    { value: 'finance', label: 'Finance & Accounting' },
-    { value: 'ops', label: 'Operations & Management' },
-    { value: 'legal', label: 'Legal & Compliance' },
-    { value: 'hr', label: 'Human Resources' },
-    { value: 'product', label: 'Product Management' },
-    { value: 'creative', label: 'Creative & Design' },
-];
-
-const GEOGRAPHY_DATA = [
-  {
-    label: "California (SF Bay Area, LA)",
-    value: "CALIFORNIA",
-    marketProfile: {
-      tech: 1.5,
-      saas: 1.5,
-      aiml: 1.4,
-      fundraising: 1.4,
-      ecom: 1.2,
-      consumergoods: 1.2,
-    },
-  },
-  {
-    label: "New York (NYC)",
-    value: "NEW_YORK",
-    marketProfile: {
-      finance: 1.5,
-      fundraising: 1.3,
-      marketing: 1.4,
-      corporate: 1.3,
-      legal: 1.4,
-      trading: 1.2,
-    },
-  },
-  {
-    label: "Texas (Austin, Houston, DFW)",
-    value: "TEXAS",
-    marketProfile: {
-      tech: 1.2,
-      manufacturing: 1.3,
-      logistics: 1.3,
-      trading: 1.3, // Energy & Commodities
-      corporate: 1.1,
-    },
-  },
-  {
-    label: "Washington (Seattle Area)",
-    value: "WASHINGTON",
-    marketProfile: {
-      tech: 1.3,
-      saas: 1.4,
-      ecom: 1.5, // Amazon HQ
-      logistics: 1.2,
-      supplychain: 1.2,
-    },
-  },
-  {
-    label: "Florida (Miami)",
-    value: "FLORIDA",
-    marketProfile: {
-      impexp: 1.4,
-      logistics: 1.3,
-      trading: 1.3, // Gateway to LatAm
-      finance: 1.1,
-      marketing: 1.1,
-    },
-  },
-  {
-    label: "Illinois (Chicago)",
-    value: "ILLINOIS",
-    marketProfile: {
-      logistics: 1.4,
-      supplychain: 1.3,
-      trading: 1.2, // Commodities
-      manufacturing: 1.2,
-      finance: 1.1,
-    },
-  },
-  {
-    label: "Massachusetts (Boston)",
-    value: "MASSACHUSETTS",
-    marketProfile: {
-      tech: 1.2,
-      healthcare: 1.4, // Bio-tech hub
-      pharma: 1.3,
-      fundraising: 1.2,
-      edtech: 1.3,
-    },
-  },
-];
-
-
-const GENCATEGORIES_DATA = [
-    { 
-        label: "E-Commerce & Online Marketplace Ventures", 
-        value: "ecommerce", 
-        budget: [10, 80], 
-        icon: <ShoppingCart className="w-8 h-8" />, 
-        prompts: [
-            "Will you launch your own D2C brand or sell on platforms like Amazon, Walmart, or Etsy?", 
-            "Are you focusing on dropshipping, private-label products, or subscription box models?", 
-            "Do you need guidance on integrating Shopify, Stripe, or cross-border shipping for US customers?"
-        ] 
-    },
-    { 
-        label: "Technology & IT Solutions", 
-        value: "tech", 
-        budget: [50, 300], 
-        icon: <Code2 className="w-8 h-8" />, 
-        prompts: [
-            "Are you building a SaaS product, a mobile app, or offering IT consulting for US enterprises?", 
-            "Do you want help recruiting US-based sales teams or remote engineering talent?", 
-            "Ready to establish a nearshore/offshore development center to support US clients?"
-        ] 
-    },
-    { 
-        label: "Legal Advisory & Consulting", 
-        value: "legal", 
-        budget: [20, 100], 
-        icon: <Scale className="w-8 h-8" />, 
-        prompts: [
-            "Do you need help with business incorporation, IP protection, or employment law compliance in the US?", 
-            "Are you looking for registered agent services for your LLC or Corporation?", 
-            "Schedule a consultation for SEC, FTC, or cross-border compliance regulations."
-        ] 
-    },
-    { 
-        label: "Financial Strategy & Consulting", 
-        value: "finance", 
-        budget: [25, 150], 
-        icon: <Landmark className="w-8 h-8" />, 
-        prompts: [
-            "Are you seeking venture capital, SBA loans, or angel investment in the US?", 
-            "Do you need support with financial modeling, valuation, or IPO readiness?", 
-            "Explore services for tax optimization, FDI structuring, and cross-border financing."
-        ] 
-    },
-    { 
-        label: "Digital Marketing & Brand Growth", 
-        value: "marketing", 
-        budget: [15, 90], 
-        icon: <Megaphone className="w-8 h-8" />, 
-        prompts: [
-            "What is your main focus: lead generation, brand awareness, or e-commerce conversions in the US?", 
-            "Will you invest in performance marketing (Google Ads, Meta Ads) or influencer-driven campaigns on TikTok/Instagram?", 
-            "Partner with our network of US-based content creators and brand strategists."
-        ] 
-    },
-    { 
-        label: "Global Offshore Service Hubs", 
-        value: "offshore", 
-        budget: [50, 250], 
-        icon: <Globe2 className="w-8 h-8" />, 
-        prompts: [
-            "Are you planning to set up a BPO, call center, or shared services hub supporting US clients?", 
-            "Do you need a 'build-operate-transfer' model for scaling operations?", 
-            "Explore compliance and HR support for US-based outsourcing partnerships."
-        ] 
-    },
-    { 
-        label: "Innovative Manufacturing & Production", 
-        value: "manufacturing", 
-        budget: [150, 700], 
-        icon: <Factory className="w-8 h-8" />, 
-        prompts: [
-            "Will you produce domestically in the US or use contract manufacturing (OEM/ODM)?", 
-            "Are you targeting US government incentives for reshoring and green manufacturing?", 
-            "Get assistance with FDA, OSHA, and ISO compliance for your production setup."
-        ] 
-    },
-    { 
-        label: "International & Domestic Trading", 
-        value: "trading", 
-        budget: [30, 200], 
-        icon: <Repeat2 className="w-8 h-8" />, 
-        prompts: [
-            "Are you trading in consumer goods, raw materials, or B2B wholesale products?", 
-            "Do you need financing solutions like factoring or trade credit for US buyers?", 
-            "Connect with verified US distributors and nationwide retail chains."
-        ] 
-    },
-    { 
-        label: "Consumer & Physical Goods", 
-        value: "consumer_goods", 
-        budget: [40, 350], 
-        icon: <Package className="w-8 h-8" />, 
-        prompts: [
-            "Are you creating a premium niche product or competing in mass-market retail?", 
-            "Will you use a D2C subscription model, Amazon FBA, or brick-and-mortar retail?", 
-            "Let us help with packaging, UL certification, and brand positioning for US buyers."
-        ] 
-    },
-    { 
-        label: "Import–Export Excellence", 
-        value: "impexp", 
-        budget: [20, 180], 
-        icon: <Ship className="w-8 h-8" />, 
-        prompts: [
-            "Do you need help with US customs clearance, freight forwarding, or FDA/USDA compliance?", 
-            "View our trade insights on profitable product flows between the US and global markets.", 
-            "Schedule a consultation for optimizing tariffs, duties, and NAFTA/USMCA benefits."
-        ] 
-    },
-    { 
-        label: "Smart Logistics & Warehousing", 
-        value: "logistics", 
-        budget: [100, 500], 
-        icon: <Warehouse className="w-8 h-8" />, 
-        prompts: [
-            "Are you planning an asset-heavy model with your own fleet/warehouses or an asset-light 3PL approach?", 
-            "Do you specialize in last-mile delivery, cold-chain logistics, or e-commerce fulfillment?", 
-            "Explore automation, robotics, and WMS/TMS solutions for US logistics efficiency."
-        ] 
-    },
-    { 
-        label: "Integrated Supply Chain Management", 
-        value: "supply_chain", 
-        budget: [70, 400], 
-        icon: <KanbanSquare className="w-8 h-8" />, 
-        prompts: [
-            "Will you offer Supply Chain as a Service (SCaaS) for US-based companies?", 
-            "Are you targeting visibility, cost optimization, or resilience in US supply chains?", 
-            "Leverage predictive analytics and AI to optimize US and global supply networks."
-        ] 
-    },
-];
-
-
-
-const SUBCATS_DATA = {
-    ecommerce: [
-        { label: "Marketplace Selling", description: "Sell products on established platforms like Amazon, Etsy, or Flipkart.", estimatedRevenue: "30K-180K/year" },
-        { label: "Direct-to-Consumer (D2C) Brand", description: "Build and market your brand via a dedicated website (e.g., using Shopify).", estimatedRevenue: "40K-250K/year" },
-        { label: "Dropshipping & Retail Arbitrage", description: "Sell products without holding inventory by forwarding orders to suppliers.", estimatedRevenue: "20K-90K/year" },
-        { label: "Subscription Box Service", description: "Curate and deliver recurring product boxes for a specific niche.", estimatedRevenue: "25K-130K/year" },
-        { label: "Social Commerce Business", description: "Sell products directly through social media platforms like Instagram and Facebook.", estimatedRevenue: "15K-70K/year" },
-    ],
-    tech: [
-        { label: "SaaS Product Development", description: "Build and market a Software-as-a-Service solution for a business need.", estimatedRevenue: "50K-300K/year" },
-        { label: "IT Consulting & Managed Services", description: "Provide expert tech advice, strategy, and ongoing IT management for businesses.", estimatedRevenue: "60K-250K/year" },
-        { label: "Custom Software Development", description: "Develop bespoke web and mobile applications for corporate clients.", estimatedRevenue: "80K-400K/year" },
-        { label: "AI & Data Science Solutions", description: "Offer services in AI, machine learning, and data analytics to solve business problems.", estimatedRevenue: "90K-500K/year" },
-        { label: "Cybersecurity Consulting", description: "Provide security audits, threat management, and compliance solutions.", estimatedRevenue: "70K-220K/year" },
-    ],
-    legal: [
-        { label: "Corporate & Commercial Law Advisory", description: "Advise on company structures, business contracts, and M&A activities.", estimatedRevenue: "50K-200K/year" },
-        { label: "Business Formation & Registration", description: "Assist entrepreneurs with company incorporation and registration processes.", estimatedRevenue: "30K-100K/year" },
-        { label: "Intellectual Property (IP) Management", description: "Help businesses file for and protect trademarks, patents, and copyrights.", estimatedRevenue: "40K-160K/year" },
-        { label: "Regulatory & Compliance Consulting", description: "Guide companies through industry-specific regulations like GDPR or financial compliance.", estimatedRevenue: "60K-180K/year" },
-        { label: "Legal Process Outsourcing (LPO)", description: "Provide outsourced legal support like document review and legal research.", estimatedRevenue: "70K-250K/year" },
-    ],
-    finance: [
-        { label: "Startup Capital & Fundraising Advisory", description: "Assist new ventures in securing funding from angels, VCs, or grants.", estimatedRevenue: "60K-300K/year" },
-        { label: "Outsourced CFO & Financial Strategy", description: "Offer fractional CFO services for strategic planning and financial management.", estimatedRevenue: "70K-200K/year" },
-        { label: "Investment & Wealth Management", description: "Provide financial advice and manage investment portfolios for clients.", estimatedRevenue: "50K-250K/year" },
-        { label: "International Tax & Structuring", description: "Advise on tax-efficient structures for cross-border investments and operations.", estimatedRevenue: "80K-350K/year" },
-        { label: "Fintech & Payments Consulting", description: "Advise on financial technology integration, payment gateways, and digital banking.", estimatedRevenue: "90K-400K/year" },
-    ],
-    marketing: [
-        { label: "Full-Service Digital Marketing Agency", description: "Offer a complete suite of services including SEO, PPC, and social media marketing.", estimatedRevenue: "50K-250K/year" },
-        { label: "Brand Strategy & Creative Services", description: "Develop brand positioning, messaging, visual identity, and creative campaigns.", estimatedRevenue: "40K-180K/year" },
-        { label: "Content Marketing & Production", description: "Create and distribute valuable content like blogs, videos, and podcasts.", estimatedRevenue: "35K-150K/year" },
-        { label: "Public Relations (PR) & Communications", description: "Manage media relations, brand reputation, and corporate communications.", estimatedRevenue: "45K-200K/year" },
-        { label: "Data Analytics & Market Research", description: "Provide data-driven insights on consumer behavior and market trends.", estimatedRevenue: "60K-220K/year" },
-    ],
-    offshore: [
-        { label: "Business Process Outsourcing (BPO)", description: "Handle non-core operations like customer support, tele-sales, or data entry.", estimatedRevenue: "80K-400K/year" },
-        { label: "Knowledge Process Outsourcing (KPO)", description: "Provide high-skill services like research, analytics, or financial analysis.", estimatedRevenue: "100K-500K/year" },
-        { label: "Remote IT & Tech Support Hub", description: "Offer outsourced IT helpdesk, network monitoring, and technical support.", estimatedRevenue: "70K-300K/year" },
-        { label: "Back-Office Administration Services", description: "Manage HR, payroll processing, and accounting for other companies.", estimatedRevenue: "60K-250K/year" },
-        { label: "Remote Team & Captive Center Setup", description: "Build, operate, and manage dedicated offshore teams for clients.", estimatedRevenue: "120K-600K/year" },
-    ],
-    manufacturing: [
-        { label: "Contract Manufacturing (OEM/ODM)", description: "Produce goods for other brands to sell, either to their spec or from your design.", estimatedRevenue: "200K-1.5M/year" },
-        { label: "Niche Product Line Manufacturing", description: "Develop and produce a proprietary line of specialized products.", estimatedRevenue: "100K-800K/year" },
-        { label: "Food & Beverage Processing", description: "Manufacture and package food products for retail or commercial distribution.", estimatedRevenue: "150K-1M/year", complianceNotes: "Requires food safety licenses like FSSAI/FDA." },
-        { label: "Industrial Component Manufacturing", description: "Produce parts and components for other manufacturing or industrial sectors.", estimatedRevenue: "250K-2M/year" },
-        { label: "Prototyping & Small-Batch Production", description: "Offer services like 3D printing and CNC machining for new product development.", estimatedRevenue: "80K-450K/year" },
-    ],
-    trading: [
-        { label: "Commodity Trading (Agri, Metal, Energy)", description: "Trade in bulk raw materials on domestic or international markets.", estimatedRevenue: "80K-700K/year" },
-        { label: "Merchant Trading & Distribution", description: "Buy and sell a variety of finished goods between manufacturers and retailers.", estimatedRevenue: "60K-500K/year" },
-        { label: "Industrial Goods & Equipment Trading", description: "Trade in machinery, spare parts, and other industrial supplies.", estimatedRevenue: "100K-800K/year" },
-        { label: "Sourcing & Procurement Agency", description: "Act as a professional sourcing agent to find and vet suppliers for clients.", estimatedRevenue: "50K-150K/year" },
-        { label: "Wholesale Consumer Goods Trading", description: "Buy fast-moving consumer goods (FMCG) in bulk and distribute them.", estimatedRevenue: "70K-600K/year" },
-    ],
-    consumer_goods: [
-        { label: "Apparel & Fashion Brand", description: "Design, produce, and sell your own line of clothing, footwear, or accessories.", estimatedRevenue: "50K-300K/year" },
-        { label: "Packaged Food & Beverage Brand", description: "Launch a brand of snacks, health foods, drinks, or ready-to-eat meals.", estimatedRevenue: "60K-400K/year" },
-        { label: "Home & Lifestyle Brand", description: "Create and sell products for home decor, furniture, kitchenware, or organization.", estimatedRevenue: "40K-250K/year" },
-        { label: "Personal Care & Beauty Brand", description: "Develop a line of skincare, cosmetics, haircare, or wellness products.", estimatedRevenue: "55K-350K/year", complianceNotes: "Regulatory approval (FDA/CDSCO) is often required." },
-        { label: "Consumer Electronics & Gadgets Brand", description: "Design and sell innovative consumer electronics or smart home devices.", estimatedRevenue: "100K-700K/year" },
-    ],
-    impexp: [
-        { label: "Freight Forwarding Service", description: "Arrange the international transport of goods via air, sea, and land carriers.", estimatedRevenue: "100K-700K/year" },
-        { label: "Customs Brokerage Firm", description: "Manage customs documentation, duties, and clearance for import/export shipments.", estimatedRevenue: "70K-300K/year", complianceNotes: "Requires a Customs Broker License." },
-        { label: "Import/Export Consulting Agency", description: "Advise businesses on market entry strategies, trade compliance, and documentation.", estimatedRevenue: "60K-250K/year" },
-        { label: "Trade Finance Facilitation", description: "Connect importers and exporters with financing solutions like letters of credit.", estimatedRevenue: "50K-200K/year" },
-        { label: "Export Management Company (EMC)", description: "Act as an outsourced export department for multiple manufacturing companies.", estimatedRevenue: "90K-500K/year" },
-    ],
-    logistics: [
-        { label: "Third-Party Logistics (3PL) Provider", description: "Offer integrated warehousing, transportation, and order fulfillment services.", estimatedRevenue: "200K-1.5M/year" },
-        { label: "Warehousing & Fulfillment Center", description: "Own and operate storage and fulfillment facilities for e-commerce and B2B clients.", estimatedRevenue: "150K-1M/year" },
-        { label: "Freight & Transportation Services", description: "Manage a fleet or brokerage for moving goods via trucking, air, or sea freight.", estimatedRevenue: "180K-2M/year" },
-        { label: "Last-Mile Delivery Network", description: "Specialize in the final delivery leg from a distribution center to the customer's door.", estimatedRevenue: "100K-600K/year" },
-        { label: "Specialized Logistics Solutions", description: "Focus on high-value niches like cold chain, hazardous materials, or oversized cargo.", estimatedRevenue: "250K-3M/year" },
-    ],
-    supply_chain: [
-        { label: "Supply Chain Consulting & Strategy", description: "Advise companies on optimizing their supply chain for cost, speed, and resilience.", estimatedRevenue: "80K-400K/year" },
-        { label: "Procurement-as-a-Service", description: "Manage the entire strategic sourcing and procurement lifecycle for other businesses.", estimatedRevenue: "70K-300K/year" },
-        { label: "Supply Chain Technology (SaaS)", description: "Develop and sell software for visibility, planning, or warehouse management (WMS).", estimatedRevenue: "100K-600K/year" },
-        { label: "Inventory Management & Optimization", description: "Provide services or software to help businesses optimize stock levels and reduce waste.", estimatedRevenue: "60K-280K/year" },
-        { label: "Reverse Logistics & Returns Management", description: "Create efficient systems for handling product returns, repairs, and recycling.", estimatedRevenue: "90K-500K/year" },
-    ],
-};
-
-
-
-const INTERESTS_DATA = {
-    ecommerce: [
-        { value: 'd2c', label: 'Direct-to-Consumer (D2C)' }, { value: 'fba', label: 'Amazon FBA' }, { value: 'dropshipping', label: 'Dropshipping' },
-        { value: 'privatelabel', label: 'Private Label Brands' }, { value: 'handmade', label: 'Handmade & Artisanal' }, { value: 'fashion', label: 'Fashion & Apparel' },
-        { value: 'homegoods', label: 'Home Goods & Decor' }, { value: 'subscription', label: 'Subscription Boxes' }, { value: 'socialcommerce', label: 'Social Commerce' }
-    ],
-    tech: [
-        { value: 'saas', label: 'B2B/B2C SaaS' }, { value: 'fintech', label: 'Fintech & Payments' }, { value: 'healthcare', label: 'HealthTech' },
-        { value: 'aiml', label: 'AI/ML & Data Science' }, { value: 'cybersecurity', label: 'Cybersecurity Solutions' }, { value: 'mobileapp', label: 'Mobile App Development' },
-        { value: 'iot', label: 'IoT & Hardware' }, { value: 'devops', label: 'DevOps & Cloud Infra' }, { value: 'edtech', label: 'EdTech Solutions' }
-    ],
-    legal: [
-        { value: 'corporate', label: 'Corporate & M&A' }, { value: 'contracts', label: 'Cross-Border Contracts' }, { value: 'ip', label: 'Intellectual Property (IP)' },
-        { value: 'compliance', label: 'Regulatory & Compliance' }, { value: 'formation', label: 'Company Formation' }, { value: 'immigration', label: 'Business Immigration' },
-        { value: 'dispute', label: 'Dispute Resolution' }, { value: 'lpo', label: 'Legal Process Outsourcing' }, { value: 'privacy', label: 'Data Privacy & Security' }
-    ],
-    finance: [
-        { value: 'fundraising', label: 'Startup Fundraising (VC/Angel)' }, { value: 'cfo', label: 'Outsourced CFO Services' }, { value: 'tax', label: 'International Tax Planning' },
-        { value: 'wealth', label: 'Wealth & Investment Management' }, { value: 'fdi', label: 'Foreign Direct Investment (FDI)' }, { value: 'payments', label: 'Payments & Fintech' },
-        { value: 'ma', label: 'Mergers & Acquisitions (M&A)' }, { value: 'valuation', label: 'Business Valuation' }, { value: 'tradefinance', label: 'Trade Finance' }
-    ],
-    marketing: [
-        { value: 'performance', label: 'Performance Marketing (PPC/SEM)' }, { value: 'seo', label: 'SEO & Content Marketing' }, { value: 'branding', label: 'Brand Strategy & Identity' },
-        { value: 'social', label: 'Social Media Marketing' }, { value: 'ecommerce', label: 'E-commerce Marketing (CRO)' }, { value: 'influencer', label: 'Influencer Marketing' },
-        { value: 'pr', label: 'Public Relations (PR)' }, { value: 'analytics', label: 'Market Research & Analytics' }, { value: 'growth', label: 'Growth Hacking' }
-    ],
-    offshore: [
-        { value: 'bpo', label: 'Customer Support (BPO)' }, { value: 'kpo', label: 'Knowledge Process Outsourcing (KPO)' }, { value: 'medicalbilling', label: 'Medical Billing (RCM)' },
-        { value: 'accounting', label: 'Accounting & Bookkeeping' }, { value: 'it', label: 'IT & Tech Support' }, { value: 'hr', label: 'HR & Recruitment Outsourcing' },
-        { value: 'virtualassistant', label: 'Virtual Assistant Services' }, { value: 'datainput', label: 'Data Entry & Management' }, { value: 'lpo', label: 'Legal Process Outsourcing (LPO)' }
-    ],
-    manufacturing: [
-        { value: 'contract', label: 'Contract Manufacturing (OEM/ODM)' }, { value: 'electronics', label: 'Electronics & Components' }, { value: 'textiles', label: 'Textiles & Apparel' },
-        { value: 'food', label: 'Food & Beverage Processing' }, { value: 'pharma', label: 'Pharma & Medical Devices' }, { value: 'automotive', label: 'Automotive Parts' },
-        { value: 'packaging', label: 'Sustainable Packaging' }, { value: 'cosmetics', label: 'Private Label Cosmetics' }, { value: 'prototyping', label: '3D Printing & Prototyping' }
-    ],
-    trading: [
-        { value: 'agro', label: 'Agro-Commodities' }, { value: 'metals', label: 'Metals & Minerals' }, { value: 'textiles', label: 'Textiles & Garments' },
-        { value: 'chemicals', label: 'Chemicals & Solvents' }, { value: 'sourcing', label: 'Sourcing Agent Services' }, { value: 'wholesale', label: 'Wholesale Distribution' },
-        { value: 'industrial', label: 'Industrial Equipment' }, { value: 'fmcg', label: 'FMCG Distribution' }, { value: 'scrap', label: 'Scrap & Recyclables' }
-    ],
-    consumer_goods: [
-        { value: 'fashion', label: 'Apparel & Fashion' }, { value: 'food', label: 'Packaged Food & Beverages' }, { value: 'beauty', label: 'Beauty & Personal Care' },
-        { value: 'home', label: 'Home & Kitchen' }, { value: 'electronics', label: 'Consumer Electronics' }, { value: 'health', label: 'Health & Wellness' },
-        { value: 'furniture', label: 'Furniture & Decor' }, { value: 'toys', label: 'Toys & Baby Products' }, { value: 'sports', label: 'Sports & Outdoor' }
-    ],
-    impexp: [
-        { value: 'freight', label: 'Freight Forwarding (Sea/Air)' }, { value: 'customs', label: 'Customs Clearance' }, { value: 'compliance', label: 'Trade Compliance' },
-        { value: 'sourcing', label: 'Global Sourcing' }, { value: 'documentation', label: 'Documentation & Licensing' }, { value: 'tradefinance', label: 'Trade Finance' },
-        { value: 'marketentry', label: 'Market Entry Strategy' }, { value: 'product', label: 'Product-Specific Export' }, { value: 'consulting', label: 'Import-Export Consulting' }
-    ],
-    logistics: [
-        { value: '3pl', label: '3PL & 4PL Services' }, { value: 'warehousing', label: 'Smart Warehousing & Automation' }, { value: 'ecomfulfillment', label: 'E-commerce Fulfillment' },
-        { value: 'lastmile', label: 'Last-Mile Delivery' }, { value: 'coldchain', label: 'Cold Chain Logistics' }, { value: 'freight', label: 'Freight Management' },
-        { value: 'fleet', label: 'Fleet & Transport Tech' }, { value: 'drones', label: 'Drone & Autonomous Delivery' }, { value: 'aircargo', label: 'Air Cargo Management' }
-    ],
-    supply_chain: [
-        { value: 'consulting', label: 'Supply Chain Consulting' }, { value: 'procurement', label: 'Strategic Sourcing & Procurement' }, { value: 'saas', label: 'Supply Chain Software (SaaS)' },
-        { value: 'inventory', label: 'Inventory Planning & Optimization' }, { value: 'visibility', label: 'Real-Time Visibility & Tracking' }, { value: 'risk', label: 'Risk Management' },
-        { value: 'reverse', label: 'Reverse Logistics & Returns' }, { value: 'sustainability', label: 'Green Supply Chains' }, { value: 'planning', label: 'Demand & Supply Planning' }
-    ]
-};
-
-
-// --- Hydrate data with parsed revenues ---
-const GENCATEGORIES = GENCATEGORIES_DATA.map(cat => ({
-    ...cat,
-    subCats: (SUBCATS_DATA[cat.value] || []).map(sub => ({
-        ...sub,
-        revenueRange: parseRevenue(sub.estimatedRevenue),
-    }))
-}));
-
-
-// ---------------------------------
-// --- HYPER CALCULATION ENGINE ---
-// ---------------------------------
-
-const calculateBusinessScore = (subCat, category, user) => {
-    const { budget, interests, backgrounds, geography } = user;
-    let scores = {
-        budget: { score: 0, reason: "" },
-        interest: { score: 0, reason: "" },
-        background: { score: 0, reason: "" },
-        opportunity: { score: 0, reason: "" },
-        total: 0
-    };
-    const reasons = [];
-
-    // 1. Budget Fit Score
-    const budgetMid = (budget[0] + budget[1]) / 2;
-    const revenueMid = (subCat.revenueRange.min + subCat.revenueRange.max) / 2;
-    if (budget[1] < subCat.revenueRange.min * 0.7) {
-        scores.budget = { score: 0.2, reason: "Your budget is significantly below the typical starting investment for this model." };
-    } else if (budget[0] > subCat.revenueRange.max * 1.5) {
-        scores.budget = { score: 0.7, reason: "Your budget is very high for this model; you could target more capital-intensive ventures." };
-    } else if (budget[1] >= subCat.revenueRange.min) {
-        scores.budget = { score: 1.0, reason: "Strong budget alignment. Your investment capacity is well-suited for this venture's needs." };
-    } else {
-        scores.budget = { score: 0.6, reason: "Your budget is on the lean side. A focused, phased-in approach would be required." };
-    }
-
-    // 2. Interest Synergy Score
-    const matchingInterests = interests.filter(interest =>
-        subCat.label.toLowerCase().includes(interest.label.toLowerCase()) ||
-        subCat.description.toLowerCase().includes(interest.label.toLowerCase())
-    ).length;
-    if (matchingInterests > 0) {
-        scores.interest = {
-            score: 0.5 + (matchingInterests * 0.25), // Cap at 1.0
-            reason: `High interest synergy. Your focus on ${interests.map(i => i.label).join(', ')} aligns perfectly.`
-        };
-    } else {
-        scores.interest = { score: 0.1, reason: "Low interest alignment. This model may not match your specified niches." };
-    }
-
-    // 3. Background Alignment Score
-    const backgroundValues = backgrounds.map(b => b.value);
-    const hasDirectMatch = backgroundValues.includes(category.value);
-    if (hasDirectMatch) {
-        scores.background = { score: 1.0, reason: `Excellent background fit. Your experience in ${category.label} provides a strong competitive advantage.` };
-    } else {
-        scores.background = { score: 0.4, reason: "This is a career transition. Leveraging a mentor or experienced co-founder is recommended." };
-    }
-
-    // 4. Market Opportunity Score
-    const geoProfile = GEOGRAPHY_DATA.find(g => g.value === geography?.value)?.marketProfile || {};
-    const marketMultiplier = geoProfile[category.value] || geoProfile[interests[0]?.value] || 1.0;
-    scores.opportunity = {
-        score: marketMultiplier > 1.0 ? 1.0 : 0.8,
-        reason: marketMultiplier > 1.1 ? `High market opportunity. ${geography.label} shows strong demand for this sector.` : "Solid market opportunity in your chosen geography."
-    };
-
-    // Weighted Total Score
-    scores.total = (scores.budget.score * 0.25) +
-                   (scores.interest.score * 0.35) +
-                   (scores.background.score * 0.25) +
-                   (scores.opportunity.score * 0.15);
-
-    // Generate Top 4 Reasons
-    const allReasons = [
-        { ...scores.background, priority: 1 },
-        { ...scores.interest, priority: 2 },
-        { ...scores.budget, priority: 3 },
-        { ...scores.opportunity, priority: 4 },
-    ];
-    const top4Reasons = allReasons.sort((a, b) => a.priority - b.priority).map(r => r.reason);
-
-    return { ...subCat, score: scores.total, reasons: top4Reasons };
-};
-
-
-// -----------------------
-// --- MAIN COMPONENT ---
-// -----------------------
-
-export default function BusinessIdeaGenerator() {
-    // --- State Management ---
-    const [step, setStep] = useState(0);
-    const [backgrounds, setBackgrounds] = useState([]);
-    const [category, setCategory] = useState(null);
-    const [budget, setBudget] = useState([10, 50]);
-    const [geography, setGeography] = useState(null);
-    const [interests, setInterests] = useState([]);
-    const [chosenSub, setChosenSub] = useState(null);
-    const [filteredSubs, setFilteredSubs] = useState([]);
-    const [bestMatch, setBestMatch] = useState(null);
-    
-    // --- Async/UI State ---
-    const [isAnalyzing, setIsAnalyzing] = useState(false);
-    const [portalTarget, setPortalTarget] = useState(null);
-
-    useEffect(() => {
-        setPortalTarget(document.body);
-    }, []);
-
-    const STEPS = [
-        { title: "Background", description: "Share your expertise" },
-        { title: "Category", description: "Choose your business type" },
-        { title: "Goals", description: "Set investment & interests" },
-        { title: "Business Model", description: "Pick a specific model" },
-        { title: "Action Plan", description: "Get your next steps" },
-    ];
-
-    // --- Navigation & Logic ---
-    const next = () => setStep(s => Math.min(s + 1, STEPS.length - 1));
-    const back = () => setStep(s => Math.max(s - 1, 0));
-
-    const handleCategorySelect = (c) => {
-        setCategory(c);
-        setBudget(c.budget);
-        setChosenSub(null);
-        setInterests([]);
-        next();
-    };
-    
-    const handleFindModels = () => {
-        const userProfile = { budget, interests, backgrounds, geography };
-        const scoredSubs = category.subCats.map(sub => calculateBusinessScore(sub, category, userProfile));
-        const sortedSubs = scoredSubs.sort((a, b) => b.score - a.score);
-        
-        setFilteredSubs(sortedSubs);
-        setBestMatch(sortedSubs[0] || null);
-        next();
-    };
-
-    const handleGeneratePlan = () => {
-        if (!chosenSub) return;
-        setIsAnalyzing(true);
-        setTimeout(() => {
-            setIsAnalyzing(false);
-            next();
-        }, 2500); // Simulate analysis
-    };
-    
-    const resetAll = () => {
-        setStep(0);
-        setBackgrounds([]);
-        setCategory(null);
-        setBudget([10, 50]);
-        setGeography(null);
-        setInterests([]);
-        setChosenSub(null);
-        setFilteredSubs([]);
-        setBestMatch(null);
-    };
-
-    const AnalysisScreen = () => (
-      <motion.div
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm"
-      >
-        <motion.div key={step} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }}
-            className="flex flex-col items-center gap-6 text-2xl font-semibold text-white">
-          <BrainCircuit className="h-12 w-12 text-primary" />
-          <span>Generating Personalized Action Plan...</span>
-        </motion.div>
-      </motion.div>
-    );
-    
-    return (
-        <>
-            <AnimatePresence>
-                {isAnalyzing && <AnalysisScreen />}
-            </AnimatePresence>
-            
-            <div className="w-full max-w-7xl mx-auto space-y-8 p-4">
-                <div className="text-center space-y-4">
-                    <div className="flex items-center justify-center gap-2 mb-4">
-                        <Settings className="w-8 h-8 text-primary" />
-                        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent py-2">Idea to Visionary Program</h1>
-                    </div>
-                    <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                        Discover the perfect international business opportunity tailored to your background, budget, and goals. Let's build your global venture.
-                    </p>
-                </div>
-
-                <Card className="p-6 shadow-2xl lg:p-10 space-y-8 bg-gradient-to-br from-white to-blue-50/30 overflow-hidden">
-                    <Stepper steps={STEPS} currentStep={step} className="mb-8" />
-                    
-                    <AnimatePresence mode="wait">
-                        {/* --- STEP 0: BACKGROUND --- */}
-                        {step === 0 && (
-                            <motion.div key="background" initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 40 }} className="space-y-6">
-                                <div className="text-center space-y-2">
-                                    <h2 className="text-2xl font-semibold flex items-center justify-center gap-2"><BookUser className="w-6 h-6 text-primary" /> What is your Professional Background?</h2>
-                                    <p className="text-muted-foreground">Select one or more areas of your expertise. This will help us recommend the best-fit categories.</p>
-                                </div>
-                                <div className="max-w-2xl mx-auto">
-                                   <Select isMulti options={PROFESSIONAL_BACKGROUNDS} value={backgrounds} onChange={(opts) => setBackgrounds(opts)} placeholder="e.g., Tech & IT, Marketing..." menuPortalTarget={portalTarget} styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }} />
-                                </div>
-                                <div className="flex justify-center">
-                                    <Button disabled={backgrounds.length === 0} onClick={next} size="lg" className="px-8">Continue <ArrowRight className="ml-2 w-4 h-4" /></Button>
-                                </div>
-                            </motion.div>
-                        )}
-
-                        {/* --- STEP 1: CATEGORY --- */}
-                        {step === 1 && (
-                            <motion.div key="cat" initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 40 }} className="space-y-6">
-                                <div className="text-center space-y-2">
-                                    <h2 className="text-2xl font-semibold flex items-center justify-center gap-2"><Lightbulb className="w-6 h-6 text-primary" /> Select Your Business Category</h2>
-                                    <p className="text-muted-foreground">Choose a category that aligns with your goals. We've highlighted matches for your background.</p>
-                                </div>
-                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    {GENCATEGORIES.map(cat => {
-                                        const isRecommended = backgrounds.some(bg => bg.value === cat.value);
-                                        return (
-                                            <Card key={cat.value} onClick={() => handleCategorySelect(cat)} className={`p-6 cursor-pointer border-2 transition-all duration-200 hover:scale-105 relative ${category?.value === cat.value ? 'border-primary bg-primary/10 shadow-lg' : 'border-border hover:border-primary/50'}`}>
-                                                {isRecommended && <Badge className="absolute top-2 right-2 bg-green-600">Recommended</Badge>}
-                                                <div className="flex items-start gap-4">
-                                                    <div className="text-primary">{cat.icon}</div>
-                                                    <div className="flex-1">
-                                                        <h3 className="font-semibold text-lg mb-2">{cat.label}</h3>
-                                                        <p className="text-sm text-muted-foreground mb-3">Est. Budget: ${cat.budget[0]}K - ${cat.budget[1]}K</p>
-                                                    </div>
-                                                </div>
-                                            </Card>
-                                        );
-                                    })}
-                                </div>
-                                <div className="flex justify-between"><Button variant="outline" onClick={back}>Back</Button></div>
-                            </motion.div>
-                        )}
-                        
-                        {/* --- STEP 2: GOALS & BUDGET --- */}
-                        {step === 2 && category && (
-                            <motion.div key="budget" initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 40 }} className="space-y-8">
-                                <div className="text-center space-y-2">
-                                  <h2 className="text-2xl font-semibold flex items-center justify-center gap-2"><DollarSign className="w-6 h-6 text-primary" /> Budget & Goals</h2>
-                                  <p className="text-muted-foreground">Define your investment, target market, and specific interests.</p>
-                                </div>
-                                <div className="grid md:grid-cols-2 gap-8">
-                                  <Card className="p-6 space-y-4"><DualRangeSlider min={1} max={1000} value={budget} onChange={setBudget} label="Investment Budget (USD)" /></Card>
-                                  <Card className="p-6 space-y-4">
-                                    <Label className="text-lg font-semibold flex items-center gap-2"><MapPin className="w-5 h-5" /> Target Geography</Label>
-                                    <Select options={GEOGRAPHY_DATA} onChange={(opt) => setGeography(opt)} placeholder="Choose your target state..." menuPortalTarget={portalTarget} styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}/>
-                                  </Card>
-                                </div>
-                                <Card className="p-6 space-y-4">
-                                  <Label className="text-lg font-semibold flex items-center gap-2"><Target className="w-5 h-5" /> Specific Interests</Label>
-                                  <p className="text-sm text-muted-foreground">Select niche interests to help us refine the business model suggestions.</p>
-                                  <Select isMulti options={INTERESTS_DATA[category.value]} value={interests} onChange={(opts) => setInterests(opts)} placeholder="e.g., Fintech, Private Label, SEO..." menuPortalTarget={portalTarget} styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }} />
-                                </Card>
-                                <div className="flex justify-between">
-                                  <Button variant="outline" onClick={back}>Back</Button>
-                                  <Button disabled={!geography || interests.length === 0} onClick={handleFindModels}>Find Business Models <ArrowRight className="ml-2 w-4 h-4" /></Button>
-                                </div>
-                            </motion.div>
-                        )}
-                        
-                        {/* --- STEP 3: BUSINESS MODEL --- */}
-                        {step === 3 && category && (
-                             <motion.div key="subcat" initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 40 }} className="space-y-6">
-                                <div className="text-center space-y-2">
-                                    <h2 className="text-2xl font-semibold flex items-center justify-center gap-2"><Building2 className="w-6 h-6 text-primary" /> Choose Your Business Model</h2>
-                                    <p className="text-muted-foreground">Select one. We've sorted them based on your profile, budget, and interests.</p>
-                                </div>
-                                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    {filteredSubs.map(sub => (
-                                        <Card key={sub.label} onClick={() => setChosenSub(sub)} className={`p-4 cursor-pointer border-2 transition-all duration-200 flex flex-col justify-between ${chosenSub?.label === sub.label ? 'border-primary bg-primary/10 shadow-lg' : 'border-border hover:border-primary/50'}`}>
-                                            <div>
-                                                <div className="flex items-start justify-between">
-                                                  <h3 className="font-semibold text-sm leading-tight pr-4">{sub.label}</h3>
-                                                  {sub.score > 0.75 && <Badge variant="default" className="text-xs bg-green-600">Top Match</Badge>}
-                                                </div>
-                                                <p className="text-xs text-muted-foreground mt-2">{sub.description}</p>
-                                            </div>
-                                            <div className="flex items-center gap-2 pt-3 mt-auto">
-                                                <TrendingUp className="w-3 h-3 text-green-600" />
-                                                <Badge variant="outline" className="text-xs">{sub.estimatedRevenue}</Badge>
-                                            </div>
-                                        </Card>
-                                    ))}
-                                </div>
-                                 <div className="flex justify-between">
-                                    <Button variant="outline" onClick={back}>Back</Button>
-                                    <Button disabled={!chosenSub} onClick={handleGeneratePlan}>Generate Action Plan <Sparkles className="ml-2 w-4 h-4" /></Button>
-                                </div>
-                            </motion.div>
-                        )}
-
-                        {/* --- STEP 4: ACTION PLAN --- */}
-                        {step === 4 && category && chosenSub && bestMatch && (
-                            <motion.div key="prompts" initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 40 }} className="space-y-6">
-                                <div className="text-center space-y-2">
-                                    <h2 className="text-2xl font-semibold flex items-center justify-center gap-2"><CheckCircle className="w-6 h-6 text-green-600" /> Your Personalized Action Plan</h2>
-                                    <p className="text-muted-foreground">Here is your top business match and recommended next steps.</p>
-                                </div>
-                                
-                                {/* --- Best Match Card --- */}
-                                <Card className="p-6 bg-gradient-to-r from-blue-500/10 to-green-500/10 border-primary/20">
-                                  <div className="flex items-center gap-3 mb-4">
-                                      <Award className="w-8 h-8 text-primary" />
-                                      <div>
-                                          <p className="text-sm font-medium text-primary">Best Matched Business</p>
-                                          <h3 className="text-xl font-bold text-foreground">{bestMatch.label}</h3>
-                                      </div>
-                                  </div>
-                                  <p className="text-muted-foreground mb-4">{bestMatch.description}</p>
-                                  
-                                  <div className="space-y-3">
-                                      <h4 className="font-semibold text-md">Why it's a great fit for you:</h4>
-                                      <ul className="list-none space-y-2">
-                                        {bestMatch.reasons.map((reason, index) => (
-                                          <li key={index} className="flex items-start gap-3">
-                                            <Zap className="w-4 h-4 text-green-500 mt-1 flex-shrink-0" />
-                                            <span className="text-sm text-foreground/90">{reason}</span>
-                                          </li>
-                                        ))}
-                                      </ul>
-                                  </div>
-                                </Card>
-                                
-                                <Card className="p-6">
-                                  <h4 className="text-lg font-semibold mb-4 flex items-center gap-2"><Rocket className="w-5 h-5 text-primary"/> Your Selected Venture Details</h4>
-                                   <div className="grid md:grid-cols-3 gap-4 pt-4 border-t">
-                                     <div>
-                                       <p className="text-sm font-medium text-muted-foreground">Your Investment</p>
-                                       <p className="text-lg font-semibold">${budget[0]}K - ${budget[1]}K</p>
-                                     </div>
-                                     <div>
-                                       <p className="text-sm font-medium text-muted-foreground">Target Market</p>
-                                       <p className="text-lg font-semibold">{geography?.label.split('(')[0]}</p>
-                                     </div>
-                                     <div>
-                                       <p className="text-sm font-medium text-muted-foreground">Revenue Potential</p>
-                                       <p className="text-lg font-semibold text-green-600">{chosenSub.estimatedRevenue}</p>
-                                     </div>
-                                   </div>
-                                  {chosenSub.complianceNotes && <div className="pt-4 mt-4 border-t"><p className="text-sm text-amber-700 font-medium bg-amber-100 p-3 rounded-md"><strong>Compliance Note:</strong> {chosenSub.complianceNotes}</p></div>}
-                                </Card>
-
-                                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                    <Button size="lg" className="bg-gradient-to-r from-primary to-blue-600 order-1 sm:order-2">Book Free Consultation <ArrowRight className="ml-2 w-4 h-4" /></Button>
-                                    <Button variant="outline" onClick={back} className="order-2 sm:order-1">Edit Selections</Button>
-                                </div>
-                                <div className="text-center pt-4">
-                                    <Button variant="ghost" onClick={resetAll} className="text-muted-foreground">Start Over <Repeat className="ml-2 w-4 h-4" /></Button>
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </Card>
-            </div>
-        </>
-    );
+// ------------------------- Stepper UI Components -------------------------
+interface StepProps {
+    title: string;
+    description?: string;
+    isActive: boolean;
+    isCompleted: boolean;
+    isLast: boolean;
+    stepNumber: number;
 }
 
+const Step = ({ title, description, isActive, isCompleted, isLast, stepNumber }: StepProps) => {
+    return (
+        <div className={cn("flex md:block", !isLast && "flex-1")}>
+            <div className="flex items-center md:flex-col md:items-center">
+                <div className={cn("flex flex-col items-center relative", !isLast && "md:hidden")}>
+                     <div className={cn(
+                        "absolute top-10 left-1/2 -translate-x-1/2 h-full w-0.5 md:hidden",
+                        isCompleted ? "bg-primary" : "bg-muted"
+                    )}></div>
+                </div>
+                <div className={cn(
+                    "flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors z-10",
+                    isCompleted ? "bg-primary border-primary text-primary-foreground" :
+                    isActive ? "border-primary text-primary bg-background" : "border-muted-foreground text-muted-foreground bg-background"
+                )}>
+                    {isCompleted ? <Check className="w-4 h-4" /> : <span className="text-sm font-medium">{stepNumber}</span>}
+                </div>
+                <div className="ml-4 md:ml-0 md:mt-2 text-left md:text-center">
+                    <div className={cn("text-sm font-medium", isActive ? "text-primary" : "text-muted-foreground")}>{title}</div>
+                    {description && <div className="text-sm text-muted-foreground mt-1">{description}</div>}
+                </div>
+            </div>
+            {!isLast && (
+                <div className={cn(
+                    "flex-1 h-0.5 mx-4 transition-colors hidden md:block mt-4",
+                    isCompleted ? "bg-primary" : "bg-muted"
+                )}></div>
+            )}
+        </div>
+    );
+};
 
+interface StepperProps {
+    steps: Array<{ title: string; description?: string }>;
+    currentStep: number;
+    className?: string;
+}
+
+const Stepper = ({ steps, currentStep, className }: StepperProps) => {
+    return (
+        <div className={cn("flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-y-8 md:gap-y-0", className)}>
+            {steps.map((step, index) => (
+                <Step
+                    key={index}
+                    title={step.title}
+                    description={step.description}
+                    stepNumber={index + 1}
+                    isActive={index === currentStep}
+                    isCompleted={index < currentStep}
+                    isLast={index === steps.length - 1}
+                />
+            ))}
+        </div>
+    );
+};
+
+// ------------------------- Static Data -------------------------
+const BROAD_BACKGROUNDS = [
+    { id: 'tech', label: 'Technology & IT', icon: '💻', desc: 'Software, AI, Cloud, Digital' },
+    { id: 'finance', label: 'Finance, Accounting & Legal', icon: '⚖️', desc: 'Banking, Compliance, Tax' },
+    { id: 'marketing', label: 'Marketing, Sales & Branding', icon: '📈', desc: 'Branding, Digital Marketing' },
+    { id: 'manufacturing', label: 'Manufacturing & Product Development', icon: '🏭', desc: 'Factories, Product Design' },
+    { id: 'trading', label: 'Trading & Business Development', icon: '🤝', desc: 'Wholesale, Imports & Exports' },
+    { id: 'logistics', label: 'Logistics & Supply Chain', icon: '🚚', desc: 'Warehousing, Fleet Management' },
+    { id: 'healthcare', label: 'Healthcare & Life Sciences', icon: '❤️', desc: 'Medical, Wellness, Pharma' },
+    { id: 'education', label: 'Education & Training', icon: '🎓', desc: 'EdTech, Training Platforms' },
+    { id: 'creative', label: 'Creative, Arts & Lifestyle', icon: '🎨', desc: 'Design, Arts, Handicrafts' },
+    { id: 'agriculture', label: 'Agriculture & Food', icon: '🌾', desc: 'Farming, Food Processing' },
+    { id: 'realestate', label: 'Real Estate & Infrastructure', icon: '🏢', desc: 'Properties, Smart Cities' },
+    { id: 'general', label: 'General Management & Multi-Skilled', icon: '🌟', desc: 'Leadership, Consulting' },
+    { id: 'energy', label: 'Energy & Renewables', icon: '💡', desc: 'Solar, Wind, Sustainable Energy'},
+    { id: 'tourism', label: 'Tourism & Hospitality', icon: '✈️', desc: 'Travel, Eco-Tourism, Hotels'},
+    { id: 'retail', label: 'Retail & Consumer Services', icon: '🛍️', desc: 'Offline/Online Retail, Services'},
+    { id: 'environment', label: 'Environment & Sustainability', icon: '♻️', desc: 'Eco-Projects, Waste Management'}
+];
+
+const CATEGORY_MAPPING = {
+    tech: ['Tech & Digital Solutions', 'E-Commerce & D2C', 'Smart Logistics & Warehousing', 'Integrated Supply Chain (B2B)'],
+    finance: ['Financial & FinTech Services', 'Legal, Compliance & Advisory', 'Offshore Service Hubs', 'E-Commerce & D2C'],
+    marketing: ['Digital Marketing & Brand Growth', 'E-Commerce & D2C', 'Consumer Products & Lifestyle Goods', 'Education & Skilling'],
+    manufacturing: ['Innovative Manufacturing & Production', 'Consumer Products & Lifestyle Goods', 'Import/Export Excellence', 'Integrated Supply Chain (B2B)'],
+    trading: ['Domestic & International Trading', 'Import/Export Excellence', 'E-Commerce & D2C'],
+    logistics: ['Smart Logistics & Warehousing', 'Integrated Supply Chain (B2B)', 'Domestic & International Trading'],
+    healthcare: ['Healthcare & Wellness', 'Consumer Products & Lifestyle Goods', 'Education & Skilling'],
+    education: ['Education & Skilling', 'Offshore Service Hubs', 'Digital Marketing & Brand Growth', 'Adult Upskilling Products'],
+    creative: ['E-Commerce & D2C', 'Consumer Products & Lifestyle Goods', 'Digital Marketing & Brand Growth'],
+    agriculture: ['Agriculture & Food', 'Import/Export Excellence', 'Consumer Products & Lifestyle Goods'],
+    realestate: ['Real Estate & Smart Cities', 'Consumer Products & Lifestyle Goods', 'Integrated Supply Chain (B2B)'],
+    general: ['E-Commerce & D2C', 'Offshore Service Hubs', 'Integrated Supply Chain (B2B)', 'Financial & FinTech Services'],
+    energy: ['Energy & Renewables Solutions', 'Integrated Supply Chain (B2B)', 'Agriculture & Food', 'Real Estate & Smart Cities'],
+    tourism: ['Digital Marketing & Brand Growth', 'E-Commerce & D2C', 'Healthcare & Wellness', 'Creative, Arts & Lifestyle'],
+    retail: ['Consumer Products & Lifestyle Goods', 'E-Commerce & D2C', 'Domestic & International Trading', 'Digital Marketing & Brand Growth'],
+    environment: ['Environment & Sustainability', 'Healthcare & Wellness', 'Agriculture & Food', 'Smart Logistics & Warehousing']
+};
+
+// UPDATED: Business Opportunities in the USA
+const GLOBAL_OPPORTUNITIES = [
+    { 
+        title: 'Technology & Artificial Intelligence', 
+        desc: 'AI-powered SaaS solutions, cybersecurity services for enterprises, cloud infrastructure management, and data analytics platforms.', 
+        reason: 'Silicon Valley\'s dominance, massive R&D funding, and widespread corporate adoption of AI and cloud tech drive continuous growth.', 
+        icon: '🤖' 
+    },
+    { 
+        title: 'Healthcare & Biotechnology', 
+        desc: 'Development of personalized medicine, advanced medical devices, telehealth platforms, and biotech research for novel therapies.', 
+        reason: 'An aging population, high healthcare spending, and world-leading research institutions create a robust market for health innovation.', 
+        icon: '🧬' 
+    },
+    { 
+        title: 'Renewable Energy & Cleantech', 
+        desc: 'Manufacturing and installation of solar panels and wind turbines, EV charging infrastructure development, and grid-scale battery storage solutions.', 
+        reason: 'Strong government incentives like the Inflation Reduction Act, corporate sustainability goals, and falling costs drive a nationwide energy transition.', 
+        icon: '🔋' 
+    },
+    { 
+        title: 'Advanced Manufacturing & Reshoring', 
+        desc: 'Semiconductor fabrication plants (fabs), aerospace and defense components, and robotics and automation systems for industrial use.', 
+        reason: 'A push for supply chain resilience, reinforced by legislation like the CHIPS Act, and automation make domestic manufacturing cost-competitive.', 
+        icon: '🏭' 
+    },
+    { 
+        title: 'E-commerce & Logistics', 
+        desc: 'Direct-to-Consumer (D2C) brands, automated warehousing, last-mile delivery robotics, and supply chain optimization software.', 
+        reason: 'A mature consumer market with high online penetration creates continuous demand for faster, more efficient delivery and personalized shopping.', 
+        icon: '📦' 
+    },
+    { 
+        title: 'FinTech & Digital Assets', 
+        desc: 'Digital payment platforms, blockchain-based financial solutions, automated wealth management (robo-advisors), and regulatory technology (RegTech).', 
+        reason: 'The world\'s largest financial market is rapidly digitizing, with growing acceptance of digital assets and demand for frictionless services.', 
+        icon: '💳' 
+    },
+    { 
+        title: 'Entertainment & Digital Media', 
+        desc: 'Content production for streaming platforms, video game development, VR/AR experiences, and creator economy tools.', 
+        reason: 'Global demand for American media content remains high, and the US is the largest market for video games and interactive entertainment.', 
+        icon: '🎬' 
+    },
+    { 
+        title: 'Real Estate & Infrastructure', 
+        desc: 'Build-to-rent housing developments, smart city technology implementation, and retrofitting commercial buildings for sustainability.', 
+        reason: 'Housing shortages in key markets, federal infrastructure spending, and evolving work patterns create new real estate demands.', 
+        icon: '🏙️' 
+    },
+    { 
+        title: 'AgriTech & Food Innovation', 
+        desc: 'Precision agriculture using drones and IoT, development of plant-based and cell-cultured proteins, and vertical farming in urban areas.', 
+        reason: 'A need for sustainable food production and changing consumer preferences towards healthier and ethical foods drive agricultural innovation.', 
+        icon: '🌱' 
+    },
+    { 
+        title: 'Professional & EdTech Services', 
+        desc: 'Specialized B2B consulting, corporate e-learning and reskilling platforms, and software solutions for remote team management.', 
+        reason: 'The shift to a knowledge-based economy and remote work models requires continuous upskilling and specialized business solutions.', 
+        icon: '📈' 
+    },
+];
+
+
+// ------------------------- Helper utils -------------------------
+const formatCurrency = (n) => `$${n.toLocaleString()}`;
+
+const getScalabilityIcon = (scalability) => {
+    if (scalability?.includes('Global') || scalability?.includes('International')) return '🌍';
+    return '🇮🇳';
+};
+
+// ------------------------- API Functions -------------------------
+async function generateBusinessIdeasWithGemini(background, category, minBudget, maxBudget, scalability) {
+    const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+    if (!API_KEY) {
+        console.error("API key not found. Please set VITE_GEMINI_API_KEY in your .env file.");
+        return [];
+    }
+
+    try {
+        const genAI = new GoogleGenerativeAI(API_KEY);
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" });
+
+        const prompt = `
+            You are an expert business strategy consultant specializing in cross-border and international business opportunities in USA.
+            Based on the following user profile, generate 5-7 innovative business ideas focused on global markets.
+
+            User Profile:
+            - Background: ${background?.label ?? 'General'}
+            - Chosen Category: ${category ?? 'General Business'}
+            - Budget Range: ${formatCurrency(minBudget)} to ${formatCurrency(maxBudget)}
+            - Desired Scalability: ${scalability} (Focus on Cross-Border or International markets)
+
+            Instructions:
+            1.  Generate 5 to 7 distinct business ideas that have cross-border or international market potential.
+            2.  For each idea, provide a 'name', a one-sentence 'description', a 'scalability' level ('Cross-Border' or 'International'), a 'skills' array of 2-3 required skills, and a 'budget' array with a min and max estimate within the user's range.
+            3.  ALL ideas must focus on USA-Global business opportunities, export potential, or serving international markets.
+            4.  Return the output as a valid JSON array of objects. Do NOT include any text, markdown formatting like \`\`\`json, or explanations outside of the JSON array itself. The response must start with '[' and end with ']'.
+
+            Example JSON output format:
+            [
+                {
+                    "name": "Export-Ready Sustainable Packaging Solutions",
+                    "description": "Manufacturing eco-friendly packaging materials for USA exporters selling to environmentally-conscious global markets.",
+                    "budget": [50000, 150000],
+                    "skills": ["Manufacturing", "Export Compliance", "Sustainability"],
+                    "scalability": "International"
+                }
+            ]
+        `;
+
+        const result = await model.generateContent(prompt);
+        const text = await result.response.text();
+        
+        const startIndex = text.indexOf('[');
+        const endIndex = text.lastIndexOf(']');
+        
+        if (startIndex === -1 || endIndex === -1) {
+            console.error("Could not find a JSON array in the response.");
+            return [];
+        }
+
+        const jsonString = text.substring(startIndex, endIndex + 1);
+
+        try {
+            const parsedJson = JSON.parse(jsonString);
+            return parsedJson;
+        } catch (parseError) {
+            console.error("Failed to parse JSON from response:", parseError);
+            console.error("Extracted JSON String that failed:", jsonString);
+            return [];
+        }
+
+    } catch (err) {
+        console.error("Idea Generation Error:", err);
+        return [];
+    }
+}
+
+async function generateFinalPlanWithGemini(idea, background, minBudget, maxBudget, teamSize, selectedCategory) {
+    const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+    if (!API_KEY) {
+        return "Error: API key not configured. Set VITE_GEMINI_API_KEY in your environment.";
+    }
+
+    try {
+        const genAI = new GoogleGenerativeAI(API_KEY);
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+
+        const prompt = `
+            You are an expert business strategy consultant specializing in the USA market and cross-border opportunities.
+            Generate a complete, original business launch strategy based on the user's profile and selected business idea.
+
+            Use the following inputs:
+            - User Background: ${background?.label ?? 'N/A'}
+            - Selected Business Category: ${selectedCategory ?? 'General'}
+            - Business Idea Name: ${idea.name}
+            - Business Idea Description: ${idea.description}
+            - Business Scalability: ${idea.scalability || 'Cross-Border'}
+            - Budget Range: ${formatCurrency(minBudget)} to ${formatCurrency(maxBudget)}
+            - Team Size: ${teamSize === 'solo' ? 'Solo entrepreneur' : 'Small team'}
+
+            Output Requirements:
+            - Structure the content with clear headings for each section (use markdown H2 and H3).
+            - Include bullet points for readability and actionability.
+            - Make the content concise, strategic, and implementable.
+            - Focus on practical steps, market entry strategies, and cross-border considerations.
+
+            Sections to Include:
+            1.  **Executive Summary**: Business overview, unique value proposition, and international market fit.
+            2.  **Market Opportunity**: Target markets (domestic and international), market size, competitive landscape, and entry barriers.
+            3.  **Product/Service Offering**: Core offerings, key features, pricing strategy, and customer benefits.
+            4.  **Go-to-Market Strategy**: Marketing channels, sales approach, distribution strategy, and international partnership opportunities.
+            5.  **Financial Snapshot**: Budget allocation breakdown, revenue projections, cost structure, and profitability timeline.
+            6.  **Regulatory & Compliance**: Export licenses, certifications, legal requirements, and cross-border considerations.
+            7.  **90-Day Action Plan**: Week-by-week roadmap for validation, setup, and initial launch activities.
+            8.  **Risk Mitigation**: Key risks and mitigation strategies for cross-border operations.
+        `;
+
+        const result = await model.generateContent(prompt);
+        const text = await result.response.text();
+        return text;
+
+    } catch (err) {
+        console.error("Plan generation error:", err);
+        return `Error: Could not generate business plan. Error: ${err?.message ?? String(err)}.`;
+    }
+}
+
+// ------------------------- Main UI component -------------------------
+export default function BusinessGeneratorWithGeminiV2() {
+    const [step, setStep] = useState(1);
+    const [userBackground, setUserBackground] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    
+    // UPDATED: Budget range with min/max
+    const [minBudget, setMinBudget] = useState(20000);
+    const [maxBudget, setMaxBudget] = useState(200000);
+    
+    const [teamSize, setTeamSize] = useState('solo');
+    
+    // UPDATED: Removed "All" and "LOCAL" options
+    const [scalabilityFilter, setScalabilityFilter] = useState('Cross-Border');
+    
+    const [generatedIdeas, setGeneratedIdeas] = useState([]);
+    const [isGeneratingIdeas, setIsGeneratingIdeas] = useState(false);
+    
+    const [selectedIdea, setSelectedIdea] = useState(null);
+    const [customIdea, setCustomIdea] = useState({ name: '', description: '', scalability: 'Cross-Border' });
+    const [finalPlan, setFinalPlan] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    // UPDATED: History feature with localStorage
+    const [history, setHistory] = useState([]);
+    const [showHistory, setShowHistory] = useState(false);
+
+    const steps = [
+        { title: 'Explore', description: 'Market opportunities' },
+        { title: 'Select Background', description: 'Choose your expertise' },
+        { title: 'Choose Category', description: 'Pick business focus' },
+        { title: 'Budget & Team', description: 'Set your resources' },
+        { title: 'View Ideas', description: 'Expert-curated options' },
+        { title: 'Custom Idea', description: 'Or create your own' },
+        { title: 'Get Blueprint', description: 'Your strategic plan' },
+    ];
+
+    // Load history on mount
+    useEffect(() => {
+        const savedHistory = localStorage.getItem('businessIdeaHistory');
+        if (savedHistory) {
+            try {
+                setHistory(JSON.parse(savedHistory));
+            } catch (e) {
+                console.error('Error loading history:', e);
+            }
+        }
+    }, []);
+
+    const restart = () => {
+        setStep(1);
+        setUserBackground(null);
+        setSelectedCategory(null);
+        setMinBudget(20000);
+        setMaxBudget(200000);
+        setTeamSize('solo');
+        setScalabilityFilter('Cross-Border');
+        setSelectedIdea(null);
+        setFinalPlan('');
+        setCustomIdea({ name: '', description: '', scalability: 'Cross-Border' });
+        setIsLoading(false);
+        setGeneratedIdeas([]);
+        setIsGeneratingIdeas(false);
+    };
+
+    const handleGeneratePlan = async (idea) => {
+        setIsLoading(true);
+        setStep(7);
+        const ideaToGenerate = idea?.name ? idea : customIdea;
+        setSelectedIdea(ideaToGenerate);
+        const plan = await generateFinalPlanWithGemini(ideaToGenerate, userBackground, minBudget, maxBudget, teamSize, selectedCategory);
+        setFinalPlan(plan);
+        setIsLoading(false);
+        
+        // Save to history
+        const newHistoryEntry = {
+            ...ideaToGenerate,
+            timestamp: new Date().toISOString(),
+            background: userBackground?.label,
+            category: selectedCategory,
+            budgetRange: `${formatCurrency(minBudget)} - ${formatCurrency(maxBudget)}`
+        };
+        
+        setHistory(prevHistory => {
+            const updatedHistory = [newHistoryEntry, ...prevHistory].slice(0, 50); // Keep last 50
+            localStorage.setItem('businessIdeaHistory', JSON.stringify(updatedHistory));
+            return updatedHistory;
+        });
+    };
+
+    useEffect(() => {
+        const fetchIdeas = async () => {
+            if (step === 5 && userBackground && selectedCategory) {
+                setIsGeneratingIdeas(true);
+                setGeneratedIdeas([]);
+                const ideas = await generateBusinessIdeasWithGemini(userBackground, selectedCategory, minBudget, maxBudget, scalabilityFilter);
+                setGeneratedIdeas(ideas);
+                setIsGeneratingIdeas(false);
+            }
+        };
+        fetchIdeas();
+    }, [step, userBackground, selectedCategory, minBudget, maxBudget, scalabilityFilter]);
+    
+    // UPDATED: Step 1 - Global Business Opportunities
+    const renderStep1Opportunities = () => (
+        <section>
+            <div className="text-center mb-8">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full mb-4">
+                    <Globe2 className="w-5 h-5 text-blue-600" />
+                    <span className="text-sm font-semibold text-blue-800">Cross-Border Focus</span>
+                </div>
+                <h2 className="text-3xl font-bold text-slate-800 mb-4">Global Business Opportunities in USA 🌍</h2>
+                <p className="text-slate-600 mb-2 max-w-3xl mx-auto">
+                    USA's strategic position and robust economy make it an ideal launchpad for international ventures. Explore these high-growth sectors with expert-curated insights.
+                </p>
+                <p className="text-sm text-slate-500 max-w-2xl mx-auto">
+                    Each opportunity represents real market potential backed by government initiatives, global demand, and USA's competitive advantages.
+                </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {GLOBAL_OPPORTUNITIES.map((opp, index) => (
+                    <div key={index} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all">
+                        <div className="flex items-start mb-4">
+                            <span className="text-3xl mr-3 flex-shrink-0">{opp.icon}</span>
+                            <div>
+                                <h3 className="font-bold text-lg text-slate-800 mb-2">{opp.title}</h3>
+                                <p className="text-sm text-slate-600 leading-relaxed">{opp.desc}</p>
+                            </div>
+                        </div>
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-lg mb-4 border-l-4 border-blue-500">
+                            <p className="text-xs font-semibold text-blue-900 mb-1">Why This Opportunity?</p>
+                            <p className="text-sm text-slate-700">{opp.reason}</p>
+                        </div>
+                        <button 
+                            onClick={() => window.location.href='mailto:experts@yourdomain.com?subject=Consultation Request: ' + opp.title + '&body=I would like to discuss opportunities in ' + opp.title + ' and explore how to enter this market.'} 
+                            className="w-full text-center px-4 py-3 text-sm rounded-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all shadow-sm hover:shadow-md"
+                        >
+                            Connect with Expert Consultant
+                        </button>
+                    </div>
+                ))}
+            </div>
+            
+            <div className="mt-10 text-center bg-gradient-to-r from-green-50 to-emerald-50 p-8 rounded-xl border border-green-200">
+                <h3 className="text-xl font-bold text-slate-800 mb-2">Ready to Build Your Own Cross-Border Business?</h3>
+                <p className="text-slate-600 mb-6 max-w-2xl mx-auto">
+                    Get a customized business strategy tailored to your background, budget, and market goals with guidance from our expert consultants.
+                </p>
+                <button 
+                    onClick={() => setStep(2)} 
+                    className="px-10 py-4 rounded-lg font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 shadow-lg hover:shadow-xl transition-all"
+                >
+                    Start Building My Business Idea →
+                </button>
+            </div>
+        </section>
+    );
+
+    const renderStep2 = () => (
+        <section>
+            <h2 className="text-2xl font-semibold text-slate-700 border-b pb-2 mb-6">Step 2: Select Your Primary Background</h2>
+            <p className="text-slate-600 mb-6">Our consultants will use this to recommend the most suitable cross-border opportunities for you.</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {BROAD_BACKGROUNDS.map(bg => (
+                    <div
+                        key={bg.id}
+                        onClick={() => { setUserBackground(bg); setSelectedCategory(null); setStep(3); }}
+                        title={bg.desc}
+                        className="p-4 border-2 rounded-xl cursor-pointer transition-all bg-white hover:border-blue-500 hover:shadow-lg hover:scale-105"
+                    >
+                        <span className="text-3xl" role="img">{bg.icon}</span>
+                        <h3 className="font-bold text-md sm:text-lg mt-2 text-slate-800">{bg.label}</h3>
+                        <p className="hidden sm:block text-sm text-slate-500 mt-1">{bg.desc}</p>
+                    </div>
+                ))}
+            </div>
+             <div className="mt-6">
+                <button onClick={() => setStep(1)} className="px-6 py-2 rounded-lg font-semibold text-slate-700 bg-gray-200 hover:bg-gray-300">← Back to Opportunities</button>
+            </div>
+        </section>
+    );
+
+    const renderStep3 = () => (
+        <section>
+            <h2 className="text-2xl font-semibold text-slate-700 border-b pb-2 mb-6">Step 3: Recommended Business Categories</h2>
+            <p className="text-slate-600 mb-4">Based on your <span className="font-semibold">{userBackground?.label}</span> background, our experts recommend these international market-focused categories.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {(CATEGORY_MAPPING[userBackground?.id] || []).slice(0, 4).map(cat => (
+                    <div
+                        key={cat}
+                        onClick={() => { setSelectedCategory(cat); setStep(4); }}
+                        className="p-5 border-2 rounded-xl cursor-pointer transition-all bg-white hover:border-blue-500 hover:shadow-lg hover:scale-105"
+                    >
+                        <h3 className="font-bold text-lg text-slate-800">{cat}</h3>
+                        <p className="text-sm text-slate-500 mt-2">Tap to explore opportunities →</p>
+                    </div>
+                ))}
+            </div>
+            <div className="mt-6">
+                <button onClick={() => setStep(2)} className="px-6 py-2 rounded-lg font-semibold text-slate-700 bg-gray-200 hover:bg-gray-300">← Back</button>
+            </div>
+        </section>
+    );
+
+    // UPDATED: Step 4 with Budget Range Selector
+    const renderStep4 = () => (
+        <section>
+            <h2 className="text-2xl font-semibold text-slate-700 border-b pb-2 mb-6">Step 4: Budget Range, Team & Market Focus</h2>
+            <div className="space-y-6">
+                {/* UPDATED: Budget Range Selector */}
+                <div className="p-6 bg-white rounded-lg border-2 border-slate-200">
+                    <label className="block text-lg font-medium text-slate-700 mb-4">Investment Budget Range</label>
+                    <div className="space-y-4">
+                        <div>
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-sm text-slate-600">Minimum Budget</span>
+                                <span className="text-base font-bold text-blue-600">{formatCurrency(minBudget)}</span>
+                            </div>
+                            <input
+                                type="range" 
+                                min="20000" 
+                                max="500000" 
+                                step="10000"
+                                value={minBudget}
+                                onChange={(e) => {
+                                    const newMin = Number(e.target.value);
+                                    setMinBudget(newMin);
+                                    if (newMin > maxBudget) {
+                                        setMaxBudget(newMin);
+                                    }
+                                }}
+                                className="w-full h-2 bg-gradient-to-r from-blue-200 to-blue-400 rounded-lg appearance-none cursor-pointer"
+                            />
+                            <div className="flex justify-between text-xs text-slate-500 mt-1">
+                                <span>$20,000</span>
+                                <span>$5,00,000</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-sm text-slate-600">Maximum Budget</span>
+                                <span className="text-base font-bold text-indigo-600">{formatCurrency(maxBudget)}</span>
+                            </div>
+                            <input
+                                type="range" 
+                                min="20000" 
+                                max="1000000" 
+                                step="10000"
+                                value={maxBudget}
+                                onChange={(e) => {
+                                    const newMax = Number(e.target.value);
+                                    setMaxBudget(newMax);
+                                    if (newMax < minBudget) {
+                                        setMinBudget(newMax);
+                                    }
+                                }}
+                                className="w-full h-2 bg-gradient-to-r from-indigo-200 to-indigo-400 rounded-lg appearance-none cursor-pointer"
+                            />
+                            <div className="flex justify-between text-xs text-slate-500 mt-1">
+                                <span>$20,000</span>
+                                <span>$10,00,000+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+                        <p className="text-sm text-slate-700">
+                            <span className="font-semibold">Your Budget Range:</span> {formatCurrency(minBudget)} - {formatCurrency(maxBudget)}
+                        </p>
+                        <p className="text-xs text-slate-500 mt-1">Our consultants will recommend ideas within this range</p>
+                    </div>
+                </div>
+                
+                <div className="p-6 bg-white rounded-lg border-2 border-slate-200">
+                    <h3 className="text-lg font-medium mb-4">Team Structure</h3>
+                    <div className="flex gap-4">
+                        <label className="flex-1 cursor-pointer">
+                            <input 
+                                type="radio" 
+                                value="solo" 
+                                checked={teamSize === 'solo'} 
+                                onChange={e => setTeamSize(e.target.value)} 
+                                className="sr-only peer" 
+                            />
+                            <div className="p-4 border-2 rounded-lg peer-checked:border-blue-500 peer-checked:bg-blue-50 transition-all hover:border-blue-300">
+                                <p className="font-semibold text-slate-800">Solo Entrepreneur</p>
+                                <p className="text-sm text-slate-600 mt-1">Individual effort, full control</p>
+                            </div>
+                        </label>
+                        <label className="flex-1 cursor-pointer">
+                            <input 
+                                type="radio" 
+                                value="team" 
+                                checked={teamSize === 'team'} 
+                                onChange={e => setTeamSize(e.target.value)} 
+                                className="sr-only peer" 
+                            />
+                            <div className="p-4 border-2 rounded-lg peer-checked:border-blue-500 peer-checked:bg-blue-50 transition-all hover:border-blue-300">
+                                <p className="font-semibold text-slate-800">With Team</p>
+                                <p className="text-sm text-slate-600 mt-1">Collaborative approach</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                {/* UPDATED: Removed "All" and "LOCAL" options */}
+                <div className="p-6 bg-white rounded-lg border-2 border-slate-200">
+                    <h3 className="text-lg font-medium mb-4">Market Scalability Focus</h3>
+                    <select
+                        value={scalabilityFilter}
+                        onChange={(e) => setScalabilityFilter(e.target.value)}
+                        className="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-lg text-sm font-medium shadow-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                    >
+                        <option value="Cross-Border">Cross-Border (USA + Neighboring Markets)</option>
+                        <option value="International">International (Global Markets)</option>
+                    </select>
+                    <p className="text-xs text-slate-500 mt-2">All opportunities focus on international market potential</p>
+                </div>
+            </div>
+            <div className="flex items-center gap-4 mt-6">
+                <button onClick={() => setStep(3)} className="px-6 py-2 rounded-lg font-semibold text-slate-700 bg-gray-200 hover:bg-gray-300">← Back</button>
+                <button onClick={() => setStep(5)} className="px-8 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md">View Expert Recommendations →</button>
+            </div>
+        </section>
+    );
+
+    // UPDATED: Step 5 with new CTAs
+    const renderStep5 = () => (
+        <section>
+            <h2 className="text-2xl font-semibold text-slate-700 border-b pb-2 mb-6">Step 5: Expert-Curated Business Ideas</h2>
+            <p className="text-slate-600 mb-6">Our consultants have curated these opportunities based on your profile, budget, and market preferences.</p>
+            
+            {isGeneratingIdeas ? (
+                 <div className="text-center p-12 bg-white rounded-xl border-2 border-blue-200">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+                    <p className="text-slate-700 font-medium mt-4">Our expert consultants are analyzing opportunities...</p>
+                    <p className="text-slate-500 text-sm mt-2">Customizing recommendations based on your profile</p>
+                </div>
+            ) : (
+                <div className="space-y-5">
+                    {generatedIdeas.length > 0 ? generatedIdeas.map((idea, index) => (
+                        <div key={index} className="p-6 border-2 rounded-xl bg-white shadow-sm hover:shadow-lg transition-all hover:border-blue-300">
+                            <div className="flex justify-between items-start mb-3">
+                                <h4 className="font-bold text-xl text-slate-800 pr-4">{idea.name}</h4>
+                                <span className="text-xs font-semibold bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 px-3 py-1.5 rounded-full flex items-center gap-1.5 flex-shrink-0">
+                                    {getScalabilityIcon(idea.scalability)}
+                                    {idea.scalability}
+                                </span>
+                            </div>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-4">{idea.description}</p>
+                            <div className="text-sm text-slate-600 mb-4 flex flex-wrap gap-x-6 gap-y-2 bg-slate-50 p-3 rounded-lg">
+                                {idea.budget && (
+                                    <span className="flex items-center gap-1">
+                                        <strong className="text-slate-700">Budget:</strong> 
+                                        <span className="font-medium text-blue-700">{formatCurrency(idea.budget[0])} - {formatCurrency(idea.budget[1])}</span>
+                                    </span>
+                                )}
+                                {idea.skills && (
+                                    <span className="flex items-center gap-1">
+                                        <strong className="text-slate-700">Key Skills:</strong> 
+                                        <span className="text-slate-600">{idea.skills.join(', ')}</span>
+                                    </span>
+                                )}
+                            </div>
+                            
+                            {/* UPDATED: Three CTAs */}
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <button 
+                                    onClick={() => handleGeneratePlan(idea)} 
+                                    className="px-4 py-3 text-sm rounded-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all shadow-sm hover:shadow-md"
+                                >
+                                    📋 Get the Playbook
+                                </button>
+                                <button 
+                                    onClick={() => window.location.href='mailto:experts@yourdomain.com?subject=Consultation: ' + idea.name + '&body=I would like to discuss the business roadmap for: ' + idea.name} 
+                                    className="px-4 py-3 text-sm rounded-lg font-semibold text-blue-800 bg-blue-100 hover:bg-blue-200 transition-all border-2 border-blue-200"
+                                >
+                                    👨‍💼 Book Expert Consultation
+                                </button>
+                                <button 
+                                    onClick={() => handleGeneratePlan(idea)} 
+                                    className="px-4 py-3 text-sm rounded-lg font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-all border-2 border-slate-200"
+                                >
+                                    🤖 Get Strategy Roadmap
+                                </button>
+                            </div>
+                        </div>
+                    )) : (
+                         <div className="p-6 bg-yellow-50 border-2 border-yellow-200 rounded-lg">
+                            <p className="text-slate-700 font-medium">No ideas match your current criteria.</p>
+                            <p className="text-slate-600 text-sm mt-2">Try adjusting your budget range or market focus, or create a custom idea below.</p>
+                        </div>
+                    )}
+
+                    <div 
+                        onClick={() => setStep(6)} 
+                        className="p-6 border-2 border-dashed border-green-300 rounded-xl cursor-pointer transition-all bg-gradient-to-r from-green-50 to-emerald-50 hover:border-green-500 hover:shadow-lg hover:scale-102"
+                    >
+                        <h4 className="font-bold text-xl text-green-800 text-center">+ Have Your Own Idea?</h4>
+                        <p className="text-sm text-slate-600 text-center mt-2">Share your business concept and get a customized strategic plan from our consultants.</p>
+                    </div>
+                </div>
+            )}
+             <div className="mt-6">
+                <button onClick={() => setStep(4)} className="px-6 py-2 rounded-lg font-semibold text-slate-700 bg-gray-200 hover:bg-gray-300">← Back</button>
+            </div>
+        </section>
+    );
+    
+    const renderStep6CustomIdea = () => (
+        <section>
+            <h2 className="text-2xl font-semibold text-slate-700 border-b pb-2 mb-6">Step 6: Describe Your Custom Business Idea</h2>
+            <p className="text-slate-600 mb-6">Share your business concept and our consultants will create a tailored strategic plan.</p>
+            
+            <div className="space-y-4 p-6 bg-white rounded-xl border-2 border-slate-200">
+                <div>
+                    <label htmlFor="custom-idea-name" className="block text-sm font-semibold text-slate-700 mb-2">Business Idea Name *</label>
+                    <input
+                        type="text" 
+                        id="custom-idea-name"
+                        value={customIdea.name}
+                        onChange={(e) => setCustomIdea({ ...customIdea, name: e.target.value })}
+                        placeholder="e.g., Export-Ready Ayurvedic Products for European Market"
+                        className="block w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-lg text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="custom-idea-desc" className="block text-sm font-semibold text-slate-700 mb-2">Business Description *</label>
+                    <textarea
+                        id="custom-idea-desc" 
+                        rows={4}
+                        value={customIdea.description}
+                        onChange={(e) => setCustomIdea({ ...customIdea, description: e.target.value })}
+                        placeholder="e.g., Manufacturing and exporting certified organic Ayurvedic wellness products to health-conscious European consumers through D2C and B2B channels."
+                        className="block w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-lg text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                    ></textarea>
+                    <p className="text-xs text-slate-500 mt-2">Describe your business model, target market, and unique value proposition</p>
+                </div>
+                <div>
+                    <label htmlFor="custom-idea-scalability" className="block text-sm font-semibold text-slate-700 mb-2">Target Market Scalability</label>
+                    <select
+                        id="custom-idea-scalability"
+                        value={customIdea.scalability}
+                        onChange={(e) => setCustomIdea({ ...customIdea, scalability: e.target.value })}
+                        className="block w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-lg text-sm font-medium shadow-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                    >
+                        <option value="Cross-Border">Cross-Border (USA + Regional Markets)</option>
+                        <option value="International">International (Global Markets)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div className="flex items-center gap-4 mt-6">
+                <button onClick={() => setStep(5)} className="px-6 py-2 rounded-lg font-semibold text-slate-700 bg-gray-200 hover:bg-gray-300">← Back</button>
+                <button
+                    onClick={() => handleGeneratePlan(customIdea)}
+                    disabled={!customIdea.name || !customIdea.description}
+                    className="px-10 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-slate-400 disabled:to-slate-400 disabled:cursor-not-allowed shadow-md transition-all"
+                >
+                    Generate Custom Business Plan →
+                </button>
+            </div>
+        </section>
+    );
+
+    // UPDATED: Step 7 with new playbook options
+    const renderStep7FinalPlan = () => (
+        <section>
+            <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-slate-800 mb-2">Your Strategic Business Blueprint</h2>
+                <p className="text-slate-600">
+                    Custom plan for: <span className="font-semibold text-blue-700">{selectedIdea?.name || customIdea.name}</span>
+                </p>
+            </div>
+
+            {isLoading ? (
+                <div className="text-center p-12 bg-white rounded-xl border-2 border-blue-200">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+                    <p className="text-slate-700 font-medium mt-4">Our expert consultants are crafting your business plan...</p>
+                    <p className="text-slate-500 text-sm mt-2">This comprehensive strategy will include market analysis, financial projections, and actionable steps</p>
+                </div>
+            ) : (
+                <>
+                    {/* UPDATED: Playbook Options */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-200 hover:shadow-lg transition-all">
+                            <div className="flex items-start gap-3 mb-4">
+                                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">1</div>
+                                <div>
+                                    <h3 className="font-bold text-lg text-slate-800">Book Consulting Session</h3>
+                                    <p className="text-sm text-slate-600 mt-1">Get playbook FREE + 60-min expert consultation</p>
+                                </div>
+                            </div>
+                            <ul className="space-y-2 mb-4 text-sm text-slate-700">
+                                <li className="flex items-start gap-2">
+                                    <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                                    <span>Complete business playbook with roadmap</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                                    <span>60-minute strategy session with expert</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                                    <span>Market entry guidance & compliance review</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                                    <span>Personalized action plan refinement</span>
+                                </li>
+                            </ul>
+                            <button 
+                                onClick={() => window.location.href='mailto:experts@yourdomain.com?subject=Consulting Session Booking: ' + (selectedIdea?.name || customIdea.name) + '&body=I would like to book a consulting session to discuss my business plan for: ' + (selectedIdea?.name || customIdea.name) + '%0D%0A%0D%0APlease send me details about scheduling and next steps.'}
+                                className="w-full px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg transition-all"
+                            >
+                                Book Consultation Now
+                            </button>
+                        </div>
+
+                        <div className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border-2 border-green-200 hover:shadow-lg transition-all">
+                            <div className="flex items-start gap-3 mb-4">
+                                <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">2</div>
+                                <div>
+                                    <h3 className="font-bold text-lg text-slate-800">Purchase Playbook Only</h3>
+                                    <p className="text-sm text-slate-600 mt-1">Get playbook + 15-min FREE consultation</p>
+                                </div>
+                            </div>
+                            <ul className="space-y-2 mb-4 text-sm text-slate-700">
+                                <li className="flex items-start gap-2">
+                                    <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                                    <span>Comprehensive business playbook (PDF)</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                                    <span>15-minute complimentary expert call</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                                    <span>Financial projections & templates</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                    <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                                    <span>Quick Q&A to clarify key points</span>
+                                </li>
+                            </ul>
+                            <button 
+                                onClick={() => window.location.href='mailto:experts@yourdomain.com?subject=Playbook Purchase: ' + (selectedIdea?.name || customIdea.name) + '&body=I would like to purchase the business playbook for: ' + (selectedIdea?.name || customIdea.name) + '%0D%0A%0D%0APlease send me payment details and delivery information.'}
+                                className="w-full px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 shadow-md hover:shadow-lg transition-all"
+                            >
+                                Purchase Playbook
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="bg-white border-2 border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                        <div className="bg-gradient-to-r from-slate-50 to-slate-100 px-6 py-4 border-b-2 border-slate-200">
+                            <h3 className="font-bold text-lg text-slate-800">Business Plan Preview</h3>
+                            <p className="text-sm text-slate-600 mt-1">Expert-curated strategy tailored to your requirements</p>
+                        </div>
+                        <div className="markdown-container p-6 prose prose-slate max-w-none">
+                            <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                                {finalPlan || "Generating your comprehensive business strategy..."}
+                            </ReactMarkdown>
+                        </div>
+                    </div>
+                </>
+            )}
+            
+            <div className="mt-8 flex flex-wrap gap-4">
+                <button 
+                    onClick={restart} 
+                    className="px-8 py-3 rounded-lg font-semibold text-white bg-slate-700 hover:bg-slate-800 transition-all shadow-md"
+                >
+                    🔄 Generate Another Idea
+                </button>
+                <button 
+                    onClick={() => setStep(5)} 
+                    className="px-6 py-3 rounded-lg font-semibold text-slate-700 bg-gray-200 hover:bg-gray-300 transition-all"
+                >
+                    ← Back to Ideas
+                </button>
+                <button 
+                    onClick={() => setShowHistory(true)} 
+                    className="px-6 py-3 rounded-lg font-semibold text-blue-700 bg-blue-100 hover:bg-blue-200 transition-all flex items-center gap-2"
+                >
+                    <History className="w-4 h-4" />
+                    View Saved History
+                </button>
+            </div>
+        </section>
+    );
+    
+    // UPDATED: History Modal
+    const renderHistory = () => (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col">
+                <div className="p-6 border-b flex justify-between items-center bg-gradient-to-r from-blue-50 to-indigo-50">
+                    <div className="flex items-center gap-3">
+                        <History className="w-6 h-6 text-blue-600" />
+                        <div>
+                            <h3 className="text-xl font-bold text-slate-800">Saved Business Ideas</h3>
+                            <p className="text-sm text-slate-600">Your previously generated concepts</p>
+                        </div>
+                    </div>
+                    <button 
+                        onClick={() => setShowHistory(false)} 
+                        className="text-slate-500 hover:text-slate-800 text-3xl font-bold leading-none transition-colors"
+                    >
+                        &times;
+                    </button>
+                </div>
+                <div className="p-6 overflow-y-auto flex-1">
+                    {history.length > 0 ? (
+                        <div className="space-y-4">
+                            {history.map((idea, index) => (
+                                <div key={index} className="p-4 border-2 rounded-lg bg-slate-50 hover:bg-white hover:border-blue-300 transition-all">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h4 className="font-bold text-slate-800">{idea.name}</h4>
+                                        <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full flex-shrink-0 ml-2">
+                                            {getScalabilityIcon(idea.scalability)} {idea.scalability}
+                                        </span>
+                                    </div>
+                                    <p className="text-sm text-slate-600 mb-3">{idea.description}</p>
+                                    <div className="flex flex-wrap gap-3 text-xs text-slate-500">
+                                        {idea.background && <span className="bg-slate-200 px-2 py-1 rounded">📊 {idea.background}</span>}
+                                        {idea.category && <span className="bg-slate-200 px-2 py-1 rounded">🎯 {idea.category}</span>}
+                                        {idea.budgetRange && <span className="bg-slate-200 px-2 py-1 rounded">💰 {idea.budgetRange}</span>}
+                                        {idea.timestamp && <span className="bg-slate-200 px-2 py-1 rounded">📅 {new Date(idea.timestamp).toLocaleDateString()}</span>}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-12">
+                            <Briefcase className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+                            <p className="text-slate-500 font-medium">No saved business ideas yet</p>
+                            <p className="text-slate-400 text-sm mt-2">Generate your first idea to see it here</p>
+                        </div>
+                    )}
+                </div>
+                 <div className="p-4 border-t bg-slate-50 flex justify-between items-center">
+                    <p className="text-sm text-slate-600">{history.length} saved {history.length === 1 ? 'idea' : 'ideas'}</p>
+                    <button 
+                        onClick={() => setShowHistory(false)} 
+                        className="px-6 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 font-semibold transition-all"
+                    >
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+
+    const renderContent = () => {
+        switch (step) {
+            case 1: return renderStep1Opportunities();
+            case 2: return renderStep2();
+            case 3: return renderStep3();
+            case 4: return renderStep4();
+            case 5: return renderStep5();
+            case 6: return renderStep6CustomIdea();
+            case 7: return renderStep7FinalPlan();
+            default: return renderStep1Opportunities();
+        }
+    };
+
+    return (
+        <div className="font-sans max-w-7xl mx-auto p-4 md:p-8 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+            <header className="text-center mb-10">
+                
+                <h1 className="text-4xl  font-bold text-slate-800 mb-2">Business Idea Generator</h1>
+                <p className="text-slate-600 mt-2 max-w-2xl mx-auto">Expert-curated business strategies for international markets. Get consulting-backed playbooks tailored to your profile.</p>
+                <div className="mt-6 flex justify-center gap-4">
+                    <button 
+                        onClick={() => setShowHistory(true)} 
+                        className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-blue-700 bg-blue-100 rounded-full hover:bg-blue-200 transition-all shadow-sm hover:shadow-md"
+                    >
+                        <History className="w-4 h-4" />
+                        Saved History ({history.length})
+                    </button>
+                </div>
+            </header>
+            
+            <div className="max-w-6xl mx-auto mt-8 p-6 md:p-10 bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-slate-200 shadow-xl">
+                <Stepper steps={steps} currentStep={step - 1} className="mb-12" />
+                <main>
+                    {renderContent()}
+                </main>
+            </div>
+            
+            {showHistory && renderHistory()}
+            
+            <footer className="text-center mt-12 text-sm text-slate-500">
+                <p>© 2025 Global Business Consultancy. Expert guidance for cross-border entrepreneurs.</p>
+            </footer>
+        </div>
+    );
+}
