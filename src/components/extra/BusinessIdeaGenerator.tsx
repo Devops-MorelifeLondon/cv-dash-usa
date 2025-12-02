@@ -414,6 +414,19 @@ export default function BusinessGeneratorWithGeminiV2() {
                     <Globe2 className="w-5 h-5 text-blue-600" />
                     <span className="text-sm font-semibold text-blue-800">Cross-Border Focus</span>
                 </div>
+                 
+            <div className="my-10 text-center bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
+                <h3 className="text-xl font-bold text-slate-800 mb-2">Ready to Build Your Own Cross-Border Business?</h3>
+                <p className="text-slate-600 mb-6 max-w-2xl mx-auto">
+                    Get a customized business strategy tailored to your background, budget, and market goals with guidance from our expert consultants.
+                </p>
+                <button 
+                    onClick={() => setStep(2)} 
+                    className="px-6 py-2 rounded-lg font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 shadow-lg hover:shadow-xl transition-all"
+                >
+                    Start Building My Business Idea →
+                </button>
+            </div>
                 <h2 className="text-3xl font-bold text-slate-800 mb-4">Global Business Opportunities in USA 🌍</h2>
                 <p className="text-slate-600 mb-2 max-w-3xl mx-auto">
                     USA's strategic position and robust economy make it an ideal launchpad for international ventures. Explore these high-growth sectors with expert-curated insights.
@@ -446,19 +459,7 @@ export default function BusinessGeneratorWithGeminiV2() {
                     </div>
                 ))}
             </div>
-            
-            <div className="mt-10 text-center bg-gradient-to-r from-green-50 to-emerald-50 p-8 rounded-xl border border-green-200">
-                <h3 className="text-xl font-bold text-slate-800 mb-2">Ready to Build Your Own Cross-Border Business?</h3>
-                <p className="text-slate-600 mb-6 max-w-2xl mx-auto">
-                    Get a customized business strategy tailored to your background, budget, and market goals with guidance from our expert consultants.
-                </p>
-                <button 
-                    onClick={() => setStep(2)} 
-                    className="px-10 py-4 rounded-lg font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 shadow-lg hover:shadow-xl transition-all"
-                >
-                    Start Building My Business Idea →
-                </button>
-            </div>
+           
         </section>
     );
 
