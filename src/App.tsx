@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import IndiaMarketEntryPricing from "./pages/Pricing";
 import PricingLayout from "./pages/PricingLayout";
 import PostLayout from "./pages/PostConsLayout";
+import AuthPage from "./pages/Auth";
 
 
 
@@ -28,6 +29,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+             <Route path="/auth" element={<AuthPage />} />
           <Route path="/opportunities" element={<Opportunities />} />
           <Route path="/badges" element={<Badges />} />
           <Route path="/advisory" element={<Advisory />} />
