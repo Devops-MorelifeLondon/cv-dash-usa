@@ -9,6 +9,7 @@ import {
   BookOpen,
   ChevronRight,
   CreditCard,
+  User
 } from "lucide-react";
 import {
   Sidebar,
@@ -32,6 +33,7 @@ const navigationItems = [
   { title: "Startup Badge Progress", url: "/badges", icon: Trophy },
 
   { title: "Resources & Playbooks", url: "/resources", icon: BookOpen },
+    { title: "Login", url: "/auth", icon: User },
 ];
 
 
