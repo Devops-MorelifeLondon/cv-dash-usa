@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux"; // Redux Hooks
+import { useNavigate } from "react-router-dom"; // Navigation
 import {
   Card,
   CardContent,
@@ -20,11 +22,18 @@ import {
 } from "lucide-react";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { apiClient } from "@/services/config";
-import Cookies from "js-cookie";
-import { toast } from "sonner"; // Import Sonner
+import { toast } from "sonner";
+
+// Import Redux Actions and Types
+import { loginStart, loginSuccess, loginFailure } from "@/store/authSlice"; 
+import { RootState } from "@/store"; 
 
 export default function AuthPage() {
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  // Access Global Auth State
+  const { isLoading, isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -35,8 +44,28 @@ export default function AuthPage() {
     password: "",
   });
 
+  // Redirect if already logged in
+  useEffect(() => {
+    if (isAuthenticated) {
+       handleRedirect();
+    }
+  }, [isAuthenticated]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Helper: Handle Redirect after Login
+  const handleRedirect = () => {
+      // Check if user was trying to access a service wizard
+      const pendingRequest = localStorage.getItem("pendingServiceRequest");
+      
+      if (pendingRequest) {
+          toast.success("Welcome back! Resuming your application...");
+          navigate("/support"); // Redirect back to ServicesHub
+      } else {
+          navigate("/"); // Default to Dashboard
+      }
   };
 
   // ===================================================================
@@ -47,29 +76,31 @@ export default function AuthPage() {
     type: "login" | "register"
   ) => {
     e.preventDefault();
-    setIsLoading(true);
+    
+    // 1. Dispatch Start Action
+    dispatch(loginStart());
 
-    // Endpoint selection
     const endpoint = type === "login" ? "/login" : "/register";
 
     try {
       const res = await apiClient.post(`/api/user${endpoint}`, formData);
       const data = res.data;
 
-      // Success Toast
       toast.success(data.message || "Operation successful!");
 
-      if (type === "login" && data.token) {
-        handleAuthSuccess(data.token, data.user);
+      // 2. Dispatch Success Action (Updates Redux Store + Cookies)
+      if (data.token) {
+        dispatch(loginSuccess({ user: data.user, token: data.token }));
+        // Navigation happens in useEffect or handleRedirect helper
+        handleRedirect();
+      } else if (type === "register") {
+         // If register doesn't auto-login, allow them to switch tabs
+         setFormData({ ...formData, password: "" });
+         // Optional: You might want to stop loading state here manually if not redirecting
+         dispatch(loginFailure()); // Reset loading state, strictly speaking not a failure but stops spinner
       }
 
-      if (type === "register") {
-        setFormData({ ...formData, password: "" });
-        // Optional: Switch tab to login automatically here if desired
-      }
     } catch (err: any) {
-      // Error handling based on your backend controller structure
-      // Backend returns 400/500 with { message: "..." } or { error: "..." }
       const errorMessage = 
         err.response?.data?.message || 
         err.response?.data?.error || 
@@ -77,8 +108,9 @@ export default function AuthPage() {
         "Something went wrong";
 
       toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
+      
+      // 3. Dispatch Failure Action
+      dispatch(loginFailure());
     }
   };
 
@@ -96,41 +128,29 @@ export default function AuthPage() {
     }
 
     try {
-      setIsLoading(true);
+      dispatch(loginStart());
 
       const res = await apiClient.post("/api/user/google-login", { token });
       const data = res.data;
 
       toast.success(data.message || "Google login successful!");
 
-      handleAuthSuccess(data.token, data.user);
+      // Dispatch Success
+      dispatch(loginSuccess({ user: data.user, token: data.token }));
+      handleRedirect();
+
     } catch (err: any) {
       const errorMessage = 
         err.response?.data?.message || 
-        err.response?.data?.error || 
         "Google login failed";
         
       toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
+      dispatch(loginFailure());
     }
   };
 
   const handleGoogleError = () => {
     toast.error("Google Sign-In failed. Please try again.");
-  };
-
-  // ===================================================================
-  // SAVE TOKEN & REDIRECT
-  // ===================================================================
-  const handleAuthSuccess = (token: string, user: any) => {
-    Cookies.set("token", token, { expires: 30 });
-    localStorage.setItem("user", JSON.stringify(user || {}));
-
-    // Small delay to allow the user to read the success toast
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 800);
   };
 
   // ===================================================================
@@ -161,8 +181,6 @@ export default function AuthPage() {
               </CardHeader>
 
               <CardContent className="space-y-4">
-                {/* Note: Alert divs removed, replaced by Sonner toasts */}
-
                 <form
                   onSubmit={(e) => handleSubmit(e, "login")}
                   className="space-y-4"
@@ -176,6 +194,7 @@ export default function AuthPage() {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
+                      disabled={isLoading}
                     />
                   </div>
 
@@ -188,6 +207,7 @@ export default function AuthPage() {
                       value={formData.password}
                       onChange={handleInputChange}
                       required
+                      disabled={isLoading}
                     />
                   </div>
 
@@ -250,6 +270,7 @@ export default function AuthPage() {
                       value={formData.fullName}
                       onChange={handleInputChange}
                       required
+                      disabled={isLoading}
                     />
                   </div>
 
@@ -263,6 +284,7 @@ export default function AuthPage() {
                         value={formData.email}
                         onChange={handleInputChange}
                         required
+                        disabled={isLoading}
                       />
                     </div>
                     <div className="space-y-2">
@@ -276,6 +298,7 @@ export default function AuthPage() {
                           value={formData.phone}
                           onChange={handleInputChange}
                           required
+                          disabled={isLoading}
                         />
                       </div>
                     </div>
@@ -293,6 +316,7 @@ export default function AuthPage() {
                           value={formData.company}
                           onChange={handleInputChange}
                           required
+                          disabled={isLoading}
                         />
                       </div>
                     </div>
@@ -308,6 +332,7 @@ export default function AuthPage() {
                           value={formData.country}
                           onChange={handleInputChange}
                           required
+                          disabled={isLoading}
                         />
                       </div>
                     </div>
@@ -322,6 +347,7 @@ export default function AuthPage() {
                       value={formData.password}
                       onChange={handleInputChange}
                       required
+                      disabled={isLoading}
                     />
                   </div>
 
