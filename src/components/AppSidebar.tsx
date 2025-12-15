@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux"; // Redux Hooks
+import { logout } from "@/store/authSlice"; // Import logout action
 import {
   Flag,
   Trophy,
@@ -9,7 +11,8 @@ import {
   BookOpen,
   ChevronRight,
   CreditCard,
-  User
+  User,
+  LogOut // Import Logout Icon
 } from "lucide-react";
 import {
   Sidebar,
@@ -20,10 +23,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
+  useSidebar
 } from "@/components/ui/sidebar";
 
-// Navigation items remain the same...
+// Navigation items
 const navigationItems = [
   { title: "Welcome & Quick Start", url: "/", icon: Flag },
   { title: "Discover Opportunities", url: "/opportunities", icon: TrendingUp },
@@ -31,25 +34,44 @@ const navigationItems = [
   { title: "Pricing", url: "/pricing", icon: CreditCard },
   { title: "Meet Advisory Team", url: "/advisory", icon: Users },
   { title: "Startup Badge Progress", url: "/badges", icon: Trophy },
-
   { title: "Resources & Playbooks", url: "/resources", icon: BookOpen },
-    { title: "Login", url: "/auth", icon: User },
+  // "Login" will be handled conditionally in the render
+  { title: "Login", url: "/auth", icon: User }, 
 ];
-
 
 export function AppSidebar() {
   const { state } = useSidebar();
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  // Get Auth State from Redux
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+  console.log("Auth State in Sidebar:", isAuthenticated, user);
+
   const currentPath = location.pathname;
   const collapsed = state === "collapsed";
-
-  const [country, setCountry] = useState("US");
+  const [country, setCountry] = useState("IN");
 
   const isActive = (path) => {
     if (path === "/" && currentPath === "/") return true;
     if (path !== "/" && currentPath.startsWith(path)) return true;
     return false;
   };
+
+  const handleLogout = () => {
+    // 1. Dispatch Logout Action (clears Redux + Cookies/Localstorage inside the slice)
+    dispatch(logout());
+    // 2. Redirect to Home or Login
+    navigate("/auth");
+  };
+
+  // Filter navigation: Hide "Login" if user is already authenticated
+  const displayItems = navigationItems.filter(item => {
+    if (isAuthenticated && item.url === "/auth") return false;
+    return true;
+  });
 
   return (
     <Sidebar
@@ -77,7 +99,6 @@ export function AppSidebar() {
           </div>
         </div>
 
-        {/* The rest of the component remains the same */}
         <SidebarGroup className="px-3 py-4">
           <SidebarGroupLabel className={`text-xs font-medium text-muted-foreground uppercase tracking-wider ${collapsed ? "hidden" : ""}`}>
             Dashboard
@@ -85,7 +106,8 @@ export function AppSidebar() {
 
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
-              {navigationItems.map((item) => (
+              {/* Standard Menu Items */}
+              {displayItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <a
@@ -98,6 +120,7 @@ export function AppSidebar() {
                         }
                       `}
                     >
+                      {/* Icons are usually passed as props to SidebarMenuButton or handled here if dynamic */}
                       {/* <item.icon className="w-5 h-5 opacity-80" /> */}
 
                       {!collapsed && (
@@ -117,36 +140,59 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+
+              {/* LOGGED IN USER SECTION */}
+              {isAuthenticated && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton 
+                    onClick={handleLogout}
+                    className="relative flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 group hover:bg-red-50 hover:text-red-600 text-muted-foreground cursor-pointer"
+                  >
+                    <LogOut className="w-5 h-5 opacity-80" />
+                    {!collapsed && (
+                      <div className="flex flex-col items-start animate-fade-in overflow-hidden">
+                        <span className="text-sm font-semibold truncate text-foreground group-hover:text-red-600">
+                          {user?.name || "User"}
+                        </span>
+                        <span className="text-[10px] uppercase tracking-wide">
+                          Logout
+                        </span>
+                      </div>
+                    )}
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
+
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {/* Country Switcher */}
+        <div className="px-6 py-4 flex justify-center animate-fade-in gap-3">
+          {/* India Button */}
+          <a
+            href="https://cv-dash-2-git-v4-devopmlls-projects.vercel.app/"
+            className={`px-3 py-1 text-base font-semibold rounded-md transition-colors duration-150
+              ${country === "IN"
+                ? "bg-primary text-primary-foreground"
+                : "hover:text-primary text-muted-foreground"
+              }`}
+          >
+            INDIA
+          </a>
 
-       <div className="px-6 py-4 flex justify-center animate-fade-in gap-3">
-  {/* India Button */}
-  <a
-    href="https://cv-dash-2-git-v4-devopmlls-projects.vercel.app/" // replace with actual India domain
-    className={`px-3 py-1 text-base font-semibold rounded-md transition-colors duration-150
-      ${country === "IN"
-        ? "bg-primary text-primary-foreground"
-        : "hover:text-primary text-muted-foreground"
-      }`}
-  >
-    INDIA
-  </a>
-
-  {/* USA Button */}
-  <a
-    href="https://cv-dash-usa.vercel.app" // replace with actual USA domain
-    className={`px-3 py-1 text-base font-semibold rounded-md transition-colors duration-150
-      ${country === "US"
-        ? "bg-primary text-primary-foreground"
-        : "hover:text-primary text-muted-foreground"
-      }`}
-  >
-    USA
-  </a>
-</div>
+          {/* USA Button */}
+          <a
+            href="https://cv-dash-usa.vercel.app"
+            className={`px-3 py-1 text-base font-semibold rounded-md transition-colors duration-150
+              ${country === "US"
+                ? "bg-primary text-primary-foreground"
+                : "hover:text-primary text-muted-foreground"
+              }`}
+          >
+            USA
+          </a>
+        </div>
 
         <div className="mt-auto p-4 border-t border-border/10">
           {!collapsed && (
