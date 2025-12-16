@@ -19,6 +19,7 @@ import NotFound from "./pages/NotFound";
 import PricingLayout from "./pages/PricingLayout";
 import PostLayout from "./pages/PostConsLayout";
 import AuthPage from "./pages/Auth";
+import SupportDashboard from "./pages/SupportDashboard";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = () => (
               <Route path="/support" element={<Support />} />
               <Route path="/resources" element={<Resources />} />
               <Route path="/crossassist" element={<CrossAssist />} />
+              <Route path="/my-support" element={<SupportDashboard />} />
               
               {/* Layout Routes */}
               <Route path="/pricing" element={<PricingLayout />} />

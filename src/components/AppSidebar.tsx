@@ -35,6 +35,7 @@ const navigationItems = [
   { title: "Meet Advisory Team", url: "/advisory", icon: Users },
   { title: "Startup Badge Progress", url: "/badges", icon: Trophy },
   { title: "Resources & Playbooks", url: "/resources", icon: BookOpen },
+  { title: "My Support", url: "/my-support", icon: BookOpen },
   // "Login" will be handled conditionally in the render
   { title: "Login", url: "/auth", icon: User }, 
 ];
